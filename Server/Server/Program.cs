@@ -17,6 +17,7 @@ using Server.Game;
 using ServerCore;
 using SharedDB;
 using static System.Net.Mime.MediaTypeNames;
+using System.IO;
 namespace Server
 {
 	// 1. GameRoom 방식의 간단한 동기화 <- OK
@@ -98,6 +99,59 @@ namespace Server
 			t.Start();
 		}
 
+        static void CreateGameRooms()
+        {
+            string host = Dns.GetHostName();
+            IPHostEntry ipHost = Dns.GetHostEntry(host);
+            IPAddress ipAddr = ipHost.AddressList[1];
+            IPEndPoint endPoint = new IPEndPoint(ipAddr, 7778);
+
+            Listener listener = new Listener();
+            listener.Init(endPoint, () => { return null; });
+
+            int processCount = 2;
+            // Get Unity server program path
+            string processPath = Directory.GetCurrentDirectory().Substring(0, Directory.GetCurrentDirectory().Length - 38) + "\\Game\\Build\\Server\\Game.exe";
+
+            Console.WriteLine(processPath);
+
+            for (int i = 0; i < processCount; i++)
+            {
+                bool bProgramConnect = false; // When unity server connect. set true
+
+                Process process = new Process();
+                GameRoom room = GameLogic.Instance.Add(i, process); // Make new game room 
+
+                listener.SetSessionFactory(() =>
+                {
+                    bProgramConnect = true;
+
+                    GameSession session = new GameSession();
+                    session.Room = room;
+                    room.Session = session;
+                    return session;
+                });
+
+                // Make program open on new window
+                process.StartInfo.UseShellExecute = true;
+                process.StartInfo.CreateNoWindow = false;
+                // Set Unity server program path
+                process.StartInfo.FileName = processPath;
+                process.Start();
+
+                while(true)
+                { 
+                    // Waiting for unity server connect
+                    if(bProgramConnect)
+                    {
+                        Console.WriteLine("Unity server connect");
+                        break;
+                    }
+                }
+            }
+
+        }
+
         static void StartServer()
         {
             // DNS (Domain Name System)
@@ -145,6 +199,7 @@ namespace Server
 			DataManager.LoadData();
 
 			StartServerInfoTask();
+            CreateGameRooms();
             StartServer();
         }
     }

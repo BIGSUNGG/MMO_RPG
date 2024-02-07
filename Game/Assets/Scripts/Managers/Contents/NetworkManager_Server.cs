@@ -27,7 +27,17 @@ public partial class NetworkManager
     // info : Information of server to connect
     public void ConnectToServer()
     {
+        string host = Dns.GetHostName();
+        IPHostEntry ipHost = Dns.GetHostEntry(host);
+        IPAddress ipAddr = ipHost.AddressList[1];
+        IPEndPoint endPoint = new IPEndPoint(ipAddr, 7778);
 
+        Connector connector = new Connector();
+
+        // Start server connect
+        connector.Connect(endPoint,
+            () => { return _serverSession; },
+            1);
     }
 
     // packet : Packet to send server
