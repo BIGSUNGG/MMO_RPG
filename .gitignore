@@ -1,0 +1,8 @@
+bin
+.vs
+obj
+Game/Build
+Game/Library
+Game/Logs
+Game/obj
+Game/Temp
