@@ -126,7 +126,7 @@ namespace Server
                 {
                     bProgramConnect = true;
 
-                    GameSession session = new GameSession();
+                    GameSession session = GameSessionManager.Instance.Generate();
                     session.Room = room;
                     room.Session = session;
                     return session;

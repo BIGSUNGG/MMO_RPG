@@ -39,12 +39,14 @@ public class ServerSession : PacketSession
 
 	public override void OnRecvPacket(ArraySegment<byte> buffer)
 	{
-        int 
-            SessionId = BitConverter.ToInt32(buffer.Array, buffer.Offset);
-           
-        ClientPacketManager.Instance.OnRecvPacket(this, 
-            new ArraySegment<byte>(buffer.Array, buffer.Offset + 4, buffer.Count - 4)
-            );
+        int SessionId = BitConverter.ToInt32(buffer.Array, buffer.Offset);
+
+        ClientSession session = Managers.Network.FindClientSession(SessionId);
+
+        if (session != null)
+            ClientPacketManager.Instance.OnRecvPacket(this, new ArraySegment<byte>(buffer.Array, buffer.Offset + 4, buffer.Count - 4));
+        else
+            Debug.Log("Recv null session's id");
     }
 
 	public override void OnSend(int numOfBytes)
