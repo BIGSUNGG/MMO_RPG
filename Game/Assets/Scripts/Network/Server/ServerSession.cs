@@ -10,7 +10,12 @@ using UnityEngine;
 #if UNITY_SERVER
 public class ServerSession : PacketSession
 {
-	public void Send(IMessage packet)
+    protected override ushort ParseDataSize(ArraySegment<byte> buffer)
+    {
+        return BitConverter.ToUInt16(buffer.Array, buffer.Offset + 4);
+    }
+
+    public void Send(IMessage packet)
 	{
 		string msgName = packet.Descriptor.Name.Replace("_", string.Empty);
 		MsgId msgId = (MsgId)Enum.Parse(typeof(MsgId), msgName);
@@ -39,14 +44,28 @@ public class ServerSession : PacketSession
 
 	public override void OnRecvPacket(ArraySegment<byte> buffer)
 	{
-        int SessionId = BitConverter.ToInt32(buffer.Array, buffer.Offset);
+        #if true // Log Packet Info
+        Debug.Log(
+            "Id : " + BitConverter.ToInt32(buffer.Array, buffer.Offset) +
+            ", Size : " + BitConverter.ToUInt16(buffer.Array, buffer.Offset + 4) +
+            ", MsgId : " + BitConverter.ToUInt16(buffer.Array, buffer.Offset + 6)
+            );
+        #endif
 
-        ClientSession session = Managers.Network.FindClientSession(SessionId);
+        int sessionId = BitConverter.ToInt32(buffer.Array, buffer.Offset);
+        if(sessionId == 0) // Recieve server packet
+        {           
+            ServerPacketManager.Instance.OnRecvPacket(this, new ArraySegment<byte>(buffer.Array, buffer.Offset + 4, buffer.Count - 4));
+        }
+        else // Recieve client packet
+        {        
+            ClientSession session = Managers.Network.FindClientSession(sessionId);
 
-        if (session != null)
-            ClientPacketManager.Instance.OnRecvPacket(this, new ArraySegment<byte>(buffer.Array, buffer.Offset + 4, buffer.Count - 4));
-        else
-            Debug.Log("Recv null session's id");
+            if (session != null)
+                ClientPacketManager.Instance.OnRecvPacket(session, new ArraySegment<byte>(buffer.Array, buffer.Offset + 4, buffer.Count - 4));
+            else
+                Debug.Log("Recv null session's id");
+        }
     }
 
 	public override void OnSend(int numOfBytes)

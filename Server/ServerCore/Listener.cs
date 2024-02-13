@@ -56,25 +56,25 @@ namespace ServerCore
 			}
 		}
 
-		void OnAcceptCompleted(object sender, SocketAsyncEventArgs args)
-		{
-			try
-			{
-				if (args.SocketError == SocketError.Success)
-				{
-					Session session = _sessionFactory.Invoke();
-					session.Start(args.AcceptSocket);
-					session.OnConnected(args.AcceptSocket.RemoteEndPoint);
-				}
-				else
-					Console.WriteLine(args.SocketError.ToString());
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e);
-			}
+        void OnAcceptCompleted(object sender, SocketAsyncEventArgs args)
+        {
+            try
+            {
+                if (args.SocketError == SocketError.Success)
+                {
+                    Session session = _sessionFactory.Invoke();
+                    session.Start(args.AcceptSocket);
+                    session.OnConnected(args.AcceptSocket.RemoteEndPoint);
+                }
+                else
+                    Console.WriteLine(args.SocketError.ToString());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
 
-			RegisterAccept(args);
-		}
+            RegisterAccept(args);
+        }
 	}
 }

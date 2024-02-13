@@ -14,6 +14,7 @@ namespace Server.Game
         public GameSession Session { get; set; }
         public Process Program { get; set; }
 		public int RoomId { get; set; }
+		public int MapId { get; set; }
 
 		Dictionary<int, Player> _players = new Dictionary<int, Player>();
 

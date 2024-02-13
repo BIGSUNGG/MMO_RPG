@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 #if UNITY_SERVER
-partial class ClientPacketHandler
+class ClientPacketHandler
 {
     public static void C_LoginHandler(PacketSession session, IMessage packet) { }
 

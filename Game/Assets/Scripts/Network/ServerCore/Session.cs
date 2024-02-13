@@ -13,6 +13,11 @@ namespace ServerCore
 		public static readonly int HeaderSize = 2;
 
 		// [size(2)][packetId(2)][ ... ][size(2)][packetId(2)][ ... ]
+        protected virtual ushort ParseDataSize(ArraySegment<byte> buffer)
+        {
+            return BitConverter.ToUInt16(buffer.Array, buffer.Offset);
+        }
+
 		public sealed override int OnRecv(ArraySegment<byte> buffer)
 		{
 			int processLen = 0;
@@ -23,9 +28,9 @@ namespace ServerCore
 				if (buffer.Count < HeaderSize)
 					break;
 
-				// 패킷이 완전체로 도착했는지 확인
-				ushort dataSize = BitConverter.ToUInt16(buffer.Array, buffer.Offset);
-				if (buffer.Count < dataSize)
+                // 패킷이 완전체로 도착했는지 확인
+                ushort dataSize = ParseDataSize(buffer);
+                if (buffer.Count < dataSize)
 					break;
 
 				// 여기까지 왔으면 패킷 조립 가능

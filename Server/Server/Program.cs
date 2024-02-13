@@ -18,6 +18,8 @@ using ServerCore;
 using SharedDB;
 using static System.Net.Mime.MediaTypeNames;
 using System.IO;
+using static System.Collections.Specialized.BitVector32;
+
 namespace Server
 {
 	// 1. GameRoom 방식의 간단한 동기화 <- OK
@@ -109,26 +111,28 @@ namespace Server
             Listener listener = new Listener();
             listener.Init(endPoint, () => { return null; });
 
-            int processCount = 2;
+            int processCount = 1;
             // Get Unity server program path
             string processPath = Directory.GetCurrentDirectory().Substring(0, Directory.GetCurrentDirectory().Length - 38) + "\\Game\\Build\\Server\\Game.exe";
 
-            Console.WriteLine(processPath);
-
             for (int i = 0; i < processCount; i++)
             {
+                int mapId = i;
                 bool bProgramConnect = false; // When unity server connect. set true
 
                 Process process = new Process();
-                GameRoom room = GameLogic.Instance.Add(i, process); // Make new game room 
+                GameRoom room = GameLogic.Instance.Add(mapId, process); // Make new game room 
 
                 listener.SetSessionFactory(() =>
-                {
-                    bProgramConnect = true;
-
+                {                    
+                    // Set session and room
                     GameSession session = GameSessionManager.Instance.Generate();
                     session.Room = room;
                     room.Session = session;
+
+                    // Notify program connect
+                    bProgramConnect = true;
+
                     return session;
                 });
 
@@ -144,6 +148,12 @@ namespace Server
                     // Waiting for unity server connect
                     if(bProgramConnect)
                     {
+                        // Send map id;
+                        S_EnterMap packet = new S_EnterMap();
+                        packet.MapId = mapId;
+
+                        room.Session.Send(packet);
+                        room.Session.FlushSend();
                         Console.WriteLine("Unity server connect");
                         break;
                     }

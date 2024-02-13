@@ -38,7 +38,9 @@ class ServerPacketManager
 		_onRecv.Add((ushort)MsgId.SCreatePlayer, MakePacket<S_CreatePlayer>);
 		_handler.Add((ushort)MsgId.SCreatePlayer, ServerPacketHandler.S_CreatePlayerHandler);		
 		_onRecv.Add((ushort)MsgId.SPing, MakePacket<S_Ping>);
-		_handler.Add((ushort)MsgId.SPing, ServerPacketHandler.S_PingHandler);
+		_handler.Add((ushort)MsgId.SPing, ServerPacketHandler.S_PingHandler);		
+		_onRecv.Add((ushort)MsgId.SEnterMap, MakePacket<S_EnterMap>);
+		_handler.Add((ushort)MsgId.SEnterMap, ServerPacketHandler.S_EnterMapHandler);
 	}
 
 	public void OnRecvPacket(PacketSession session, ArraySegment<byte> buffer)
@@ -59,8 +61,9 @@ class ServerPacketManager
 	{
 		T pkt = new T();
 		pkt.MergeFrom(buffer.Array, buffer.Offset + 4, buffer.Count - 4);
+        Console.WriteLine(pkt.GetType().Name);
 
-		if (CustomHandler != null)
+        if (CustomHandler != null)
 		{
 			CustomHandler.Invoke(session, pkt, id);
 		}

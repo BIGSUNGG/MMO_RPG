@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-#if !UNITY_SERVER
+#if UNITY_SERVER
 class ServerPacketHandler
 {
 	public static void S_EnterGameHandler(PacketSession session, IMessage packet)
@@ -98,7 +98,8 @@ class ServerPacketHandler
 
     public static void S_EnterMapHandler(PacketSession session, IMessage packet)
     {
-        
+        S_EnterMap roomPacket = (S_EnterMap)packet;
+        Managers.Map.LoadMap(roomPacket.MapId);
     }
 }
 #endif
