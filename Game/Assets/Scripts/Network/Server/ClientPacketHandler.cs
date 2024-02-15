@@ -8,13 +8,13 @@ using UnityEngine;
 #if UNITY_SERVER
 class ClientPacketHandler
 {
-    public static void C_LoginHandler(PacketSession session, IMessage packet) { }
+    public static void C_LoginHandler(ISession session, IMessage packet) { }
 
-    public static void C_EnterGameHandler(PacketSession session, IMessage packet) { }
+    public static void C_EnterGameHandler(ISession session, IMessage packet) { }
 
-    public static void C_CreatePlayerHandler(PacketSession session, IMessage packet) { }
+    public static void C_CreatePlayerHandler(ISession session, IMessage packet) { }
 
-    public static void C_PongHandler(PacketSession session, IMessage packet) { }
+    public static void C_PongHandler(ISession session, IMessage packet) { }
 
 
 }

@@ -8,19 +8,19 @@ using UnityEngine;
 #if UNITY_SERVER
 class ServerPacketHandler
 {
-	public static void S_EnterGameHandler(PacketSession session, IMessage packet)
+	public static void S_EnterGameHandler(ISession session, IMessage packet)
 	{
 		S_EnterGame enterGamePacket = packet as S_EnterGame;
 		Managers.Object.Add(enterGamePacket.Player, myPlayer: true);
 	}
 
-	public static void S_LeaveGameHandler(PacketSession session, IMessage packet)
+	public static void S_LeaveGameHandler(ISession session, IMessage packet)
 	{
 		S_LeaveGame leaveGameHandler = packet as S_LeaveGame;
 		Managers.Object.Clear();
 	}
 
-	public static void S_SpawnHandler(PacketSession session, IMessage packet)
+	public static void S_SpawnHandler(ISession session, IMessage packet)
 	{
 		S_Spawn spawnPacket = packet as S_Spawn;
 		foreach (ObjectInfo obj in spawnPacket.Objects)
@@ -29,7 +29,7 @@ class ServerPacketHandler
 		}
 	}
 
-	public static void S_DespawnHandler(PacketSession session, IMessage packet)
+	public static void S_DespawnHandler(ISession session, IMessage packet)
 	{
 		S_Despawn despawnPacket = packet as S_Despawn;
 		foreach (int id in despawnPacket.ObjectIds)
@@ -38,7 +38,7 @@ class ServerPacketHandler
 		}
 	}
 
-	public static void S_ConnectedHandler(PacketSession session, IMessage packet)
+	public static void S_ConnectedHandler(ISession session, IMessage packet)
 	{
 		Debug.Log("S_ConnectedHandler");
 		C_Login loginPacket = new C_Login();
@@ -49,7 +49,7 @@ class ServerPacketHandler
 	}
 
 	// 로그인 OK + 캐릭터 목록
-	public static void S_LoginHandler(PacketSession session, IMessage packet)
+	public static void S_LoginHandler(ISession session, IMessage packet)
 	{
 		S_Login loginPacket = (S_Login)packet;
 		Debug.Log($"LoginOk({loginPacket.LoginOk})");
@@ -71,7 +71,7 @@ class ServerPacketHandler
 		}
 	}
 
-	public static void S_CreatePlayerHandler(PacketSession session, IMessage packet)
+	public static void S_CreatePlayerHandler(ISession session, IMessage packet)
 	{
 		S_CreatePlayer createOkPacket = (S_CreatePlayer)packet;
 
@@ -89,14 +89,14 @@ class ServerPacketHandler
 		}
 	}
 
-	public static void S_PingHandler(PacketSession session, IMessage packet)
+	public static void S_PingHandler(ISession session, IMessage packet)
 	{
 		C_Pong pongPacket = new C_Pong();
 		Debug.Log("[Server] PingCheck");
 		Managers.Network.Send(pongPacket);
 	}
 
-    public static void S_EnterMapHandler(PacketSession session, IMessage packet)
+    public static void S_EnterMapHandler(ISession session, IMessage packet)
     {
         S_EnterMap roomPacket = (S_EnterMap)packet;
         Managers.Map.LoadMap(roomPacket.MapId);

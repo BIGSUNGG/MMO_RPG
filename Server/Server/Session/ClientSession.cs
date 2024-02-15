@@ -98,11 +98,6 @@ namespace Server
 		{
 			Console.WriteLine($"OnConnected : {endPoint}");
 
-			{
-				S_Connected connectedPacket = new S_Connected();
-				Send(connectedPacket);
-			}
-
 			GameLogic.Instance.PushAfter(5000, Ping);
 		}
 
@@ -114,15 +109,6 @@ namespace Server
 		public override void OnDisconnected(EndPoint endPoint)
 		{
 			Console.WriteLine($"OnDiconnected : {endPoint}");
-
-			GameLogic.Instance.Push(() =>
-            {
-				if (MyPlayer == null)
-					return;
-
-				GameRoom room = GameLogic.Instance.Find(1);
-				room.Push(room.LeaveGame, MyPlayer.Info.ObjectId);
-			});
 
 			ClientSessionManager.Instance.Remove(this);
 		}
