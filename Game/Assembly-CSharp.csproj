@@ -117,7 +117,6 @@
     <None Include="Assets\Libs\System.Memory.dll" />
     <None Include="Assets\Libs\Google.Protobuf.dll" />
     <None Include="Assets\Libs\System.Runtime.CompilerServices.Unsafe.dll" />
-    <None Include="Assets\Resources\Map\Map_001.txt" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
