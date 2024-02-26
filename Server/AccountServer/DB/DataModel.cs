@@ -10,7 +10,7 @@ namespace AccountServer.DB
 	public class AccountDb
 	{
 		public int AccountDbId { get; set; }
-		public string AccountName { get; set; }
+		public string LoginId { get; set; }
 		public string Password { get; set; }
 	}
 }

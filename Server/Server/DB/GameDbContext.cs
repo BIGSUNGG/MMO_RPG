@@ -1,15 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Server.Data;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Server.DB
 {
-	public class AppDbContext : DbContext
+	public class GameDbContext : DbContext
 	{
-		public DbSet<AccountDb> Accounts { get; set; }
+		public DbSet<GameAccountDb> Accounts { get; set; }
 		public DbSet<PlayerDb> Players { get; set; }
 
 		static readonly ILoggerFactory _logger = LoggerFactory.Create(builder => { builder.AddConsole(); });
@@ -20,13 +19,13 @@ namespace Server.DB
 		{
 			options
 				//.UseLoggerFactory(_logger)
-				.UseSqlServer(ConfigManager.Config == null ? _connectionString : ConfigManager.Config.connectionString);
+				.UseSqlServer(_connectionString);
 		}
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
-			builder.Entity<AccountDb>()
-				.HasIndex(a => a.AccountName)
+			builder.Entity<GameAccountDb>()
+				.HasIndex(a => a.AccountDbId)
 				.IsUnique();
 
 			builder.Entity<PlayerDb>()

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 public static class Extensions
 {
-	public static bool SaveChangesEx(this AppDbContext db)
+	public static bool SaveChangesEx(this AccountDbContext db)
 	{
 		try
 		{

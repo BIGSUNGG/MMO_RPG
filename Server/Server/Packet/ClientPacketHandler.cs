@@ -14,6 +14,12 @@ partial class ClientPacketHandler
 	public static void C_LoginHandler(ISession session, IMessage packet)
 	{
 		C_Login loginPacket = packet as C_Login;
+
+        ClientSession clientSession = session as ClientSession;
+        if (clientSession == null)
+            return;
+
+        clientSession.LoginAccount(loginPacket);
 	}
 
 	public static void C_PongHandler(ISession session, IMessage packet)

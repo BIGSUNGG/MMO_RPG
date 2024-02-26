@@ -12,7 +12,7 @@ namespace AccountServer.Migrations
                 {
                     AccountDbId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AccountName = table.Column<string>(nullable: true),
+                    LoginId = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -21,12 +21,11 @@ namespace AccountServer.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Account_AccountName",
+                name: "IX_Account_LoginId",
                 table: "Account",
-
-                column: "AccountName",
+                column: "LoginId",
                 unique: true,
-                filter: "[AccountName] IS NOT NULL");
+                filter: "[LoginId] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

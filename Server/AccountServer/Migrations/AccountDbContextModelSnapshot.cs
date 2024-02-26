@@ -7,8 +7,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AccountServer.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(AccountDbContext))]
+    partial class AccountDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -25,7 +25,7 @@ namespace AccountServer.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AccountName")
+                    b.Property<string>("LoginId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Password")
@@ -33,9 +33,9 @@ namespace AccountServer.Migrations
 
                     b.HasKey("AccountDbId");
 
-                    b.HasIndex("AccountName")
+                    b.HasIndex("LoginId")
                         .IsUnique()
-                        .HasFilter("[AccountName] IS NOT NULL");
+                        .HasFilter("[LoginId] IS NOT NULL");
 
                     b.ToTable("Account");
                 });

@@ -7,17 +7,12 @@ using UnityEngine;
 public class ObjectManager
 {
 	Dictionary<int, GameObject> _objects = new Dictionary<int, GameObject>();
-	
-	public static GameObjectType GetObjectTypeById(int id)
-	{
-		int type = (id >> 24) & 0x7F;
-		return (GameObjectType)type;
-	}
 
-	public void Add(ObjectInfo info, bool myPlayer = false)
+	public void Add(GameObject gameObject, int id)
 	{
+        _objects.Add(id, gameObject);
 
-	}
+    }
 
 	public void Remove(int id)
 	{

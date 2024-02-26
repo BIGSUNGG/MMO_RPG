@@ -10,7 +10,7 @@ using SharedDB;
 namespace SharedDB.Migrations
 {
     [DbContext(typeof(SharedDbContext))]
-    [Migration("20200920051923_Init")]
+    [Migration("20240225073716_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,7 +59,7 @@ namespace SharedDB.Migrations
                     b.Property<int>("AccountDbId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Created")
+                    b.Property<DateTime>("Expired")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Token")

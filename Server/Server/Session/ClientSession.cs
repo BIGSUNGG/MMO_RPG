@@ -9,13 +9,12 @@ using System.Net;
 using Google.Protobuf.Protocol;
 using Google.Protobuf;
 using Server.Game;
-using Server.Data;
 
 namespace Server
 {
 	public partial class ClientSession : PacketSession
 	{
-		public PlayerServerState ServerState { get; private set; } = PlayerServerState.ServerStateLogin;
+		public PlayerServerState ServerState { get; private set; } = PlayerServerState.ServerStateOffline;
 
 		public Player MyPlayer { get; set; }
 		public int SessionId { get; set; }
@@ -98,7 +97,8 @@ namespace Server
 		{
 			Console.WriteLine($"OnConnected : {endPoint}");
 
-			GameLogic.Instance.PushAfter(5000, Ping);
+            S_Connected connectedPacket = new S_Connected();
+            Send(connectedPacket);
 		}
 
 		public override void OnRecvPacket(ArraySegment<byte> buffer)
@@ -110,7 +110,8 @@ namespace Server
 		{
 			Console.WriteLine($"OnDiconnected : {endPoint}");
 
-			ClientSessionManager.Instance.Remove(this);
+            LogoutAccount();
+            ClientSessionManager.Instance.Remove(this);
 		}
 
 		public override void OnSend(int numOfBytes)

@@ -1,7 +1,10 @@
 bin
+!Common/protoc-3.12.3-win64/bin
+
 .vs
 obj
 Game/Build
+Game/Builds
 Game/Library
 Game/Logs
 Game/obj

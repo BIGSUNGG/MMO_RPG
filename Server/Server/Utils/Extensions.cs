@@ -8,7 +8,7 @@ namespace Server
 {
 	public static class Extensions
 	{
-		public static bool SaveChangesEx(this AppDbContext db)
+		public static bool SaveChangesEx(this GameDbContext db)
 		{
 			try
 			{

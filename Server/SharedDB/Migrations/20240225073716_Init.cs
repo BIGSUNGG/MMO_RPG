@@ -31,7 +31,7 @@ namespace SharedDB.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AccountDbId = table.Column<int>(nullable: false),
                     Token = table.Column<int>(nullable: false),
-                    Created = table.Column<DateTime>(nullable: false)
+                    Expired = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {

@@ -11,7 +11,6 @@ using System.Diagnostics;
 using Google.Protobuf;
 using Google.Protobuf.Protocol;
 using Google.Protobuf.WellKnownTypes;
-using Server.Data;
 using Server.DB;
 using Server.Game;
 using ServerCore;
@@ -99,7 +98,7 @@ namespace Server
 			});
 			t.Interval = 10 * 1000;
 			t.Start();
-		}
+        }
 
         static void CreateGameRooms()
         {
@@ -204,9 +203,6 @@ namespace Server
             // Get Project Path
             for(int i = 0; i < Environment.CurrentDirectory.Length - 38; i++)
                 Path += Environment.CurrentDirectory[i];
-
-            ConfigManager.LoadConfig();
-			DataManager.LoadData();
 
 			StartServerInfoTask();
             CreateGameRooms();

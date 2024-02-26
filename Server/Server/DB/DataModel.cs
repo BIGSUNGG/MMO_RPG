@@ -5,11 +5,12 @@ using System.Text;
 
 namespace Server.DB
 {
-	[Table("Account")]
-	public class AccountDb
+	[Table("GameAccount")]
+	public class GameAccountDb
 	{
-		public int AccountDbId { get; set; }
-		public string AccountName { get; set; }
+		public int GameAccountDbId { get; set; }
+		public int AccountDbId { get; set; } // GameAccount를 가지고 있는 계정의 Db 아이디
+
 		public PlayerDb Player { get; set; }
 	}
 
@@ -21,6 +22,6 @@ namespace Server.DB
 
 		[ForeignKey("Account")]
 		public int AccountDbId { get; set; }
-		public AccountDb Account { get; set; }
+		public GameAccountDb Account { get; set; }
 	}
 }

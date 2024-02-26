@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package Protocol;
+option csharp_namespace = "Google.Protobuf.Protocol";
+
+enum MsgId {
+  // Connect
+  S_CONNECTED = 0;
+
+  // Ping
+  S_PING = 1;
+  C_PONG = 2;
+
+  // Login
+  C_LOGIN = 3;
+  S_LOGIN = 4;
+
+  // Enter
+  S_ENTER_MAP = 5;
+
+}
+
+// Enums
+
+enum PlayerServerState {
+  SERVER_STATE_OFFLINE = 0;
+  SERVER_STATE_ONLINE = 1;
+}
+
+enum LoginState {
+  LOGIN_SUCCESS = 0;
+  LOGIN_FAIL = 1;
+}
+
+// Packets
+
+// S_CONNECTED
+message S_Connected {
+}
+
+// S_PING
+message S_Ping {
+}
+
+// C_PONG
+message C_Pong {
+}
+
+// C_LOGIN
+message C_Login {
+  int32 AccountId = 1;
+  int32 Token = 2;
+}
+
+// S_LOGIN
+message S_Login {
+  LoginState loginState = 1;
+}
+
+message S_EnterMap {
+	int32 mapId = 1;	
+}

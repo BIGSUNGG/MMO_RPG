@@ -34,7 +34,7 @@ namespace AccountServer
 				options.JsonSerializerOptions.DictionaryKeyPolicy = null;
 			});
 
-			services.AddDbContext<AppDbContext>(options =>
+			services.AddDbContext<AccountDbContext>(options =>
 				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
 			services.AddDbContext<SharedDbContext>(options =>

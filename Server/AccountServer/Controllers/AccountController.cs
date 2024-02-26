@@ -14,10 +14,10 @@ namespace AccountServer.Controllers
 	[ApiController]
 	public class AccountController : ControllerBase
 	{
-		AppDbContext _context;
+		AccountDbContext _context;
 		SharedDbContext _shared;
 
-		public AccountController(AppDbContext context, SharedDbContext shared)
+		public AccountController(AccountDbContext context, SharedDbContext shared)
 		{
 			_context = context;
 			_shared = shared;
@@ -31,14 +31,14 @@ namespace AccountServer.Controllers
 
 			AccountDb account = _context.Accounts
 									.AsNoTracking()
-									.Where(a => a.AccountName == req.AccountName)
+									.Where(a => a.LoginId == req.AccountName)
 									.FirstOrDefault();
 
 			if (account == null)
 			{
 				_context.Accounts.Add(new AccountDb()
 				{
-					AccountName = req.AccountName,
+                    LoginId = req.AccountName,
 					Password = req.Password
 				});
 
@@ -61,7 +61,7 @@ namespace AccountServer.Controllers
 
 			AccountDb account = _context.Accounts
 				.AsNoTracking()
-				.Where(a => a.AccountName == req.AccountName && a.Password == req.Password)
+				.Where(a => a.LoginId == req.AccountName && a.Password == req.Password)
 				.FirstOrDefault();
 
 			if (account == null)

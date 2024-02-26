@@ -9,7 +9,6 @@ using System.Net;
 using Google.Protobuf.Protocol;
 using Google.Protobuf;
 using Server.Game;
-using Server.Data;
 using System.Diagnostics;
 using static System.Collections.Specialized.BitVector32;
 

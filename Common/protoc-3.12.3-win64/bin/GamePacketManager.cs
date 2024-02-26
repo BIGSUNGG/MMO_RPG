@@ -4,14 +4,14 @@ using ServerCore;
 using System;
 using System.Collections.Generic;
 
-class ClientPacketManager
+class GamePacketManager
 {
 	#region Singleton
-	static ClientPacketManager _instance = new ClientPacketManager();
-	public static ClientPacketManager Instance { get { return _instance; } }
+	static GamePacketManager _instance = new GamePacketManager();
+	public static GamePacketManager Instance { get { return _instance; } }
 	#endregion
 
-	ClientPacketManager()
+	GamePacketManager()
 	{
 		Register();
 	}
@@ -22,11 +22,7 @@ class ClientPacketManager
 	public Action<ISession, IMessage, ushort> CustomHandler { get; set; }
 
 	public void Register()
-	{		
-		_onRecv.Add((ushort)MsgId.CPong, MakePacket<C_Pong>);
-		_handler.Add((ushort)MsgId.CPong, ClientPacketHandler.C_PongHandler);		
-		_onRecv.Add((ushort)MsgId.CLogin, MakePacket<C_Login>);
-		_handler.Add((ushort)MsgId.CLogin, ClientPacketHandler.C_LoginHandler);
+	{
 	}
 
 	public void OnRecvPacket(ISession session, ArraySegment<byte> buffer)
