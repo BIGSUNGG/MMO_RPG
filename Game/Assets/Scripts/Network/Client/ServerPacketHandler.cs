@@ -29,7 +29,11 @@ class ServerPacketHandler
 	{
 		S_Login loginPacket = packet as S_Login;
 
-        Debug.Log(loginPacket.LoginState);
+        Debug.Log(loginPacket.LoginResult);
+        if(loginPacket.LoginResult == LoginResult.LoginSuccess)
+        {
+
+        }
 	}
 
 	public static void S_PingHandler(ISession session, IMessage packet)

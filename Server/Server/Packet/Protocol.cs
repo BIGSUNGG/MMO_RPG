@@ -26,22 +26,22 @@ namespace Google.Protobuf.Protocol {
           string.Concat(
             "Cg5Qcm90b2NvbC5wcm90bxIIUHJvdG9jb2wiDQoLU19Db25uZWN0ZWQiCAoG",
             "U19QaW5nIggKBkNfUG9uZyIrCgdDX0xvZ2luEhEKCUFjY291bnRJZBgBIAEo",
-            "BRINCgVUb2tlbhgCIAEoBSIzCgdTX0xvZ2luEigKCmxvZ2luU3RhdGUYASAB",
-            "KA4yFC5Qcm90b2NvbC5Mb2dpblN0YXRlIhsKClNfRW50ZXJNYXASDQoFbWFw",
-            "SWQYASABKAUqWwoFTXNnSWQSDwoLU19DT05ORUNURUQQABIKCgZTX1BJTkcQ",
-            "ARIKCgZDX1BPTkcQAhILCgdDX0xPR0lOEAMSCwoHU19MT0dJThAEEg8KC1Nf",
-            "RU5URVJfTUFQEAUqRgoRUGxheWVyU2VydmVyU3RhdGUSGAoUU0VSVkVSX1NU",
-            "QVRFX09GRkxJTkUQABIXChNTRVJWRVJfU1RBVEVfT05MSU5FEAEqLwoKTG9n",
-            "aW5TdGF0ZRIRCg1MT0dJTl9TVUNDRVNTEAASDgoKTE9HSU5fRkFJTBABQhuq",
-            "AhhHb29nbGUuUHJvdG9idWYuUHJvdG9jb2xiBnByb3RvMw=="));
+            "BRINCgVUb2tlbhgCIAEoBSI1CgdTX0xvZ2luEioKC2xvZ2luUmVzdWx0GAEg",
+            "ASgOMhUuUHJvdG9jb2wuTG9naW5SZXN1bHQiGwoKU19FbnRlck1hcBINCgVt",
+            "YXBJZBgBIAEoBSpbCgVNc2dJZBIPCgtTX0NPTk5FQ1RFRBAAEgoKBlNfUElO",
+            "RxABEgoKBkNfUE9ORxACEgsKB0NfTE9HSU4QAxILCgdTX0xPR0lOEAQSDwoL",
+            "U19FTlRFUl9NQVAQBSo0ChBQbGF5ZXJMb2dpblN0YXRlEhEKDU5PVF9MT0dH",
+            "RURfSU4QABINCglMT0dHRURfSU4QASowCgtMb2dpblJlc3VsdBIRCg1MT0dJ",
+            "Tl9TVUNDRVNTEAASDgoKTE9HSU5fRkFJTBABQhuqAhhHb29nbGUuUHJvdG9i",
+            "dWYuUHJvdG9jb2xiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.MsgId), typeof(global::Google.Protobuf.Protocol.PlayerServerState), typeof(global::Google.Protobuf.Protocol.LoginState), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.MsgId), typeof(global::Google.Protobuf.Protocol.PlayerLoginState), typeof(global::Google.Protobuf.Protocol.LoginResult), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_Connected), global::Google.Protobuf.Protocol.S_Connected.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_Ping), global::Google.Protobuf.Protocol.S_Ping.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.C_Pong), global::Google.Protobuf.Protocol.C_Pong.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.C_Login), global::Google.Protobuf.Protocol.C_Login.Parser, new[]{ "AccountId", "Token" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_Login), global::Google.Protobuf.Protocol.S_Login.Parser, new[]{ "LoginState" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_Login), global::Google.Protobuf.Protocol.S_Login.Parser, new[]{ "LoginResult" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_EnterMap), global::Google.Protobuf.Protocol.S_EnterMap.Parser, new[]{ "MapId" }, null, null, null, null)
           }));
     }
@@ -70,12 +70,12 @@ namespace Google.Protobuf.Protocol {
     [pbr::OriginalName("S_ENTER_MAP")] SEnterMap = 5,
   }
 
-  public enum PlayerServerState {
-    [pbr::OriginalName("SERVER_STATE_OFFLINE")] ServerStateOffline = 0,
-    [pbr::OriginalName("SERVER_STATE_ONLINE")] ServerStateOnline = 1,
+  public enum PlayerLoginState {
+    [pbr::OriginalName("NOT_LOGGED_IN")] NotLoggedIn = 0,
+    [pbr::OriginalName("LOGGED_IN")] LoggedIn = 1,
   }
 
-  public enum LoginState {
+  public enum LoginResult {
     [pbr::OriginalName("LOGIN_SUCCESS")] LoginSuccess = 0,
     [pbr::OriginalName("LOGIN_FAIL")] LoginFail = 1,
   }
@@ -583,7 +583,7 @@ namespace Google.Protobuf.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public S_Login(S_Login other) : this() {
-      loginState_ = other.loginState_;
+      loginResult_ = other.loginResult_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -592,14 +592,14 @@ namespace Google.Protobuf.Protocol {
       return new S_Login(this);
     }
 
-    /// <summary>Field number for the "loginState" field.</summary>
-    public const int LoginStateFieldNumber = 1;
-    private global::Google.Protobuf.Protocol.LoginState loginState_ = global::Google.Protobuf.Protocol.LoginState.LoginSuccess;
+    /// <summary>Field number for the "loginResult" field.</summary>
+    public const int LoginResultFieldNumber = 1;
+    private global::Google.Protobuf.Protocol.LoginResult loginResult_ = global::Google.Protobuf.Protocol.LoginResult.LoginSuccess;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Protobuf.Protocol.LoginState LoginState {
-      get { return loginState_; }
+    public global::Google.Protobuf.Protocol.LoginResult LoginResult {
+      get { return loginResult_; }
       set {
-        loginState_ = value;
+        loginResult_ = value;
       }
     }
 
@@ -616,14 +616,14 @@ namespace Google.Protobuf.Protocol {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (LoginState != other.LoginState) return false;
+      if (LoginResult != other.LoginResult) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (LoginState != global::Google.Protobuf.Protocol.LoginState.LoginSuccess) hash ^= LoginState.GetHashCode();
+      if (LoginResult != global::Google.Protobuf.Protocol.LoginResult.LoginSuccess) hash ^= LoginResult.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -637,9 +637,9 @@ namespace Google.Protobuf.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (LoginState != global::Google.Protobuf.Protocol.LoginState.LoginSuccess) {
+      if (LoginResult != global::Google.Protobuf.Protocol.LoginResult.LoginSuccess) {
         output.WriteRawTag(8);
-        output.WriteEnum((int) LoginState);
+        output.WriteEnum((int) LoginResult);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -649,8 +649,8 @@ namespace Google.Protobuf.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (LoginState != global::Google.Protobuf.Protocol.LoginState.LoginSuccess) {
-        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) LoginState);
+      if (LoginResult != global::Google.Protobuf.Protocol.LoginResult.LoginSuccess) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) LoginResult);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -663,8 +663,8 @@ namespace Google.Protobuf.Protocol {
       if (other == null) {
         return;
       }
-      if (other.LoginState != global::Google.Protobuf.Protocol.LoginState.LoginSuccess) {
-        LoginState = other.LoginState;
+      if (other.LoginResult != global::Google.Protobuf.Protocol.LoginResult.LoginSuccess) {
+        LoginResult = other.LoginResult;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -678,7 +678,7 @@ namespace Google.Protobuf.Protocol {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            LoginState = (global::Google.Protobuf.Protocol.LoginState) input.ReadEnum();
+            LoginResult = (global::Google.Protobuf.Protocol.LoginResult) input.ReadEnum();
             break;
           }
         }

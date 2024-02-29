@@ -13,12 +13,15 @@ namespace Server
 {
 	public partial class ClientSession : PacketSession
 	{
-		#region Account
-		public int AccountDbId { get; private set; }
+		public Player MyPlayer { get; set; }
 
-		public void LoginAccount(C_Login loginPacket)
+        #region Account
+        public int GameAccountDbId { get; private set; }
+        public PlayerLoginState LoginState { get; private set; } = PlayerLoginState.NotLoggedIn;
+
+        public void LoginAccount(C_Login loginPacket)
 		{
-			if (ServerState != PlayerServerState.ServerStateOffline)
+			if (LoginState != PlayerLoginState.NotLoggedIn)
 				return;
 
             Console.WriteLine("Login Try");
@@ -33,7 +36,7 @@ namespace Server
 				if (findToken == null) // 토큰을 못찾았을 경우
 				{
                     Console.WriteLine("Failed to find token");
-					LoginFail(loginPacket);
+					LoginFail();
 					return;
 				}
 			}
@@ -43,7 +46,7 @@ namespace Server
 			using (GameDbContext db = new GameDbContext())
 			{
 				findAccount = db.Accounts
-					.Where(a => a.AccountDbId == findToken.AccountDbId).FirstOrDefault();
+					.Where(a => a.GameAccountDbId == findToken.AccountDbId).FirstOrDefault();
             }
 
             if (findAccount == null) // 계정을 못찾았을 경우
@@ -54,36 +57,49 @@ namespace Server
                 findAccount = CreateAccount(findToken.AccountDbId);
                 if (findAccount == null) // 계정을 못만들었을 경우
                 {
-                    LoginFail(loginPacket);
+                    LoginFail();
+                    return;
+                }
+            }
+            else // 계정이 있을 경우
+            {
+                ClientSession session = GameAccountManager.Instance.Find(findAccount.GameAccountDbId);
+                if (session != null && session.LoginState == PlayerLoginState.LoggedIn) // 찾은 계정이 다른 클라이언트에서 이미 플레이 중이라면
+                {
+                    Console.WriteLine("Already playing this account");
+                    LoginFail();
                     return;
                 }
             }
 
-            LoginSuccess(loginPacket);
+            LoginSuccess(findAccount.GameAccountDbId);
 		}
 
-		private void LoginSuccess(C_Login loginPacket)
+		private void LoginSuccess(int gameAccountDbId)
 		{
             Console.WriteLine("Login Success");
-            AccountDbId = loginPacket.AccountId;
-            ServerState = PlayerServerState.ServerStateOnline;
+            GameAccountDbId = gameAccountDbId;
+            LoginState = PlayerLoginState.LoggedIn;
 
             // 로그인 성공 패킷 보내기
             S_Login sendPacket = new S_Login();
-            sendPacket.LoginState = LoginState.LoginSuccess;
+            sendPacket.LoginResult = LoginResult.LoginSuccess;
             Send(sendPacket);
 
             // 핑 패킷 보내기
             GameLogic.Instance.PushAfter(5000, Ping);
+
+            // 계정 추가하기
+            GameAccountManager.Instance.Add(GameAccountDbId, this);
         }
 
-        private void LoginFail(C_Login loginPacket)
+        private void LoginFail()
 		{
             Console.WriteLine("Login Fail");
 
             // 로그인 실패 패킷 보내기
             S_Login sendPacket = new S_Login();
-            sendPacket.LoginState = LoginState.LoginFail;
+            sendPacket.LoginResult = LoginResult.LoginFail;
             Send(sendPacket);
 
             // 연결 끊기
@@ -94,7 +110,11 @@ namespace Server
         {
             Console.WriteLine("Logout");
 
-            ServerState = PlayerServerState.ServerStateOffline;
+            LoginState = PlayerLoginState.NotLoggedIn;
+
+            // 계정 제거하기
+            if(LoginState == PlayerLoginState.LoggedIn)
+                GameAccountManager.Instance.Remove(GameAccountDbId);
         }
 
         private GameAccountDb CreateAccount(int accountDbId)
@@ -106,7 +126,7 @@ namespace Server
             using (GameDbContext db = new GameDbContext())
 			{
 				gameAccount = db.Accounts
-					.Where(a => a.AccountDbId == accountDbId).FirstOrDefault();
+					.Where(a => a.GameAccountDbId == accountDbId).FirstOrDefault();
 
 				if (gameAccount == null) // 만들어져있는 계정이 없으면
 				{

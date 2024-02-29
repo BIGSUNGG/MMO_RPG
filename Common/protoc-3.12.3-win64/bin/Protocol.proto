@@ -22,12 +22,12 @@ enum MsgId {
 
 // Enums
 
-enum PlayerServerState {
-  SERVER_STATE_OFFLINE = 0;
-  SERVER_STATE_ONLINE = 1;
+enum PlayerLoginState {
+  NOT_LOGGED_IN = 0;
+  LOGGED_IN = 1;
 }
 
-enum LoginState {
+enum LoginResult {
   LOGIN_SUCCESS = 0;
   LOGIN_FAIL = 1;
 }
@@ -54,7 +54,7 @@ message C_Login {
 
 // S_LOGIN
 message S_Login {
-  LoginState loginState = 1;
+  LoginResult loginResult = 1;
 }
 
 message S_EnterMap {

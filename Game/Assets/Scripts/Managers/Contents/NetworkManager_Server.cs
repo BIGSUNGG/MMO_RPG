@@ -51,8 +51,8 @@ public partial class NetworkManager
     #region ClientSession
     Dictionary<int, ClientSession> _clientSessions = new Dictionary<int, ClientSession>();
 
-    // sessionId : Created Session's Id
-    // return : Created session (If failed to create return null)
+    // sessionId : 만들 세션의 아이디
+    // return : 만든 세션 반환 (실패했을경우 null 반환)
     public ClientSession CreateClienSession(int sessionId)
     {
         if(_clientSessions.ContainsKey(sessionId)) // Is exist same client session id
@@ -66,8 +66,8 @@ public partial class NetworkManager
         return session;
     }
 
-    // sessionId : Deleted Session's Id
-    // return : Is success to delete session
+    // sessionId : 제거할 세션의 아이디
+    // return : 세션 제거에 성공했는지
     public bool DeleteClientSession(int sessionId)
     {
         // Try remove session
@@ -78,8 +78,8 @@ public partial class NetworkManager
         return false;
     }
 
-    // sessionId : Find Session's Id
-    // return : Found session (If failed to find session return null)
+    // sessionId : 찾을 세션의 아이디
+    // return : 찾은 세션반환 (실패했을경우 null 반환)
     public ClientSession FindClientSession(int sessionId)
     {
         ClientSession result;
