@@ -18,7 +18,6 @@ public partial class NetworkManager
 
     public virtual void Update()
     {
-
     }
 
     #region ServerSession

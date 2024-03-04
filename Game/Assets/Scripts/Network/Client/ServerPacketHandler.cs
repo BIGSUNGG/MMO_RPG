@@ -32,9 +32,9 @@ class ServerPacketHandler
         Debug.Log(loginPacket.LoginResult);
         if(loginPacket.LoginResult == LoginResult.LoginSuccess)
         {
-
+            Managers.Map.LoadMap(0);
         }
-	}
+    }
 
 	public static void S_PingHandler(ISession session, IMessage packet)
 	{

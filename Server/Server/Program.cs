@@ -52,7 +52,7 @@ namespace Server
 			}
 		}
 
-		static void NetworkTask()
+		static void ClientNetworkTask()
 		{
 			while (true)
 			{
@@ -66,7 +66,21 @@ namespace Server
 			}
 		}
 
-		static void StartServerInfoTask()
+        static void GameNetworkTask()
+        {
+            while (true)
+            {
+                List<GameSession> sessions = GameSessionManager.Instance.GetSessions();
+                foreach (GameSession session in sessions)
+                {
+                    session.FlushSend();
+                }
+
+                Thread.Sleep(0);
+            }
+        }
+
+        static void StartServerInfoTask()
 		{
 			var t = new System.Timers.Timer();
 			t.AutoReset = true;
@@ -183,8 +197,13 @@ namespace Server
 
             // NetworkTask
             {
-                Thread t = new Thread(NetworkTask);
-                t.Name = "Network Send";
+                Thread t = new Thread(ClientNetworkTask);
+                t.Name = "Client Network Send";
+                t.Start();
+            }
+            {
+                Thread t = new Thread(GameNetworkTask);
+                t.Name = "Game Network Send";
                 t.Start();
             }
 

@@ -17,8 +17,8 @@ namespace Server.Game
 			Flush();
 
 			foreach (GameRoom room in _rooms.Values)
-			{
-				room.Update();
+            {
+                room.Update();
 			}
 		}
 
