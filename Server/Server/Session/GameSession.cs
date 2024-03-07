@@ -15,8 +15,13 @@ using static System.Collections.Specialized.BitVector32;
 namespace Server
 {
 	public partial class GameSession : PacketSession
-	{
-		public GameRoom Room { get; set; }
+    {
+        protected override ushort ParseDataSize(ArraySegment<byte> buffer)
+        {
+            return BitConverter.ToUInt16(buffer.Array, buffer.Offset + 4);
+        }
+
+        public GameRoom Room { get; set; }
 
 		object _lock = new object();
 		public int SessionId { get; set; }
@@ -95,8 +100,36 @@ namespace Server
 		}
 
 		public override void OnRecvPacket(ArraySegment<byte> buffer)
-		{
-			GamePacketManager.Instance.OnRecvPacket(this, buffer);
+        {
+            #if true // Log Packet Info
+            Console.WriteLine(
+                "Id : " + BitConverter.ToInt32(buffer.Array, buffer.Offset) +
+                ", Size : " + BitConverter.ToUInt16(buffer.Array, buffer.Offset + 4) +
+                ", MsgId : " + BitConverter.ToUInt16(buffer.Array, buffer.Offset + 6)
+                );
+            #endif
+
+            int sessionId = BitConverter.ToInt32(buffer.Array, buffer.Offset);
+            ArraySegment<byte> recvBuffer = new ArraySegment<byte>(buffer.Array, buffer.Offset + 4, buffer.Count - 4);
+            if (sessionId == 0) // 게임 패킷을 받았을경우
+            {
+                GamePacketManager.Instance.OnRecvPacket(this, recvBuffer);
+            }
+            else if(sessionId == -1) // 모든 클라이언트로 보낼 패킷을 받았을 경우
+            {
+                Func<ArraySegment<byte>> packetFunc = ()=> { return recvBuffer; };
+                Room.DoActionAll(packetFunc);
+            }
+            else // 클라이언트로 보낼 패킷을 받았을 경우
+            {
+                // 패킷을 받을 클라이언트 찾기
+                ClientSession session = Room.FindSession(sessionId);
+
+                if (session != null) // 세션을 찾았는지
+                    session.Send(recvBuffer);
+                else
+                    Console.WriteLine("Recv null session's id");
+            }
 		}
 
 		public override void OnDisconnected(EndPoint endPoint)

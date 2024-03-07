@@ -1,31 +1,32 @@
 ﻿using Google.Protobuf;
+using ServerCore;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PacketMessage
+public class ServerPacketMessage
 {
 	public ushort Id { get; set; }
 	public IMessage Message { get; set; }
 }
 
-public class PacketQueue
+public class ServerPacketQueue
 {
-	public static PacketQueue Instance { get; } = new PacketQueue();
+	public static ServerPacketQueue Instance { get; } = new ServerPacketQueue();
 
-	Queue<PacketMessage> _packetQueue = new Queue<PacketMessage>();
+	Queue<ServerPacketMessage> _packetQueue = new Queue<ServerPacketMessage>();
 	object _lock = new object();
 
 	public void Push(ushort id, IMessage packet)
 	{
 		lock (_lock)
 		{
-			_packetQueue.Enqueue(new PacketMessage() { Id = id, Message = packet });
+			_packetQueue.Enqueue(new ServerPacketMessage() { Id = id, Message = packet });
 		}
 	}
 
-	public PacketMessage Pop()
+	public ServerPacketMessage Pop()
 	{
 		lock (_lock)
 		{
@@ -36,9 +37,9 @@ public class PacketQueue
 		}
 	}
 
-	public List<PacketMessage> PopAll()
+	public List<ServerPacketMessage> PopAll()
 	{
-		List<PacketMessage> list = new List<PacketMessage>();
+		List<ServerPacketMessage> list = new List<ServerPacketMessage>();
 
 		lock (_lock)
 		{

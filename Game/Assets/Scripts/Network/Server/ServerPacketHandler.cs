@@ -16,13 +16,13 @@ class ServerPacketHandler
 	{
 		C_Pong pongPacket = new C_Pong();
 		Debug.Log("[Server] PingCheck");
-		Managers.Network.Send(pongPacket);
+        session.Send(pongPacket);
 	}
 
     public static void S_LoginHandler(ISession session, IMessage packet)
     {
         S_Login loginPacket = packet as S_Login;
-        Debug.Log(loginPacket.LoginState);
+        Debug.Log(loginPacket.LoginResult);
     }
 
     public static void S_EnterMapHandler(ISession session, IMessage packet)

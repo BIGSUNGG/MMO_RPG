@@ -15,16 +15,9 @@ public class ServerSession : PacketSession
         return BitConverter.ToUInt16(buffer.Array, buffer.Offset + 4);
     }
 
-    public void Send(IMessage packet)
+    public override void Send(IMessage packet)
 	{
-		string msgName = packet.Descriptor.Name.Replace("_", string.Empty);
-		MsgId msgId = (MsgId)Enum.Parse(typeof(MsgId), msgName);
-		ushort size = (ushort)packet.CalculateSize();
-		byte[] sendBuffer = new byte[size + 4];
-		Array.Copy(BitConverter.GetBytes((ushort)(size + 4)), 0, sendBuffer, 0, sizeof(ushort));
-		Array.Copy(BitConverter.GetBytes((ushort)msgId), 0, sendBuffer, 2, sizeof(ushort));
-		Array.Copy(packet.ToByteArray(), 0, sendBuffer, 4, size);
-		Send(new ArraySegment<byte>(sendBuffer));
+        Managers.Network.SendServer(packet);  
 	}
 
 	public override void OnConnected(EndPoint endPoint)
@@ -33,9 +26,13 @@ public class ServerSession : PacketSession
 
         ClientPacketManager.Instance.CustomHandler = (s, m, i) =>
 		{
-			PacketQueue.Instance.Push(i, m);
+			ClientPacketQueue.Instance.Push(s, i, m);
 		};
-	}
+        ServerPacketManager.Instance.CustomHandler = (s, m, i) =>
+        {
+            ServerPacketQueue.Instance.Push(i, m);
+        };
+    }
 
 	public override void OnDisconnected(EndPoint endPoint)
 	{
@@ -44,13 +41,13 @@ public class ServerSession : PacketSession
 
 	public override void OnRecvPacket(ArraySegment<byte> buffer)
 	{
-        #if true // Log Packet Info
+#if true // Log Packet Info
         Debug.Log(
             "Id : " + BitConverter.ToInt32(buffer.Array, buffer.Offset) +
             ", Size : " + BitConverter.ToUInt16(buffer.Array, buffer.Offset + 4) +
             ", MsgId : " + BitConverter.ToUInt16(buffer.Array, buffer.Offset + 6)
             );
-        #endif
+#endif
 
         int sessionId = BitConverter.ToInt32(buffer.Array, buffer.Offset);
         if(sessionId == 0) // Recieve server packet

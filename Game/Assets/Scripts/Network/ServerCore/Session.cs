@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Google.Protobuf;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
@@ -108,7 +109,9 @@ namespace ServerCore
 			}
 		}
 
-		public void Disconnect()
+        public abstract void Send(IMessage packet);
+
+        public void Disconnect()
 		{
 			if (Interlocked.Exchange(ref _disconnected, 1) == 1)
 				return;
@@ -235,10 +238,12 @@ namespace ServerCore
 			}
 		}
 
-		#endregion
-	}
+        #endregion
+    }
+
+    public interface ISession
+    {
+        public void Send(IMessage packet);
+    }
 }
 
-public interface ISession
-{
-}

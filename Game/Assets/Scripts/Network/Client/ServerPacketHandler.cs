@@ -22,7 +22,8 @@ class ServerPacketHandler
         loginPacket.AccountId = 11231223;
         loginPacket.Token = 129212222;
         #endif
-        Managers.Network.Send(loginPacket);
+
+        session.Send(loginPacket);
     }
 
 	public static void S_LoginHandler(ISession session, IMessage packet)

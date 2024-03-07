@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
 using Google.Protobuf;
+using Google.Protobuf.Protocol;
+using static System.Collections.Specialized.BitVector32;
 
 #if UNITY_SERVER
 public partial class NetworkManager
@@ -18,12 +20,27 @@ public partial class NetworkManager
 
     public virtual void Update()
     {
+        List<ServerPacketMessage> serverList = ServerPacketQueue.Instance.PopAll();
+        foreach (ServerPacketMessage packet in serverList)
+        {
+            Action<ISession, IMessage> handler = ServerPacketManager.Instance.GetPacketHandler(packet.Id);
+            if (handler != null)
+                handler.Invoke(_serverSession, packet.Message);
+        }
+
+        List<ClientPacketMessage> clientList = ClientPacketQueue.Instance.PopAll();
+        foreach (ClientPacketMessage packet in clientList)
+        {
+            Action<ISession, IMessage> handler = ClientPacketManager.Instance.GetPacketHandler(packet.Id);
+            if (handler != null)
+                handler.Invoke(_serverSession, packet.Message);
+        }
     }
 
     #region ServerSession
     ServerSession _serverSession = new ServerSession();
 
-    // info : Information of server to connect
+    // info : 연결할 서버의 정보
     public void ConnectToServer()
     {
         string host = Dns.GetHostName();
@@ -33,18 +50,68 @@ public partial class NetworkManager
 
         Connector connector = new Connector();
 
-        // Start server connect
+        // 서버에 연결 시도
         connector.Connect(endPoint,
             () => { return _serverSession; },
             1);
     }
 
-    // packet : Packet to send server
-    public void Send(IMessage packet)
+    // packet : 서버에 전송할 패킷
+    public void SendServer(IMessage packet)
     {
-        // Send packet to server
-        _serverSession.Send(packet);
+        // 서버에게 sessionId로 0을 준다면 서버에서 처리하는 패킷으로 처리
+        int sessionId = 0;
+
+		string msgName = packet.Descriptor.Name.Replace("_", string.Empty);
+		MsgId msgId = (MsgId)Enum.Parse(typeof(MsgId), msgName);
+		ushort size = (ushort)packet.CalculateSize();
+		byte[] sendBuffer = new byte[size + 8];
+		Array.Copy(BitConverter.GetBytes((int)(sessionId)), 0, sendBuffer, 0, sizeof(int));
+		Array.Copy(BitConverter.GetBytes((ushort)(size + 4)), 0, sendBuffer, 4, sizeof(ushort));
+		Array.Copy(BitConverter.GetBytes((ushort)msgId), 0, sendBuffer, 6, sizeof(ushort));
+		Array.Copy(packet.ToByteArray(), 0, sendBuffer, 8, size);
+
+        // 서버로 패킷 전송
+        _serverSession.Send(new ArraySegment<byte>(sendBuffer));
     }
+
+    // 매개 변수로 들어온 session으로 패킷 전송
+    public void SendClient(ClientSession session, IMessage packet)
+    {
+        // 서버로 패킷 전송 후 서버에서 다시 클라이언트로 전송
+		string msgName = packet.Descriptor.Name.Replace("_", string.Empty);
+		MsgId msgId = (MsgId)Enum.Parse(typeof(MsgId), msgName);
+		ushort size = (ushort)packet.CalculateSize();
+		byte[] sendBuffer = new byte[size + 8];
+		Array.Copy(BitConverter.GetBytes((int)(session.SessionId)), 0, sendBuffer, 0, sizeof(int));
+		Array.Copy(BitConverter.GetBytes((ushort)(size + 4)), 0, sendBuffer, 4, sizeof(ushort));
+		Array.Copy(BitConverter.GetBytes((ushort)msgId), 0, sendBuffer, 6, sizeof(ushort));
+		Array.Copy(packet.ToByteArray(), 0, sendBuffer, 8, size);
+
+        // 서버로 패킷 전송
+        _serverSession.Send(new ArraySegment<byte>(sendBuffer));
+    }
+
+    // 이 Game Room안에 있는 모든 클라이언트에게 패킷 전송
+    public void SendMulticast(IMessage packet)
+    {
+        // 서버에게 sessionId로 -1을 준다면 모두에게 전송하는 패킷으로 처리
+        int sessionId = -1;
+
+        // 서버로 패킷 전송 후 서버에서 모든 클라이언트로 전송
+        string msgName = packet.Descriptor.Name.Replace("_", string.Empty);
+        MsgId msgId = (MsgId)Enum.Parse(typeof(MsgId), msgName);
+        ushort size = (ushort)packet.CalculateSize();
+        byte[] sendBuffer = new byte[size + 8];
+        Array.Copy(BitConverter.GetBytes((int)(sessionId)), 0, sendBuffer, 0, sizeof(int));
+        Array.Copy(BitConverter.GetBytes((ushort)(size + 4)), 0, sendBuffer, 4, sizeof(ushort));
+        Array.Copy(BitConverter.GetBytes((ushort)msgId), 0, sendBuffer, 6, sizeof(ushort));
+        Array.Copy(packet.ToByteArray(), 0, sendBuffer, 8, size);
+
+        // 서버로 패킷 전송
+        _serverSession.Send(new ArraySegment<byte>(sendBuffer));
+    }
+
     #endregion
 
     #region ClientSession

@@ -17,5 +17,9 @@ public class ClientSession : ISession
 
     public int SessionId { get; private set; }
 
+    public void Send(IMessage packet)
+    {
+        Managers.Network.SendClient(this, packet);
+    }
 }
 #endif
