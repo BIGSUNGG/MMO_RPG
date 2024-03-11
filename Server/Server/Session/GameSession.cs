@@ -117,8 +117,7 @@ namespace Server
             }
             else if(sessionId == -1) // 모든 클라이언트로 보낼 패킷을 받았을 경우
             {
-                Func<ArraySegment<byte>> packetFunc = ()=> { return recvBuffer; };
-                Room.DoActionAll(packetFunc);
+                Room.SendAll(recvBuffer);
             }
             else // 클라이언트로 보낼 패킷을 받았을 경우
             {

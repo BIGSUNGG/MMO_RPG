@@ -15,13 +15,13 @@ class ServerPacketHandler
         // 로그인 패킷 보내기
         C_Login loginPacket = new C_Login();
 
-        #if true // 정상적인 패킷 보내기
+#if true // 정상적인 패킷 보내기
         loginPacket.AccountId = Managers.Network.AccountId;
         loginPacket.Token = Managers.Network.Token;
-        #else // 비정상적인 패킷 보내기
+#else // 비정상적인 패킷 보내기
         loginPacket.AccountId = 11231223;
         loginPacket.Token = 129212222;
-        #endif
+#endif
 
         session.Send(loginPacket);
     }
@@ -47,7 +47,27 @@ class ServerPacketHandler
 
     public static void S_EnterMapHandler(ISession session, IMessage packet)
     {
-        S_EnterMap mapPacket = packet as S_EnterMap;
+        S_EnterMap recvPacket = packet as S_EnterMap;
+        Managers.Map.LoadMap(recvPacket.MapId);
+
+    }
+
+    public static void S_EnterPlayerHandler(ISession session, IMessage packet)
+    {
+        S_EnterPlayer recvPacket = packet as S_EnterPlayer;
+
+        Debug.Log($"Played Id : {recvPacket.AccountDbId} Enter");
+    }
+
+    public static void S_LeaveMapHandler(ISession session, IMessage packet)
+    {
+        S_LeaveMap leaveMapPacket = packet as S_LeaveMap;
+
+    }
+
+    public static void S_LeavePlayerHandler(ISession session, IMessage packet)
+    {
+        S_LeavePlayer leavePlayerPacket = packet as S_LeavePlayer;
 
     }
 }

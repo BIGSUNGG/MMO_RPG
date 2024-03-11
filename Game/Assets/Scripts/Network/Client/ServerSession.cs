@@ -12,7 +12,7 @@ public class ServerSession : PacketSession
 {
 	public override void Send(IMessage packet)
 	{
-        Managers.Network.SendServer(packet);  
+        Managers.Network.Send(packet);  
     }
 
     public override void OnConnected(EndPoint endPoint)

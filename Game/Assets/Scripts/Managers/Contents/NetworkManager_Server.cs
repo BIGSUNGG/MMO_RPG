@@ -115,11 +115,11 @@ public partial class NetworkManager
     #endregion
 
     #region ClientSession
-    Dictionary<int, ClientSession> _clientSessions = new Dictionary<int, ClientSession>();
+    Dictionary<int, ClientSession> _clientSessions = new Dictionary<int, ClientSession>(); // Key : ClientSession의 Id, Value : 세션 아이디에 맞는 ClientSession
 
     // sessionId : 만들 세션의 아이디
     // return : 만든 세션 반환 (실패했을경우 null 반환)
-    public ClientSession CreateClienSession(int sessionId)
+    public ClientSession CreateClienSession(int sessionId, int accountDbId)
     {
         if(_clientSessions.ContainsKey(sessionId)) // Is exist same client session id
         {
@@ -127,7 +127,7 @@ public partial class NetworkManager
             return null;
         }
 
-        ClientSession session = new ClientSession(sessionId);
+        ClientSession session = new ClientSession(sessionId, accountDbId);
         _clientSessions.Add(sessionId, session);
         return session;
     }

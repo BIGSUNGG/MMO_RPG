@@ -9,11 +9,11 @@ namespace Server.Game
 {
 	public class Player : GameObject
 	{
-		public int PlayerDbId { get; set; }
-		public ClientSession Session { get; set; }
+		public ClientSession Session { get; private set; }
 
-		public Player()
+		public Player(ClientSession session)
 		{
-		}
+            this.Session = session;
+        }
 	}
 }

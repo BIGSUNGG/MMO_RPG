@@ -17,6 +17,11 @@ enum MsgId {
 
   // Enter
   S_ENTER_MAP = 5;
+  S_ENTER_PLAYER = 6;
+
+  // LEAVE
+  S_LEAVE_MAP = 7;
+  S_LEAVE_PLAYER = 8;
 
 }
 
@@ -59,4 +64,17 @@ message S_Login {
 
 message S_EnterMap {
 	int32 mapId = 1;	
+}
+
+message S_EnterPlayer{
+	int32 sessionId = 1;
+	int32 accountDbId = 2;
+}
+
+message S_LeaveMap{
+}
+
+message S_LeavePlayer{
+	int32 sessionId = 1;
+	int32 accountDbId = 2;
 }

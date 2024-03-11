@@ -30,7 +30,13 @@ class ServerPacketManager
 		_onRecv.Add((ushort)MsgId.SLogin, MakePacket<S_Login>);
 		_handler.Add((ushort)MsgId.SLogin, ServerPacketHandler.S_LoginHandler);		
 		_onRecv.Add((ushort)MsgId.SEnterMap, MakePacket<S_EnterMap>);
-		_handler.Add((ushort)MsgId.SEnterMap, ServerPacketHandler.S_EnterMapHandler);
+		_handler.Add((ushort)MsgId.SEnterMap, ServerPacketHandler.S_EnterMapHandler);		
+		_onRecv.Add((ushort)MsgId.SEnterPlayer, MakePacket<S_EnterPlayer>);
+		_handler.Add((ushort)MsgId.SEnterPlayer, ServerPacketHandler.S_EnterPlayerHandler);		
+		_onRecv.Add((ushort)MsgId.SLeaveMap, MakePacket<S_LeaveMap>);
+		_handler.Add((ushort)MsgId.SLeaveMap, ServerPacketHandler.S_LeaveMapHandler);		
+		_onRecv.Add((ushort)MsgId.SLeavePlayer, MakePacket<S_LeavePlayer>);
+		_handler.Add((ushort)MsgId.SLeavePlayer, ServerPacketHandler.S_LeavePlayerHandler);
 	}
 
 	public void OnRecvPacket(ISession session, ArraySegment<byte> buffer)

@@ -141,7 +141,7 @@ namespace Server
                     // Set session and room
                     GameSession session = GameSessionManager.Instance.Generate();
                     session.Room = room;
-                    room.Session = session;
+                    room._gameSession = session;
 
                     // Notify program connect
                     bProgramConnect = true;
@@ -165,8 +165,8 @@ namespace Server
                         S_EnterMap packet = new S_EnterMap();
                         packet.MapId = mapId;
 
-                        room.Session.Send(packet);
-                        room.Session.FlushSend();
+                        room._gameSession.Send(packet);
+                        room._gameSession.FlushSend();
                         Console.WriteLine("Unity server connect");
                         break;
                     }

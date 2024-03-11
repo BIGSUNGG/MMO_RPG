@@ -80,6 +80,7 @@ namespace Server
             Console.WriteLine("Login Success");
             GameAccountDbId = gameAccountDbId;
             LoginState = PlayerLoginState.LoggedIn;
+            MyPlayer = new Player(this);
 
             // 로그인 성공 패킷 보내기
             S_Login sendPacket = new S_Login();
@@ -91,6 +92,9 @@ namespace Server
 
             // 계정 추가하기
             GameAccountManager.Instance.Add(GameAccountDbId, this);
+
+            // 유저를 GameRoom에 추가
+            GameLogic.Instance.Push(() => { EnterRoom(GameLogic.Instance.Find(0)); });
         }
 
         private void LoginFail()
@@ -115,6 +119,8 @@ namespace Server
             // 계정 제거하기
             if(LoginState == PlayerLoginState.LoggedIn)
                 GameAccountManager.Instance.Remove(GameAccountDbId);
+
+            GameLogic.Instance.Push(LeaveRoom);
         }
 
         private GameAccountDb CreateAccount(int accountDbId)
@@ -161,6 +167,31 @@ namespace Server
 
 			return false;
 		}
-		#endregion
-	}
+        #endregion
+
+        #region Room
+        // room : 입장할 GameRoom
+        public void EnterRoom(GameRoom room)
+        {
+            if (MyPlayer == null || room == null) // 입장맵이 없는 경우
+                return;          
+
+            // 현재 입장해있는 GameRoom에서 나오기
+            LeaveRoom();
+
+            // GameRoom 입장하자
+            MyPlayer.Room = room;
+            room.EnterRoom(this);
+        }
+
+        // 현재 입장해있는 GameRoom에서 나오기
+        public void LeaveRoom()
+        {
+            if (MyPlayer == null || MyPlayer.Room == null) // 현재 입장해있는 맵이 없는경우
+                return;
+
+            MyPlayer.Room.LeaveRoom(this);
+        }
+        #endregion
+    }
 }
