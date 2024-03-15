@@ -36,7 +36,15 @@ class ServerPacketManager
 		_onRecv.Add((ushort)MsgId.SLeaveMap, MakePacket<S_LeaveMap>);
 		_handler.Add((ushort)MsgId.SLeaveMap, ServerPacketHandler.S_LeaveMapHandler);		
 		_onRecv.Add((ushort)MsgId.SLeavePlayer, MakePacket<S_LeavePlayer>);
-		_handler.Add((ushort)MsgId.SLeavePlayer, ServerPacketHandler.S_LeavePlayerHandler);
+		_handler.Add((ushort)MsgId.SLeavePlayer, ServerPacketHandler.S_LeavePlayerHandler);		
+		_onRecv.Add((ushort)MsgId.SSpawnObject, MakePacket<S_SpawnObject>);
+		_handler.Add((ushort)MsgId.SSpawnObject, ServerPacketHandler.S_SpawnObjectHandler);		
+		_onRecv.Add((ushort)MsgId.SDespawnObject, MakePacket<S_DespawnObject>);
+		_handler.Add((ushort)MsgId.SDespawnObject, ServerPacketHandler.S_DespawnObjectHandler);		
+		_onRecv.Add((ushort)MsgId.SPossessObject, MakePacket<S_PossessObject>);
+		_handler.Add((ushort)MsgId.SPossessObject, ServerPacketHandler.S_PossessObjectHandler);		
+		_onRecv.Add((ushort)MsgId.SUnpossessObject, MakePacket<S_UnpossessObject>);
+		_handler.Add((ushort)MsgId.SUnpossessObject, ServerPacketHandler.S_UnpossessObjectHandler);
 	}
 
 	public void OnRecvPacket(ISession session, ArraySegment<byte> buffer)

@@ -75,6 +75,7 @@
     <Compile Include="Assets\Scripts\Scenes\GameScene\GameScene.cs" />
     <Compile Include="Assets\Scripts\Scenes\GameScene\GameScene_Server.cs" />
     <Compile Include="Assets\Scripts\Scenes\LoginScene\LoginScene_Server.cs" />
+    <Compile Include="Assets\Scripts\Controllers\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Network\Web\WebPacket.cs" />
     <Compile Include="Assets\Scripts\UI\Scene\UI_GameScene.cs" />
     <Compile Include="Assets\Scripts\Network\Client\ClientPacketHandler.cs" />
@@ -101,8 +102,10 @@
     <Compile Include="Assets\Scripts\Utils\Util.cs" />
     <Compile Include="Assets\Scripts\Managers\Managers.cs" />
     <Compile Include="Assets\Scripts\Network\Packet\ClientPacketQueue.cs" />
+    <Compile Include="Assets\Scripts\Controllers\ObjectController.cs" />
     <Compile Include="Assets\Scripts\UI\Scene\UI_LoginScene.cs" />
     <Compile Include="Assets\Scripts\Managers\Contents\NetworkManager_Client.cs" />
+    <Compile Include="Assets\Scripts\Managers\Contents\ControllerManager.cs" />
     <Compile Include="Assets\Scripts\UI\Scene\UI_Stat.cs" />
     <Compile Include="Assets\Scripts\Network\Server\ClientSession.cs" />
     <Compile Include="Assets\Scripts\Network\ServerCore\Session.cs" />

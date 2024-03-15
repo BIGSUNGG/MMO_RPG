@@ -6,20 +6,35 @@ using UnityEngine;
 
 public class ObjectManager
 {
-	Dictionary<int, GameObject> _objects = new Dictionary<int, GameObject>();
+    public ObjectManager()
+    {
+        _spawner = new List<Func<GameObject>>(new Func<GameObject>[10]);
+        _spawner[(int)GameObjectType.Character] = () => { return Managers.Resource.Instantiate("Object/Character");  }; 
+    }
+    Dictionary<int, GameObject> _objects = new Dictionary<int, GameObject>();
+    List<Func<GameObject>> _spawner;
 
-	public void Add(GameObject gameObject, int id)
-	{
-        _objects.Add(id, gameObject);
-
+    public GameObject Add(ObjectInfo info)
+    {
+        GameObject gameObject = _spawner[(int)info.ObjectType].Invoke();
+        _objects.Add(info.ObjectId, gameObject);
+        return gameObject;
     }
 
 	public void Remove(int id)
 	{
+        if (_objects.ContainsKey(id) == false)
+            return;
 
-	}
+        GameObject go = FindById(id);
+        if (go == null)
+            return;
 
-	public GameObject FindById(int id)
+        _objects.Remove(id);
+        Managers.Resource.Destroy(go);
+    }
+
+    public GameObject FindById(int id)
 	{
 		GameObject go = null;
 		_objects.TryGetValue(id, out go);

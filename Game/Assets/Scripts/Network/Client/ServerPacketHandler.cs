@@ -10,7 +10,7 @@ class ServerPacketHandler
 {
     public static void S_ConnectedHandler(ISession session, IMessage packet)
     {
-        S_Connected connectedPacket = packet as S_Connected;
+        S_Connected recvPacket = packet as S_Connected;
 
         // 로그인 패킷 보내기
         C_Login loginPacket = new C_Login();
@@ -28,10 +28,10 @@ class ServerPacketHandler
 
 	public static void S_LoginHandler(ISession session, IMessage packet)
 	{
-		S_Login loginPacket = packet as S_Login;
+		S_Login recvPacket = packet as S_Login;
 
-        Debug.Log(loginPacket.LoginResult);
-        if(loginPacket.LoginResult == LoginResult.LoginSuccess)
+        Debug.Log(recvPacket.LoginResult);
+        if(recvPacket.LoginResult == LoginResult.LoginSuccess)
         {
             Managers.Map.LoadMap(0);
         }
@@ -39,7 +39,7 @@ class ServerPacketHandler
 
 	public static void S_PingHandler(ISession session, IMessage packet)
 	{
-        S_Ping pingPacket = packet as S_Ping;
+        S_Ping recvPacket = packet as S_Ping;
 
 		C_Pong pongPacket = new C_Pong();
 		Managers.Network.Send(pongPacket);
@@ -61,13 +61,39 @@ class ServerPacketHandler
 
     public static void S_LeaveMapHandler(ISession session, IMessage packet)
     {
-        S_LeaveMap leaveMapPacket = packet as S_LeaveMap;
+        S_LeaveMap recvPacket = packet as S_LeaveMap;
 
     }
 
     public static void S_LeavePlayerHandler(ISession session, IMessage packet)
     {
-        S_LeavePlayer leavePlayerPacket = packet as S_LeavePlayer;
+        S_LeavePlayer recvPacket = packet as S_LeavePlayer;
+
+    }
+
+    public static void S_SpawnObjectHandler(ISession session, IMessage packet)
+    {
+        S_SpawnObject recvPacket = packet as S_SpawnObject;
+
+        foreach(var info in recvPacket.SpawnInfo)
+            Managers.Object.Add(info);
+    }
+
+    public static void S_DespawnObjectHandler(ISession session, IMessage packet)
+    {
+        S_DespawnObject recvPacket = packet as S_DespawnObject;    
+        Managers.Object.Remove(recvPacket.ObjectId);
+    }
+
+    public static void S_PossessObjectHandler(ISession session, IMessage packet)
+    {
+        S_PossessObject recvPacket = packet as S_PossessObject;
+
+    }
+
+    public static void S_UnpossessObjectHandler(ISession session, IMessage packet)
+    {
+        S_UnpossessObject recvPacket = packet as S_UnpossessObject;
 
     }
 }

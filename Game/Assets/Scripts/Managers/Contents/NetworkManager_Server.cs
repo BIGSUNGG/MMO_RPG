@@ -20,6 +20,7 @@ public partial class NetworkManager
 
     public virtual void Update()
     {
+        // 서버 패킷 처리
         List<ServerPacketMessage> serverList = ServerPacketQueue.Instance.PopAll();
         foreach (ServerPacketMessage packet in serverList)
         {
@@ -28,6 +29,7 @@ public partial class NetworkManager
                 handler.Invoke(_serverSession, packet.Message);
         }
 
+        // 클라이언트 패킷 처리
         List<ClientPacketMessage> clientList = ClientPacketQueue.Instance.PopAll();
         foreach (ClientPacketMessage packet in clientList)
         {
