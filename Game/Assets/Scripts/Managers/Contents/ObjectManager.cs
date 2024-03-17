@@ -17,11 +17,19 @@ public class ObjectManager
     public GameObject Add(ObjectInfo info)
     {
         GameObject gameObject = _spawner[(int)info.ObjectType].Invoke();
+
+        //ObjectController controller = gameObject.GetComponent<ObjectController>();
+        //if (controller != null)
+        //    controller.Spawn(info.ObjectId);
+
         _objects.Add(info.ObjectId, gameObject);
+
+        Debug.Log($"Make {info.ObjectType} Object Id : {info.ObjectId}");
         return gameObject;
     }
 
-	public void Remove(int id)
+
+    public void Remove(int id)
 	{
         if (_objects.ContainsKey(id) == false)
             return;
@@ -38,6 +46,10 @@ public class ObjectManager
 	{
 		GameObject go = null;
 		_objects.TryGetValue(id, out go);
+
+        if (go == null)
+            Debug.Log($"Find GameObject failed Id : {id}");
+
 		return go;
 	}
 

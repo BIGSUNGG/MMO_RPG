@@ -22,6 +22,8 @@ public class MapManager
     public void LoadMap(string mapPath)
     {
 		DestroyMap();
+
+        Debug.Log($"Enter Map {mapPath}");
         SceneManager.LoadScene($"Assets/{mapPath}", LoadSceneMode.Single);
     }
 

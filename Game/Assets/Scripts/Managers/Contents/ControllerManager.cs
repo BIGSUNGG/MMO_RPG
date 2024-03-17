@@ -8,7 +8,7 @@ using Google.Protobuf;
 
 public class ControllerManager
 {
-    PlayerController MyController = null;
+    public PlayerController MyController { get; private set; } = null;
 
     public void Update()
     {
@@ -16,5 +16,30 @@ public class ControllerManager
             return;
 
         MyController.ControllerUpdate();
+    }
+
+    public void Possess(GameObject obj)
+    {
+        if (obj == null)
+            return;
+
+        PlayerController controller = obj.GetComponent<PlayerController>();
+        if (controller == null)
+            return;
+
+        Debug.Log("Possess GameObject");
+        MyController = controller;
+        MyController.OnPossess();
+    }
+
+    public void Unpossess()
+    {
+        if (MyController == null)
+            return;
+
+        Debug.Log("Unpossess GameObject");
+        MyController.OnUnpossess();
+        MyController = null;
+
     }
 }

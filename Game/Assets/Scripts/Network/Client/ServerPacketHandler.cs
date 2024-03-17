@@ -30,11 +30,6 @@ class ServerPacketHandler
 	{
 		S_Login recvPacket = packet as S_Login;
 
-        Debug.Log(recvPacket.LoginResult);
-        if(recvPacket.LoginResult == LoginResult.LoginSuccess)
-        {
-            Managers.Map.LoadMap(0);
-        }
     }
 
 	public static void S_PingHandler(ISession session, IMessage packet)
@@ -88,7 +83,8 @@ class ServerPacketHandler
     public static void S_PossessObjectHandler(ISession session, IMessage packet)
     {
         S_PossessObject recvPacket = packet as S_PossessObject;
-
+        GameObject obj = Managers.Object.FindById(recvPacket.ObjectId);
+        Managers.Controller.Possess(obj);
     }
 
     public static void S_UnpossessObjectHandler(ISession session, IMessage packet)

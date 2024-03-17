@@ -118,5 +118,4 @@ message S_PossessObject{
 
 // S_UNPOSSESS_OBJECT
 message S_UnpossessObject{
-	int32 objectId =1;
 }
