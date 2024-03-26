@@ -3,6 +3,7 @@ using Google.Protobuf.Protocol;
 using ServerCore;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 #if UNITY_SERVER
@@ -30,6 +31,7 @@ class ServerPacketHandler
     public static void S_EnterMapHandler(ISession session, IMessage packet)
     {
         S_EnterMap recvPacket = packet as S_EnterMap;
+
         Managers.Map.LoadMap(recvPacket.MapId);
     }
     
@@ -37,7 +39,20 @@ class ServerPacketHandler
     {
         S_EnterPlayer recvPacket = packet as S_EnterPlayer;
 
-        Managers.Network.CreateClienSession(recvPacket.SessionId, recvPacket.AccountDbId);
+        ClientSession clientSession = Managers.Network.CreateClienSession(recvPacket.SessionId, recvPacket.AccountDbId);
+
+        // 접속한 플레이어가 빙의할 오브젝트 만들기
+        ObjectInfo info = new ObjectInfo();
+        info.ObjectType = GameObjectType.Character;
+        GameObject go = Managers.Object.Create(info);
+
+        PlayerController pc = go.GetComponent<PlayerController>();
+        if (pc == null)
+            return;
+        
+        // 만든 오브젝트에 플레이어 빙의시키기
+        clientSession.Possess(pc);
+
     }
 
     public static void S_LeaveMapHandler(ISession session, IMessage packet)
@@ -52,6 +67,53 @@ class ServerPacketHandler
         S_LeavePlayer recvPacket = packet as S_LeavePlayer;
 
         Managers.Network.DeleteClientSession(recvPacket.SessionId);
+    }
+
+
+    public static void S_SpawnObjectHandler(ISession session, IMessage packet)
+    {
+        S_SpawnObject recvPacket = packet as S_SpawnObject;
+
+        Managers.Object.Create(recvPacket.SpawnInfo);
+    }
+
+    public static void S_SpawnObjectsHandler(ISession session, IMessage packet)
+    {
+        S_SpawnObjects recvPacket = packet as S_SpawnObjects;
+
+        Managers.Object.Create(recvPacket.SpawnInfos);
+    }
+
+    public static void S_DespawnObjectHandler(ISession session, IMessage packet)
+    {
+        S_DespawnObject recvPacket = packet as S_DespawnObject;
+
+        Managers.Object.Delete(recvPacket.ObjectId);
+    }
+    
+    public static void S_DespawnObjectsHandler(ISession session, IMessage packet)
+    {
+        S_DespawnObjects recvPacket = packet as S_DespawnObjects;
+
+        Managers.Object.Delete(recvPacket.ObjectIds);
+    }
+
+    public static void S_PossessObjectHandler(ISession session, IMessage packet)
+    {
+        S_PossessObject recvPacket = packet as S_PossessObject;
+
+    }
+
+    public static void S_UnpossessObjectHandler(ISession session, IMessage packet)
+    {
+        S_UnpossessObject recvPacket = packet as S_UnpossessObject;
+
+    }
+
+    public static void S_ObjectSyncHandler(ISession session, IMessage packet)
+    {
+        S_ObjectSync recvPacket = packet as S_ObjectSync;
+
     }
 }
 #endif

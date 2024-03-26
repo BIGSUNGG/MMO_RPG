@@ -64,6 +64,7 @@
     <Compile Include="Assets\Scripts\Network\Server\ServerSession.cs" />
     <Compile Include="Assets\Scripts\Network\Packet\ServerPacketManager.cs" />
     <Compile Include="Assets\Scripts\Managers\Core\DataManager.cs" />
+    <Compile Include="Assets\Scripts\Controllers\Character\Player\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Managers\Core\PoolManager.cs" />
     <Compile Include="Assets\Scripts\Utils\Extension.cs" />
     <Compile Include="Assets\Scripts\Utils\PriorityQueue.cs" />
@@ -75,9 +76,9 @@
     <Compile Include="Assets\Scripts\Scenes\GameScene\GameScene.cs" />
     <Compile Include="Assets\Scripts\Scenes\GameScene\GameScene_Server.cs" />
     <Compile Include="Assets\Scripts\Scenes\LoginScene\LoginScene_Server.cs" />
-    <Compile Include="Assets\Scripts\Controllers\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Network\Web\WebPacket.cs" />
     <Compile Include="Assets\Scripts\UI\Scene\UI_GameScene.cs" />
+    <Compile Include="Assets\Scripts\Component\MovementComponent.cs" />
     <Compile Include="Assets\Scripts\Network\Client\ClientPacketHandler.cs" />
     <Compile Include="Assets\Scripts\Scenes\StartScene\StartScene_Server.cs" />
     <Compile Include="Assets\Scripts\Managers\Core\ResourceManager.cs" />
@@ -104,10 +105,13 @@
     <Compile Include="Assets\Scripts\Network\Packet\ClientPacketQueue.cs" />
     <Compile Include="Assets\Scripts\Controllers\ObjectController.cs" />
     <Compile Include="Assets\Scripts\UI\Scene\UI_LoginScene.cs" />
+    <Compile Include="Assets\Scripts\Managers\Contents\ObjectManager_Client.cs" />
     <Compile Include="Assets\Scripts\Managers\Contents\NetworkManager_Client.cs" />
     <Compile Include="Assets\Scripts\Managers\Contents\ControllerManager.cs" />
     <Compile Include="Assets\Scripts\UI\Scene\UI_Stat.cs" />
     <Compile Include="Assets\Scripts\Network\Server\ClientSession.cs" />
+    <Compile Include="Assets\Scripts\Controllers\Character\CharacterController.cs" />
+    <Compile Include="Assets\Scripts\Managers\Contents\ObjectManager_Server.cs" />
     <Compile Include="Assets\Scripts\Network\ServerCore\Session.cs" />
     <Compile Include="Assets\Scripts\UI\UI_EventHandler.cs" />
     <Compile Include="Assets\Scripts\Scenes\LoginScene\LoginScene.cs" />

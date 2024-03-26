@@ -1,46 +1,20 @@
-﻿using Google.Protobuf.Protocol;
+﻿using Google.Protobuf.Collections;
+using Google.Protobuf.Protocol;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class ObjectManager
+public partial class ObjectManager
 {
     public ObjectManager()
     {
         _spawner = new List<Func<GameObject>>(new Func<GameObject>[10]);
         _spawner[(int)GameObjectType.Character] = () => { return Managers.Resource.Instantiate("Object/Character");  }; 
     }
-    Dictionary<int, GameObject> _objects = new Dictionary<int, GameObject>();
+    public Dictionary<int, GameObject> _objects { get; private set; } = new Dictionary<int, GameObject>();
     List<Func<GameObject>> _spawner;
-
-    public GameObject Add(ObjectInfo info)
-    {
-        GameObject gameObject = _spawner[(int)info.ObjectType].Invoke();
-
-        //ObjectController controller = gameObject.GetComponent<ObjectController>();
-        //if (controller != null)
-        //    controller.Spawn(info.ObjectId);
-
-        _objects.Add(info.ObjectId, gameObject);
-
-        Debug.Log($"Make {info.ObjectType} Object Id : {info.ObjectId}");
-        return gameObject;
-    }
-
-
-    public void Remove(int id)
-	{
-        if (_objects.ContainsKey(id) == false)
-            return;
-
-        GameObject go = FindById(id);
-        if (go == null)
-            return;
-
-        _objects.Remove(id);
-        Managers.Resource.Destroy(go);
-    }
 
     public GameObject FindById(int id)
 	{

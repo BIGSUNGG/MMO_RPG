@@ -13,8 +13,6 @@ namespace Server
 {
 	public partial class ClientSession : PacketSession
 	{
-		public Player MyPlayer { get; set; }
-
         #region Account
         public int GameAccountDbId { get; private set; }
         public PlayerLoginState LoginState { get; private set; } = PlayerLoginState.NotLoggedIn;
@@ -80,7 +78,6 @@ namespace Server
             Console.WriteLine("Login Success");
             GameAccountDbId = gameAccountDbId;
             LoginState = PlayerLoginState.LoggedIn;
-            MyPlayer = new Player(this);
 
             // 로그인 성공 패킷 보내기
             S_Login sendPacket = new S_Login();
@@ -170,27 +167,29 @@ namespace Server
         #endregion
 
         #region Room
+        public GameRoom MyRoom { get; private set; }
+
         // room : 입장할 GameRoom
         public void EnterRoom(GameRoom room)
         {
-            if (MyPlayer == null || room == null) // 입장맵이 없는 경우
+            if (room == null) // 입장맵이 없는 경우
                 return;          
 
             // 현재 입장해있는 GameRoom에서 나오기
             LeaveRoom();
 
             // GameRoom 입장하자
-            MyPlayer.Room = room;
-            room.EnterRoom(this);
+            MyRoom = room;
+            MyRoom.EnterRoom(this);
         }
 
         // 현재 입장해있는 GameRoom에서 나오기
         public void LeaveRoom()
         {
-            if (MyPlayer == null || MyPlayer.Room == null) // 현재 입장해있는 맵이 없는경우
+            if (MyRoom == null) // 현재 입장해있는 맵이 없는경우
                 return;
 
-            MyPlayer.Room.LeaveRoom(this);
+            MyRoom.LeaveRoom(this);
         }
         #endregion
     }

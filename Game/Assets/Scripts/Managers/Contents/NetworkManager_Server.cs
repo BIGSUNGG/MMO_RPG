@@ -11,8 +11,9 @@ using static System.Collections.Specialized.BitVector32;
 #if UNITY_SERVER
 public partial class NetworkManager
 {
-	public int GameSessionId;
+    public bool IsServer { get { return true; } private set { } }
 
+	public int GameSessionId;
 
     public NetworkManager()
 	{
@@ -37,6 +38,27 @@ public partial class NetworkManager
             if (handler != null)
                 handler.Invoke(_serverSession, packet.Message);
         }
+
+        //// 오브젝트 정보 클라이언트와 싱크맞추기
+        //S_ObjectSync syncPacket = new S_ObjectSync();
+        //foreach (var tuple in Managers.Object._objects)
+        //{
+        //    GameObject go = tuple.Value;
+        //    if (go == null)
+        //        continue;
+        //
+        //    ObjectController oc = go.GetComponent<ObjectController>();
+        //    if (oc == null)
+        //        continue;
+        //
+        //    ObjectSyncInfo info = new ObjectSyncInfo();
+        //    info.SyncInfoJson = oc.GetObjectSyncInfo();
+        //    info.ObjectInfo.ObjectId = oc.ObjectId;
+        //    info.ObjectInfo.ObjectType = oc.ObjectType;
+        //    syncPacket.SyncInfos.Add(info);
+        //}
+        //
+        //SendMulticast(syncPacket);
     }
 
     #region ServerSession
@@ -67,14 +89,23 @@ public partial class NetworkManager
 		string msgName = packet.Descriptor.Name.Replace("_", string.Empty);
 		MsgId msgId = (MsgId)Enum.Parse(typeof(MsgId), msgName);
 		ushort size = (ushort)packet.CalculateSize();
-		byte[] sendBuffer = new byte[size + 8];
-		Array.Copy(BitConverter.GetBytes((int)(sessionId)), 0, sendBuffer, 0, sizeof(int));
-		Array.Copy(BitConverter.GetBytes((ushort)(size + 4)), 0, sendBuffer, 4, sizeof(ushort));
-		Array.Copy(BitConverter.GetBytes((ushort)msgId), 0, sendBuffer, 6, sizeof(ushort));
-		Array.Copy(packet.ToByteArray(), 0, sendBuffer, 8, size);
+        byte[] sendBuffer = new byte[size + 8];
+        Array.Copy(BitConverter.GetBytes((int)(sessionId)), 0, sendBuffer, 0, sizeof(int));
+        Array.Copy(BitConverter.GetBytes((ushort)(size + 8)), 0, sendBuffer, 4, sizeof(ushort));
+        Array.Copy(BitConverter.GetBytes((ushort)msgId), 0, sendBuffer, 6, sizeof(ushort));
+        Array.Copy(packet.ToByteArray(), 0, sendBuffer, 8, size);
 
         // 서버로 패킷 전송
         _serverSession.Send(new ArraySegment<byte>(sendBuffer));
+
+#if true // Log Packet Info
+        Debug.Log(
+            "Send " +
+            "Id : " + sessionId +
+            ", Size : " + (size + 8) +
+            ", MsgId : " + msgId + $"{((int)msgId)}"
+            );
+#endif
     }
 
     // 매개 변수로 들어온 session으로 패킷 전송
@@ -86,12 +117,21 @@ public partial class NetworkManager
 		ushort size = (ushort)packet.CalculateSize();
 		byte[] sendBuffer = new byte[size + 8];
 		Array.Copy(BitConverter.GetBytes((int)(session.SessionId)), 0, sendBuffer, 0, sizeof(int));
-		Array.Copy(BitConverter.GetBytes((ushort)(size + 4)), 0, sendBuffer, 4, sizeof(ushort));
-		Array.Copy(BitConverter.GetBytes((ushort)msgId), 0, sendBuffer, 6, sizeof(ushort));
-		Array.Copy(packet.ToByteArray(), 0, sendBuffer, 8, size);
+        Array.Copy(BitConverter.GetBytes((ushort)(size + 8)), 0, sendBuffer, 4, sizeof(ushort));
+        Array.Copy(BitConverter.GetBytes((ushort)msgId), 0, sendBuffer, 6, sizeof(ushort));
+        Array.Copy(packet.ToByteArray(), 0, sendBuffer, 8, size);
 
         // 서버로 패킷 전송
         _serverSession.Send(new ArraySegment<byte>(sendBuffer));
+
+#if true // Log Packet Info
+        Debug.Log(
+            "Send " +
+            "Id : " + session.SessionId +
+            ", Size : " + (size + 8) +
+            ", MsgId : " + msgId + $"{((int)msgId)}"
+            );
+#endif
     }
 
     // 이 Game Room안에 있는 모든 클라이언트에게 패킷 전송
@@ -106,12 +146,21 @@ public partial class NetworkManager
         ushort size = (ushort)packet.CalculateSize();
         byte[] sendBuffer = new byte[size + 8];
         Array.Copy(BitConverter.GetBytes((int)(sessionId)), 0, sendBuffer, 0, sizeof(int));
-        Array.Copy(BitConverter.GetBytes((ushort)(size + 4)), 0, sendBuffer, 4, sizeof(ushort));
+        Array.Copy(BitConverter.GetBytes((ushort)(size + 8)), 0, sendBuffer, 4, sizeof(ushort));
         Array.Copy(BitConverter.GetBytes((ushort)msgId), 0, sendBuffer, 6, sizeof(ushort));
         Array.Copy(packet.ToByteArray(), 0, sendBuffer, 8, size);
 
         // 서버로 패킷 전송
         _serverSession.Send(new ArraySegment<byte>(sendBuffer));
+
+#if true // Log Packet Info
+        Debug.Log(
+            "Send " +
+            "Id : " + sessionId +
+            ", Size : " + (size + 8) +
+            ", MsgId : " + msgId + $"{((int)msgId)}"
+            );
+#endif
     }
 
     #endregion

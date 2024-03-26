@@ -39,12 +39,18 @@ class ServerPacketManager
 		_handler.Add((ushort)MsgId.SLeavePlayer, ServerPacketHandler.S_LeavePlayerHandler);		
 		_onRecv.Add((ushort)MsgId.SSpawnObject, MakePacket<S_SpawnObject>);
 		_handler.Add((ushort)MsgId.SSpawnObject, ServerPacketHandler.S_SpawnObjectHandler);		
+		_onRecv.Add((ushort)MsgId.SSpawnObjects, MakePacket<S_SpawnObjects>);
+		_handler.Add((ushort)MsgId.SSpawnObjects, ServerPacketHandler.S_SpawnObjectsHandler);		
 		_onRecv.Add((ushort)MsgId.SDespawnObject, MakePacket<S_DespawnObject>);
 		_handler.Add((ushort)MsgId.SDespawnObject, ServerPacketHandler.S_DespawnObjectHandler);		
+		_onRecv.Add((ushort)MsgId.SDespawnObjects, MakePacket<S_DespawnObjects>);
+		_handler.Add((ushort)MsgId.SDespawnObjects, ServerPacketHandler.S_DespawnObjectsHandler);		
 		_onRecv.Add((ushort)MsgId.SPossessObject, MakePacket<S_PossessObject>);
 		_handler.Add((ushort)MsgId.SPossessObject, ServerPacketHandler.S_PossessObjectHandler);		
 		_onRecv.Add((ushort)MsgId.SUnpossessObject, MakePacket<S_UnpossessObject>);
-		_handler.Add((ushort)MsgId.SUnpossessObject, ServerPacketHandler.S_UnpossessObjectHandler);
+		_handler.Add((ushort)MsgId.SUnpossessObject, ServerPacketHandler.S_UnpossessObjectHandler);		
+		_onRecv.Add((ushort)MsgId.SObjectSync, MakePacket<S_ObjectSync>);
+		_handler.Add((ushort)MsgId.SObjectSync, ServerPacketHandler.S_ObjectSyncHandler);
 	}
 
 	public void OnRecvPacket(ISession session, ArraySegment<byte> buffer)

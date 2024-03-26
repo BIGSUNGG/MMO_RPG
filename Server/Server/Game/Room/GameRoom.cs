@@ -48,18 +48,6 @@ namespace Server.Game
                 _gameSession.Send(enterPlayerPacket);
                 SendAll(enterPlayerPacket);
 
-                // 클라이언트 캐릭터 만들어서 패킷 보내기
-                // TODO : 게엄 서버와 다른 클라이언트에도 전송해야함
-                S_SpawnObject spawnPacket = new S_SpawnObject();
-                ObjectInfo info = new ObjectInfo();
-                info.ObjectId = 1;
-                info.ObjectType = GameObjectType.Character;
-                spawnPacket.SpawnInfo.Add(info);
-                session.Send(spawnPacket);
-
-                S_PossessObject posessPacket = new S_PossessObject();
-                posessPacket.ObjectId = info.ObjectId;
-                session.Send(posessPacket);
             }
         }   
 
@@ -69,6 +57,10 @@ namespace Server.Game
             {
                 ClientSession result;
                 _sessions.TryGetValue(id, out result);
+
+                if(result == null)
+                    Console.WriteLine($"Find Session Failed{id}");
+
                 return result;
             }
         }
@@ -109,13 +101,15 @@ namespace Server.Game
         // 이 Room에 있는 모든 클라이언트에게 패킷 전송
         public void SendAll(IMessage packet)
         {
-            lock (_lock)
-            {
-                foreach (var tuple in _sessions)
-                {
-                    tuple.Value.Send(packet);
-                }
-            }
+            string msgName = packet.Descriptor.Name.Replace("_", string.Empty);
+            MsgId msgId = (MsgId)Enum.Parse(typeof(MsgId), msgName);
+            ushort size = (ushort)packet.CalculateSize();
+            byte[] sendBuffer = new byte[size + 4];
+            Array.Copy(BitConverter.GetBytes((ushort)(size + 4)), 0, sendBuffer, 0, sizeof(ushort));
+            Array.Copy(BitConverter.GetBytes((ushort)msgId), 0, sendBuffer, 2, sizeof(ushort));
+            Array.Copy(packet.ToByteArray(), 0, sendBuffer, 4, size);
+
+            SendAll(sendBuffer);
         }
 
         public void SendAll(ArraySegment<byte> packet)

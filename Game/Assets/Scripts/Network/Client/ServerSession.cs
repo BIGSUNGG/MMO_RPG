@@ -32,6 +32,13 @@ public class ServerSession : PacketSession
 
 	public override void OnRecvPacket(ArraySegment<byte> buffer)
 	{
+        #if true // Log Packet Info
+        Debug.Log(
+            "Size : " + BitConverter.ToUInt16(buffer.Array, buffer.Offset ) +
+            ", MsgId : " + BitConverter.ToUInt16(buffer.Array, buffer.Offset + 2)
+            );
+        #endif
+
         ServerPacketManager.Instance.OnRecvPacket(this, buffer);
 	}
 

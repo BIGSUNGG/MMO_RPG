@@ -1,25 +1,61 @@
+using Google.Protobuf.Collections;
+using Google.Protobuf.Protocol;
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ObjectController : MonoBehaviour
+public class ObjectController : MonoBehaviour
 {
-    void Start()
+    public ObjectController()
     {
-        
+        ObjectType = GameObjectType.Character;
     }
 
-    private void Update()
+    protected virtual void Start()
+    {
+
+    }
+
+    protected virtual void Update()
     {
 
     }
 
     #region Object
     public int ObjectId { get; private set; }
+    public GameObjectType ObjectType { get; protected set; }
 
-    public virtual void Spawn(int id)
+    public virtual void Created(int id)
     {
         ObjectId = id;
+    }
+
+    #endregion
+
+    #region Sync
+    protected class ObjectSyncInfo
+    {
+    }
+
+    public virtual void ObjectSync(string infoJson)
+    {
+        ObjectSyncInfo info = JsonConvert.DeserializeObject<ObjectSyncInfo>(infoJson);
+        ObjectSync(info);
+    }
+
+    protected void ObjectSync(ObjectSyncInfo info)
+    {
+    }
+
+    public virtual string GetObjectSyncInfo()
+    {
+        ObjectSyncInfo info = new ObjectSyncInfo();
+        return JsonConvert.SerializeObject(info);
+    }
+
+    protected void GetObjectSyncInfo(ObjectSyncInfo info)
+    {
     }
     #endregion
 

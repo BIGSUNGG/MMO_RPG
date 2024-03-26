@@ -9,7 +9,9 @@ using Google.Protobuf;
 using Google.Protobuf.Protocol;
 
 public partial class NetworkManager
-{ 
+{
+    public bool IsServer { get { return false; } private set { } }
+
     public int AccountId { get; set; }
     public int Token { get; set; }
 
@@ -41,6 +43,7 @@ public partial class NetworkManager
 
     public void Update()
     {
+        // 서버 패킷 처리
         List<ServerPacketMessage> list = ServerPacketQueue.Instance.PopAll();
         foreach (ServerPacketMessage packet in list)
         {
@@ -48,6 +51,18 @@ public partial class NetworkManager
             if (handler != null)
                 handler.Invoke(_serverSession, packet.Message);
         }
+
+        //// 내 컨트롤러 정보 서버와 싱크맞추기
+        //PlayerController pc = Managers.Controller.MyController;
+        //if (pc)
+        //{
+	    //    C_ObjectSync syncPacket = new C_ObjectSync();
+	    //    syncPacket.SyncInfo.SyncInfoJson = pc.GetObjectSyncInfo();
+        //    syncPacket.SyncInfo.ObjectInfo.ObjectId = pc.ObjectId;
+        //    syncPacket.SyncInfo.ObjectInfo.ObjectType = pc.ObjectType;
+        //    Send(syncPacket);
+        //}
+        
     }
 }
 #endif
