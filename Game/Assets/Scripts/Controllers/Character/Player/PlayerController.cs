@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,7 @@ public class PlayerController : CharacterController
     }
 
     #region Sync
+    [Serializable]
     protected class PlayerSyncInfo : CharacterSyncInfo
     {
     }
@@ -25,7 +27,7 @@ public class PlayerController : CharacterController
         if (IsLocallyControlled())
             return;
 
-        PlayerSyncInfo info = JsonConvert.DeserializeObject<PlayerSyncInfo>(infoJson);
+        PlayerSyncInfo info = JsonUtility.FromJson<PlayerSyncInfo>(infoJson);
         ObjectSync(info);
     }
 
@@ -38,7 +40,7 @@ public class PlayerController : CharacterController
     {
         PlayerSyncInfo info = new PlayerSyncInfo();
         GetObjectSyncInfo(info);
-        return JsonConvert.SerializeObject(info);
+        return JsonUtility.ToJson(info);
     }
 
     protected void GetObjectSyncInfo(PlayerSyncInfo info)

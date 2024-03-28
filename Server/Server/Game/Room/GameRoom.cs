@@ -11,7 +11,7 @@ namespace Server.Game
 {
     public partial class GameRoom : JobSerializer
     {
-        public GameSession _gameSession { get; set; }
+        public GameSession RoomSession { get; set; }
         public Process Program { get; set; }
         public int MapId { get; set; }
 
@@ -42,10 +42,9 @@ namespace Server.Game
 
                 // 모든 클라이언트와 GameRoom에 플레이어 입장 알리기
                 S_EnterPlayer enterPlayerPacket = new S_EnterPlayer();
-                enterPlayerPacket.SessionId = session.SessionId;
                 enterPlayerPacket.AccountDbId = session.GameAccountDbId;
 
-                _gameSession.Send(enterPlayerPacket);
+                RoomSession.Send(enterPlayerPacket);
                 SendAll(enterPlayerPacket);
 
             }
@@ -75,11 +74,16 @@ namespace Server.Game
                 {
                     Console.WriteLine("LeaveRoom Succeed");
 
-                    // GameRoom과 클라이언트에게 맵 퇴장 알리기
-                    S_EnterMap enterMapPacket = new S_EnterMap();
-	                enterMapPacket.MapId = this.MapId;
-	                session.Send(enterMapPacket);
-                    SendAll(enterMapPacket);
+                    // 클라이언트에게 맵 퇴장 알리기
+                    S_LeaveMap leaveMapPacket = new S_LeaveMap();
+	                session.Send(leaveMapPacket);
+
+                    // GameRoom과 모든 클라이언트에게 플레이어의 맵 퇴장 알리기
+                    S_LeavePlayer leavePlayerPacket = new S_LeavePlayer();
+                    leavePlayerPacket.AccountDbId = session.GameAccountDbId;
+
+                    RoomSession.Send(leavePlayerPacket);
+                    SendAll(leavePlayerPacket);
 
                     return true;
                 }
@@ -87,7 +91,7 @@ namespace Server.Game
             }
         }
 
-        public void DoActionAlla(Func<ArraySegment<byte>> action)
+        public void DoActionAll(Func<ArraySegment<byte>> action)
         {
             lock(_lock)
             {

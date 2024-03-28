@@ -70,7 +70,6 @@ class ServerPacketHandler
 	{
 		S_SpawnObject recvPacket = packet as S_SpawnObject;
 
-        Debug.Log("H");
 		Managers.Object.Create(recvPacket.SpawnInfo);
 	}
 
@@ -78,7 +77,6 @@ class ServerPacketHandler
     {
         S_SpawnObjects recvPacket = packet as S_SpawnObjects;
 
-        Debug.Log("H1");
         Managers.Object.Create(recvPacket.SpawnInfos);
     }
 
@@ -99,7 +97,6 @@ class ServerPacketHandler
 	{
 		S_PossessObject recvPacket = packet as S_PossessObject;
 
-        Debug.Log("H2");
 		GameObject obj = Managers.Object.FindById(recvPacket.ObjectId);
 		Managers.Controller.Possess(obj);
 	}

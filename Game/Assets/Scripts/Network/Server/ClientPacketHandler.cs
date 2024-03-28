@@ -20,16 +20,23 @@ class ClientPacketHandler
     {
         ClientSession clientSession = session as ClientSession;
         if (clientSession == null)
+        {
+            Debug.Log("Client session is null");
             return;
+        }
 
         C_ObjectSync recvPacket = packet as C_ObjectSync;
         ObjectSyncInfo info = recvPacket.SyncInfo;
 
-        ObjectController controller = clientSession._playerController;
-        if (controller == null)
+        PlayerController pc = clientSession._playerController;
+        if (pc == null)
+        {
+            Debug.Log("Player controller is null");
             return;
+        }
 
-        controller.ObjectSync(info.SyncInfoJson);
+        Debug.Log($"{pc.ObjectId} ObjectSync");
+        pc.ObjectSync(info.SyncInfoJson);
     }
 
 }

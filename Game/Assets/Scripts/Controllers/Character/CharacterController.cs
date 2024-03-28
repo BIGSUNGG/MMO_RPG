@@ -1,5 +1,6 @@
 ﻿using Google.Protobuf.Protocol;
 using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,9 +26,11 @@ public class CharacterController : ObjectController
     protected override void Update()
     {
         base.Update();
+
     }
 
     #region Sync
+    [Serializable]
     protected class CharacterSyncInfo : ObjectSyncInfo
     {
         public Vector3 pos;
@@ -37,7 +40,7 @@ public class CharacterController : ObjectController
 
     public override void ObjectSync(string infoJson)
     {
-        CharacterSyncInfo info = JsonConvert.DeserializeObject<CharacterSyncInfo>(infoJson);
+        CharacterSyncInfo info = JsonUtility.FromJson<CharacterSyncInfo>(infoJson);
         ObjectSync(info);
     }
 
@@ -45,7 +48,9 @@ public class CharacterController : ObjectController
     {
         transform.position = info.pos;
         transform.eulerAngles = info.angle;
-        _movement._velocity = info.velocity;
+
+        if(_movement)
+            _movement._velocity = info.velocity;
 
         base.ObjectSync(info);
     }
@@ -53,11 +58,17 @@ public class CharacterController : ObjectController
     public override string GetObjectSyncInfo()
     {
         CharacterSyncInfo info = new CharacterSyncInfo();
-        return JsonConvert.SerializeObject(info);
+        return JsonUtility.ToJson(info);
     }
 
     protected void GetObjectSyncInfo(CharacterSyncInfo info)
     {
+        if (_movement == null)
+        {
+            Debug.Log("Movement Comp is null");
+            return;
+        }
+
         info.pos = transform.position;
         info.angle = transform.eulerAngles;
         info.velocity = _movement._velocity;

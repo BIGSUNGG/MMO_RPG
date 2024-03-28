@@ -49,21 +49,24 @@ namespace Server
 			{
 				_reserveQueue.Add(sendBuffer);
 				_reservedSendBytes += sendBuffer.Length;
-
-				Console.WriteLine
-				(
-                    "Send To Room : " + 
-                    "Id : " + Id +
-                    ", Packet Size : " + (ushort)(size) +
-                    ", All Size : " + (ushort)(size + 8) +
-                    ", MsgId : " + (ushort)msgId
-                );
+                #if false
+                {
+			        Console.WriteLine
+				    	(
+	                        "Send To Room : " + 
+	                        "Id : " + Id +
+	                        ", Packet Size : " + (ushort)(size) +
+	                        ", All Size : " + (ushort)(size + 8) +
+	                        ", MsgId : " + (ushort)msgId
+	                    );
+		        }
+                #endif
 			}
 		}
 
 		public void Send(ClientSession session, IMessage packet)
 		{
-			Send(session.SessionId, packet);
+			Send(session.GameAccountDbId, packet);
 		}
 
 		// Send server packet 
@@ -106,14 +109,14 @@ namespace Server
             ushort size = BitConverter.ToUInt16(buffer.Array, buffer.Offset + 4);
             ushort msg = BitConverter.ToUInt16(buffer.Array, buffer.Offset + 6);
 
-            #if true // Log Packet Info
+#if false // Log Packet Info
             Console.WriteLine(
                 "Recieve From Room: " + 
                 "Id : " +  id +
                 ", Size : " + size +
                 ", MsgId : " + msg 
                 );
-            #endif
+#endif
 
             int sessionId = BitConverter.ToInt32(buffer.Array, buffer.Offset);
             ArraySegment<byte> recvBuffer = new ArraySegment<byte>(buffer.Array, buffer.Offset + 4, buffer.Count - 4);
@@ -128,7 +131,7 @@ namespace Server
             }
             else if(sessionId == -1) // 모든 클라이언트로 보낼 패킷을 받았을 경우
             {
-                Console.WriteLine("Send All");
+                //Console.WriteLine("Send All");
 
                 byte[] sendBuffer = new byte[recvBuffSize];
                 for (int i = 0; i < recvBuffSize; i++)
@@ -144,7 +147,7 @@ namespace Server
 
                 if (session != null) // 세션을 찾았는지
                 {
-                    Console.WriteLine($"Send to {sessionId} session");
+                    //Console.WriteLine($"Send to {sessionId} session");
 
                     byte[] sendBuffer = new byte[recvBuffSize];
                     for (int i = 0; i < recvBuffSize; i++)
@@ -169,6 +172,6 @@ namespace Server
 		{
 			//Console.WriteLine($"Transferred bytes: {numOfBytes}");
 		}
-		#endregion
+#endregion
 	}
 }

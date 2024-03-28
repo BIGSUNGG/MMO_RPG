@@ -98,8 +98,7 @@ message S_EnterMap {
 
 // S_ENTER_PLAYER
 message S_EnterPlayer{
-	int32 sessionId = 1;
-	int32 accountDbId = 2;
+	int32 accountDbId = 1;
 }
 
 // S_LEAVE_MAP
@@ -108,8 +107,7 @@ message S_LeaveMap{
 
 // S_LEAVE_PLAYER
 message S_LeavePlayer{
-	int32 sessionId = 1;
-	int32 accountDbId = 2;
+	int32 accountDbId = 1;
 }
 
 // S_SPAWN_OBJECT

@@ -39,20 +39,45 @@ class ServerPacketHandler
     {
         S_EnterPlayer recvPacket = packet as S_EnterPlayer;
 
-        ClientSession clientSession = Managers.Network.CreateClienSession(recvPacket.SessionId, recvPacket.AccountDbId);
+        ClientSession clientSession = Managers.Network.CreateClienSession(recvPacket.AccountDbId);
+
+        // 현재 맵에 있는 모든 오브젝트 클라이언트에게 전송
+        {
+            S_SpawnObjects objectSpawnInfosPacket = new S_SpawnObjects();
+            foreach (var tuple in Managers.Object._objects)
+            {
+                GameObject go = tuple.Value;
+                if (go == null)
+                    continue;
+
+                ObjectController oc = go.GetComponent<ObjectController>();
+                if (oc == null)
+                    continue;
+
+                ObjectInfo info = new ObjectInfo();
+                {
+                    info.ObjectId = oc.ObjectId;
+                    info.ObjectType = oc.ObjectType;
+                }
+                objectSpawnInfosPacket.SpawnInfos.Add(info);
+                Managers.Network.SendMulticast(objectSpawnInfosPacket);
+
+            }
+        }
 
         // 접속한 플레이어가 빙의할 오브젝트 만들기
-        ObjectInfo info = new ObjectInfo();
-        info.ObjectType = GameObjectType.Character;
-        GameObject go = Managers.Object.Create(info);
+        {
+	        ObjectInfo info = new ObjectInfo();
+	        info.ObjectType = GameObjectType.Character;
+	        GameObject go = Managers.Object.Create(info);
 
-        PlayerController pc = go.GetComponent<PlayerController>();
-        if (pc == null)
-            return;
-        
-        // 만든 오브젝트에 플레이어 빙의시키기
-        clientSession.Possess(pc);
+            PlayerController pc = go.GetComponent<PlayerController>();
+            if (pc == null)
+                return;
 
+            // 만든 오브젝트에 플레이어 빙의시키기
+            clientSession.Possess(pc);
+        }
     }
 
     public static void S_LeaveMapHandler(ISession session, IMessage packet)
@@ -66,7 +91,7 @@ class ServerPacketHandler
     {
         S_LeavePlayer recvPacket = packet as S_LeavePlayer;
 
-        Managers.Network.DeleteClientSession(recvPacket.SessionId);
+        Managers.Network.DeleteClientSession(recvPacket.AccountDbId);
     }
 
 

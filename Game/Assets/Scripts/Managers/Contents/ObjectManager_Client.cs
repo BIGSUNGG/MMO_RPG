@@ -46,6 +46,12 @@ public partial class ObjectManager
 
     private GameObject Create(int id, GameObjectType type)
     {
+        if(_objects.ContainsKey(id))
+        {
+            Debug.Log($"Try create object but object Id {id} is already exist");
+            return null;
+        }
+
         GameObject gameObject = _spawner[(int)type].Invoke();
 
         ObjectController controller = gameObject.GetComponent<ObjectController>();

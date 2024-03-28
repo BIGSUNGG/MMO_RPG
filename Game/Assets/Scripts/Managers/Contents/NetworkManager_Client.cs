@@ -41,6 +41,7 @@ public partial class NetworkManager
             1);
     }
 
+    float _syncRepeatTime = 0.0f;
     public void Update()
     {
         // 서버 패킷 처리
@@ -52,16 +53,25 @@ public partial class NetworkManager
                 handler.Invoke(_serverSession, packet.Message);
         }
 
-        //// 내 컨트롤러 정보 서버와 싱크맞추기
-        //PlayerController pc = Managers.Controller.MyController;
-        //if (pc)
-        //{
-	    //    C_ObjectSync syncPacket = new C_ObjectSync();
-	    //    syncPacket.SyncInfo.SyncInfoJson = pc.GetObjectSyncInfo();
-        //    syncPacket.SyncInfo.ObjectInfo.ObjectId = pc.ObjectId;
-        //    syncPacket.SyncInfo.ObjectInfo.ObjectType = pc.ObjectType;
-        //    Send(syncPacket);
-        //}
+        // 내 컨트롤러 정보 서버와 싱크맞추기
+        PlayerController pc = Managers.Controller.MyController;
+        if (pc)
+        {
+            _syncRepeatTime += Time.deltaTime;
+            if (_syncRepeatTime > 0.05f)
+            {
+                _syncRepeatTime = 0.0f;
+
+                C_ObjectSync syncPacket = new C_ObjectSync();
+                syncPacket.SyncInfo = new ObjectSyncInfo();
+                syncPacket.SyncInfo.ObjectInfo = new ObjectInfo();
+
+                syncPacket.SyncInfo.SyncInfoJson = pc.GetObjectSyncInfo();
+                syncPacket.SyncInfo.ObjectInfo.ObjectId = pc.ObjectId;
+                syncPacket.SyncInfo.ObjectInfo.ObjectType = pc.ObjectType;
+                Send(syncPacket);
+            }
+        }
         
     }
 }

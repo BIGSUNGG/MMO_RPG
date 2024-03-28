@@ -32,7 +32,9 @@ partial class ClientPacketHandler
     {
         C_ObjectSync recvPacket = packet as C_ObjectSync;
 		ClientSession clientSession = session as ClientSession;
-        clientSession.MyRoom._gameSession.Send(packet);
+
+        GameRoom room = clientSession.MyRoom;
+        room.Push(() => { room.RoomSession.Send(clientSession, packet); });
 
     }
 }
