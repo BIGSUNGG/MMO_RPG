@@ -36,6 +36,7 @@ enum MsgId {
 	// Sync
 	S_OBJECT_SYNC = 15;
 	C_OBJECT_SYNC = 16;
+	S_REQEUST_OBJECT_SYNC = 17;
 
 }
 
@@ -147,4 +148,8 @@ message S_ObjectSync{
 // C_OBJECT_SYNC
 message C_ObjectSync{
 	ObjectSyncInfo SyncInfo = 1;
+}
+
+// S_REQEUST_OBJECT_SYNC
+message S_ReqeustObjectSync{
 }

@@ -7,7 +7,7 @@ public partial class StartScene
 {
     protected override void Init()
     {
-        Application.targetFrameRate = 30;
+        Application.targetFrameRate = 300;
         Managers.Network.ConnectToServer();
     }
 

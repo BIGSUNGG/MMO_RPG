@@ -34,6 +34,11 @@ class ClientPacketHandler
             Debug.Log("Player controller is null");
             return;
         }
+        else if(pc.ObjectId != recvPacket.SyncInfo.ObjectInfo.ObjectId)
+        {
+            Debug.Log("Player controller id is not sync info's id");
+            return;
+        }
 
         Debug.Log($"{pc.ObjectId} ObjectSync");
         pc.ObjectSync(info.SyncInfoJson);

@@ -3,7 +3,9 @@ using Google.Protobuf.Protocol;
 using ServerCore;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using UnityEngine;
+using IMessage = Google.Protobuf.IMessage;
 
 #if !UNITY_SERVER
 class ServerPacketHandler
@@ -73,27 +75,27 @@ class ServerPacketHandler
 		Managers.Object.Create(recvPacket.SpawnInfo);
 	}
 
-    public static void S_SpawnObjectsHandler(ISession session, IMessage packet)
-    {
-        S_SpawnObjects recvPacket = packet as S_SpawnObjects;
+	public static void S_SpawnObjectsHandler(ISession session, IMessage packet)
+	{
+		S_SpawnObjects recvPacket = packet as S_SpawnObjects;
 
-        Managers.Object.Create(recvPacket.SpawnInfos);
-    }
+		Managers.Object.Create(recvPacket.SpawnInfos);
+	}
 
-    public static void S_DespawnObjectHandler(ISession session, IMessage packet)
+	public static void S_DespawnObjectHandler(ISession session, IMessage packet)
 	{
 		S_DespawnObject recvPacket = packet as S_DespawnObject;   
-        
+		
 		Managers.Object.Delete(recvPacket.ObjectId);
 	}
 
-    public static void S_DespawnObjectsHandler(ISession session, IMessage packet)
-    {
-        S_DespawnObjects recvPacket = packet as S_DespawnObjects;
-        Managers.Object.Delete(recvPacket.ObjectIds);
-    }
+	public static void S_DespawnObjectsHandler(ISession session, IMessage packet)
+	{
+		S_DespawnObjects recvPacket = packet as S_DespawnObjects;
+		Managers.Object.Delete(recvPacket.ObjectIds);
+	}
 
-    public static void S_PossessObjectHandler(ISession session, IMessage packet)
+	public static void S_PossessObjectHandler(ISession session, IMessage packet)
 	{
 		S_PossessObject recvPacket = packet as S_PossessObject;
 
@@ -123,6 +125,24 @@ class ServerPacketHandler
 
 			controller.ObjectSync(info.SyncInfoJson);
 		}
+	}
+
+	public static void S_ReqeustObjectSyncHandler(ISession session, IMessage packet)
+	{
+		S_ReqeustObjectSync recvPacket = packet as S_ReqeustObjectSync;
+
+        PlayerController pc = Managers.Controller.MyController;
+        if (pc == null)
+            return;
+
+		C_ObjectSync syncPacket = new C_ObjectSync();
+		syncPacket.SyncInfo = new ObjectSyncInfo();
+		syncPacket.SyncInfo.ObjectInfo = new ObjectInfo();
+
+		syncPacket.SyncInfo.SyncInfoJson = pc.GetObjectSyncInfo();
+		syncPacket.SyncInfo.ObjectInfo.ObjectId = pc.ObjectId;
+		syncPacket.SyncInfo.ObjectInfo.ObjectType = pc.ObjectType;
+		Managers.Network.Send(syncPacket);
 	}
 }
 

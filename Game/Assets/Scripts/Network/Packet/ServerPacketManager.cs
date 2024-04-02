@@ -50,7 +50,9 @@ class ServerPacketManager
 		_onRecv.Add((ushort)MsgId.SUnpossessObject, MakePacket<S_UnpossessObject>);
 		_handler.Add((ushort)MsgId.SUnpossessObject, ServerPacketHandler.S_UnpossessObjectHandler);		
 		_onRecv.Add((ushort)MsgId.SObjectSync, MakePacket<S_ObjectSync>);
-		_handler.Add((ushort)MsgId.SObjectSync, ServerPacketHandler.S_ObjectSyncHandler);
+		_handler.Add((ushort)MsgId.SObjectSync, ServerPacketHandler.S_ObjectSyncHandler);		
+		_onRecv.Add((ushort)MsgId.SReqeustObjectSync, MakePacket<S_ReqeustObjectSync>);
+		_handler.Add((ushort)MsgId.SReqeustObjectSync, ServerPacketHandler.S_ReqeustObjectSyncHandler);
 	}
 
 	public void OnRecvPacket(ISession session, ArraySegment<byte> buffer)

@@ -19,7 +19,6 @@ public partial class NetworkManager
 	{
     }
 
-    float _syncRepeatTime = 0.0f;
     public virtual void Update()
     {
         // 서버 패킷 처리
@@ -43,34 +42,31 @@ public partial class NetworkManager
 
         if (_clientSessions.Count > 0)
         {
-	        _syncRepeatTime += Time.deltaTime;
-	        if (_syncRepeatTime > 0.05f)
-	        {
-	            _syncRepeatTime = 0.0f;
-	
-		        // 오브젝트 정보 클라이언트와 싱크맞추기
-		        S_ObjectSync syncPacket = new S_ObjectSync();
-		        foreach (var tuple in Managers.Object._objects)
-		        {
-		            GameObject go = tuple.Value;
-		            if (go == null)
-		                continue;
-		        
-		            ObjectController oc = go.GetComponent<ObjectController>();
-		            if (oc == null)
-		                continue;
-		        
-		            ObjectSyncInfo info = new ObjectSyncInfo();
-		            info.ObjectInfo = new ObjectInfo();
-		
-		            info.SyncInfoJson = oc.GetObjectSyncInfo();
-		            info.ObjectInfo.ObjectId = oc.ObjectId;
-		            info.ObjectInfo.ObjectType = oc.ObjectType;
-		            syncPacket.SyncInfos.Add(info);
-		        }
-		        
-		        SendMulticast(syncPacket);
-	        }
+            S_ReqeustObjectSync requestPacket = new S_ReqeustObjectSync();
+            SendMulticast(requestPacket);
+
+            // 오브젝트 정보 클라이언트와 싱크맞추기
+            S_ObjectSync syncPacket = new S_ObjectSync();
+            foreach (var tuple in Managers.Object._objects)
+            {
+                GameObject go = tuple.Value;
+                if (go == null)
+                    continue;
+
+                ObjectController oc = go.GetComponent<ObjectController>();
+                if (oc == null)
+                    continue;
+
+                ObjectSyncInfo info = new ObjectSyncInfo();
+                info.ObjectInfo = new ObjectInfo();
+
+                info.SyncInfoJson = oc.GetObjectSyncInfo();
+                info.ObjectInfo.ObjectId = oc.ObjectId;
+                info.ObjectInfo.ObjectType = oc.ObjectType;
+                syncPacket.SyncInfos.Add(info);
+            }
+
+            SendMulticast(syncPacket);
         }
     }
 

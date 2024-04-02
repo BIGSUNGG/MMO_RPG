@@ -34,8 +34,7 @@ public class CharacterController : ObjectController
     protected class CharacterSyncInfo : ObjectSyncInfo
     {
         public Vector3 pos;
-        public Vector3 angle;
-        public Vector3 velocity;
+        public Vector3 rot;
     }
 
     public override void ObjectSync(string infoJson)
@@ -46,11 +45,13 @@ public class CharacterController : ObjectController
 
     protected void ObjectSync(CharacterSyncInfo info)
     {
-        transform.position = info.pos;
-        transform.eulerAngles = info.angle;
+        if (info == null)
+            return;
 
         if(_movement)
-            _movement._velocity = info.velocity;
+        {
+            _movement.Sync(info.pos, info.rot);
+        }
 
         base.ObjectSync(info);
     }
@@ -70,8 +71,7 @@ public class CharacterController : ObjectController
         }
 
         info.pos = transform.position;
-        info.angle = transform.eulerAngles;
-        info.velocity = _movement._velocity;
+        info.rot = transform.eulerAngles;
 
         base.GetObjectSyncInfo(info);
     }

@@ -140,5 +140,12 @@ class ServerPacketHandler
         S_ObjectSync recvPacket = packet as S_ObjectSync;
 
     }
+
+    public static void S_ReqeustObjectSyncHandler(ISession session, IMessage packet)
+    {
+        S_ReqeustObjectSync recvPacket = packet as S_ReqeustObjectSync;
+
+    }
+    
 }
 #endif
