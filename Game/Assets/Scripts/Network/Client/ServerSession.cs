@@ -28,6 +28,11 @@ public class ServerSession : PacketSession
 	public override void OnDisconnected(EndPoint endPoint)
 	{
 		Debug.Log($"OnDisconnected : {endPoint}");
+
+        Managers.Timer.SetTimerNextTick(() => 
+        {
+            Managers.Map.LoadMap("Scenes/Start.unity");
+        });    
 	}
 
 	public override void OnRecvPacket(ArraySegment<byte> buffer)

@@ -37,7 +37,6 @@ public class MovementComponent : MonoBehaviour
         {
             _curSyncLerpTime += Time.deltaTime;
 
-            Debug.Log(_curSyncLerpTime * _syncLerpMultiply);
             transform.position = Vector3.Lerp(_syncStartPos, _syncEndPos, (_curSyncLerpTime * _syncLerpMultiply));
             transform.eulerAngles = Vector3.Lerp(_syncStartRot, _syncEndRot, (_curSyncLerpTime * _syncLerpMultiply));
         }

@@ -65,8 +65,7 @@ namespace Server
                 if (session != null && session.LoginState == PlayerLoginState.LoggedIn) // 찾은 계정이 다른 클라이언트에서 이미 플레이 중이라면
                 {
                     Console.WriteLine("Already playing this account");
-                    LoginFail();
-                    return;
+                    session.Disconnect(); // 이미 연결중인 클라이언트 연결해제
                 }
             }
 
@@ -114,8 +113,13 @@ namespace Server
             LoginState = PlayerLoginState.NotLoggedIn;
 
             // 계정 제거하기
-            if(LoginState == PlayerLoginState.LoggedIn)
-                GameAccountManager.Instance.Remove(GameAccountDbId);
+            if(LoginState == PlayerLoginState.LoggedIn) // 이미 로그인 중이라면
+            {
+                GameAccountManager.Instance.Remove(GameAccountDbId);                
+            }
+
+            if (MyRoom != null)
+                MyRoom.LeaveRoom(this);
 
             GameLogic.Instance.Push(LeaveRoom);
         }

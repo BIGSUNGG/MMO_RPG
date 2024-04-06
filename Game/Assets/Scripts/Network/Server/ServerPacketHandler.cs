@@ -91,6 +91,14 @@ class ServerPacketHandler
     {
         S_LeavePlayer recvPacket = packet as S_LeavePlayer;
 
+        // 룸에서 나간 플레이어의 클라이언트 세션 찾기
+        ClientSession clientSession = Managers.Network.FindClientSession(recvPacket.AccountDbId);
+        if(clientSession == null)
+            return;
+      
+        // 나간 클라이언트 세션의 오브젝트 제거
+        Managers.Object.Delete(clientSession._playerController.ObjectId);
+        // 룸에 있는 클라이언트 세션에서 나간 세션 제거
         Managers.Network.DeleteClientSession(recvPacket.AccountDbId);
     }
 

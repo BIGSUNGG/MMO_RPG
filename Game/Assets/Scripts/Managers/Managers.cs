@@ -13,12 +13,14 @@ public class Managers : MonoBehaviour
     ObjectManager _obj = new ObjectManager();
     NetworkManager _network = new NetworkManager();
     WebManager _web = new WebManager();
+    TimerManager _timer = new TimerManager();
 
     public static ControllerManager Controller { get { return Instance._controller; } }
     public static MapManager Map { get { return Instance._map; } }
     public static ObjectManager Object { get { return Instance._obj; } }
     public static NetworkManager Network { get { return Instance._network; } }
     public static WebManager Web { get { return Instance._web; } }
+    public static TimerManager Timer { get { return Instance._timer; } }
     #endregion
 
     #region Core
@@ -51,6 +53,7 @@ public class Managers : MonoBehaviour
 
     void Update()
     {
+        _timer.Update();
         _controller.Update();
         _network.Update();
     }
