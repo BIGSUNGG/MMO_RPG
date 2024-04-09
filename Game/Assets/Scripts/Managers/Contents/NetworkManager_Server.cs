@@ -60,7 +60,7 @@ public partial class NetworkManager
                 ObjectSyncInfo info = new ObjectSyncInfo();
                 info.ObjectInfo = new ObjectInfo();
 
-                info.SyncInfoJson = oc.GetObjectSyncInfo();
+                info.SyncInfo = oc.GetObjectSyncInfo();
                 info.ObjectInfo.ObjectId = oc.ObjectId;
                 info.ObjectInfo.ObjectType = oc.ObjectType;
                 syncPacket.SyncInfos.Add(info);

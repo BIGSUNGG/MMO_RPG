@@ -40,8 +40,7 @@ class ClientPacketHandler
             return;
         }
 
-        Debug.Log($"{pc.ObjectId} ObjectSync");
-        pc.ObjectSync(info.SyncInfoJson);
+        pc.ObjectSync(info.SyncInfo);
     }
 
 }

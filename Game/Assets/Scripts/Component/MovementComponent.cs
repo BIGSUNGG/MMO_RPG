@@ -16,24 +16,24 @@ public class MovementComponent : MonoBehaviour
             Debug.Assert(false);
         }
 
-        _rigidbody = gameObject.GetComponent<Rigidbody>();
-        if(_rigidbody == null)
-        {
-            Debug.Log("Failed to find Rigidbody");
-            _rigidbody = gameObject.AddComponent<Rigidbody>();
-        }
+        _rigidbody = Util.GetOrAddComponent<Rigidbody>(gameObject);
     }
 
     void Update()
     {
-        _moveDir.Normalize();
+        if(Managers.Network.IsServer) // 서버인 경우
+        {
+        }
+        else if (_owner.IsLocallyControlled()) // 클라이언트가 빙의한 오브젝트인 경우
+        {
+            _moveDir.Normalize();
 
-        Vector3 velocity = new Vector3(_moveDir.x * _walkMaxSpeed, 0.0f, _moveDir.y * _walkMaxSpeed) * Time.deltaTime;
-        gameObject.transform.Translate(velocity);
+            Vector3 velocity = new Vector3(_moveDir.x * _walkMaxSpeed, 0.0f, _moveDir.y * _walkMaxSpeed) * Time.deltaTime;
+            gameObject.transform.Translate(velocity);
 
-        _moveDir = new Vector2(0, 0);
-
-        if(Managers.Network.IsServer == false && _owner.IsLocallyControlled() == false && _bSync)
+            _moveDir = new Vector2(0, 0);
+        }
+        else // 클라이언트가 빙의하지않은 오브젝트인 경우
         {
             _curSyncLerpTime += Time.deltaTime;
 

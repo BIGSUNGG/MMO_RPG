@@ -1,8 +1,10 @@
-﻿using Google.Protobuf.Protocol;
+﻿using Google.Protobuf;
+using Google.Protobuf.Protocol;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class CharacterController : ObjectController
@@ -30,16 +32,19 @@ public class CharacterController : ObjectController
     }
 
     #region Sync
-    [Serializable]
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
     protected class CharacterSyncInfo : ObjectSyncInfo
     {
         public Vector3 pos;
         public Vector3 rot;
     }
 
-    public override void ObjectSync(string infoJson)
+    public override void ObjectSync(ByteString syncInfo)
     {
-        CharacterSyncInfo info = JsonUtility.FromJson<CharacterSyncInfo>(infoJson);
+        if (IsLocallyControlled())
+            return;
+
+        CharacterSyncInfo info = Util.BytesToObject<CharacterSyncInfo>(syncInfo.ToByteArray());
         ObjectSync(info);
     }
 
@@ -56,10 +61,11 @@ public class CharacterController : ObjectController
         base.ObjectSync(info);
     }
 
-    public override string GetObjectSyncInfo()
+    public override ByteString GetObjectSyncInfo()
     {
         CharacterSyncInfo info = new CharacterSyncInfo();
-        return JsonUtility.ToJson(info);
+        GetObjectSyncInfo(info);
+        return ByteString.CopyFrom(Util.ObjectToBytes<CharacterSyncInfo>(info));
     }
 
     protected void GetObjectSyncInfo(CharacterSyncInfo info)

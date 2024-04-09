@@ -1,7 +1,9 @@
+using Google.Protobuf;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class PlayerController : CharacterController
@@ -17,17 +19,17 @@ public class PlayerController : CharacterController
     }
 
     #region Sync
-    [Serializable]
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
     protected class PlayerSyncInfo : CharacterSyncInfo
     {
     }
 
-    public override void ObjectSync(string infoJson)
+    public override void ObjectSync(ByteString syncInfo)
     {
         if (IsLocallyControlled())
             return;
 
-        PlayerSyncInfo info = JsonUtility.FromJson<PlayerSyncInfo>(infoJson);
+        PlayerSyncInfo info = Util.BytesToObject<PlayerSyncInfo>(syncInfo.ToByteArray());
         ObjectSync(info);
     }
 
@@ -36,11 +38,11 @@ public class PlayerController : CharacterController
         base.ObjectSync(info);
     }
 
-    public override string GetObjectSyncInfo()
+    public override ByteString GetObjectSyncInfo()
     {
         PlayerSyncInfo info = new PlayerSyncInfo();
         GetObjectSyncInfo(info);
-        return JsonUtility.ToJson(info);
+        return ByteString.CopyFrom(Util.ObjectToBytes<PlayerSyncInfo>(info));
     }
 
     protected void GetObjectSyncInfo(PlayerSyncInfo info)

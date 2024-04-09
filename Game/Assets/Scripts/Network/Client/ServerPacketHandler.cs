@@ -123,7 +123,7 @@ class ServerPacketHandler
 			if (controller == null)
 				return;
 
-			controller.ObjectSync(info.SyncInfoJson);
+			controller.ObjectSync(info.SyncInfo);
 		}
 	}
 
@@ -139,7 +139,7 @@ class ServerPacketHandler
 		syncPacket.SyncInfo = new ObjectSyncInfo();
 		syncPacket.SyncInfo.ObjectInfo = new ObjectInfo();
 
-		syncPacket.SyncInfo.SyncInfoJson = pc.GetObjectSyncInfo();
+		syncPacket.SyncInfo.SyncInfo = pc.GetObjectSyncInfo();
 		syncPacket.SyncInfo.ObjectInfo.ObjectId = pc.ObjectId;
 		syncPacket.SyncInfo.ObjectInfo.ObjectType = pc.ObjectType;
 		Managers.Network.Send(syncPacket);

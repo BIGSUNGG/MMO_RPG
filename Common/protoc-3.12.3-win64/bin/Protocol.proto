@@ -64,7 +64,7 @@ message ObjectInfo {
 
 message ObjectSyncInfo {
 	ObjectInfo ObjectInfo = 1;
-	string SyncInfoJson = 2;
+	bytes SyncInfo = 2;
 }
 
 // Packets

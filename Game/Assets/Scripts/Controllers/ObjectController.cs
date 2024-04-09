@@ -1,9 +1,11 @@
+using Google.Protobuf;
 using Google.Protobuf.Collections;
 using Google.Protobuf.Protocol;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class ObjectController : MonoBehaviour
@@ -35,14 +37,17 @@ public class ObjectController : MonoBehaviour
     #endregion
 
     #region Sync
-    [Serializable]
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
     protected class ObjectSyncInfo
     {
     }
 
-    public virtual void ObjectSync(string infoJson)
+    public virtual void ObjectSync(ByteString syncInfo)
     {
-        ObjectSyncInfo info = JsonUtility.FromJson<ObjectSyncInfo>(infoJson);
+        if (IsLocallyControlled())
+            return;
+
+        ObjectSyncInfo info = Util.BytesToObject<ObjectSyncInfo>(syncInfo.ToByteArray());
         ObjectSync(info);
     }
 
@@ -50,10 +55,11 @@ public class ObjectController : MonoBehaviour
     {
     }
 
-    public virtual string GetObjectSyncInfo()
+    public virtual ByteString GetObjectSyncInfo()
     {
         ObjectSyncInfo info = new ObjectSyncInfo();
-        return JsonUtility.ToJson(info);
+        GetObjectSyncInfo(info);
+        return ByteString.CopyFrom(Util.ObjectToBytes<ObjectSyncInfo>(info));
     }
 
     protected void GetObjectSyncInfo(ObjectSyncInfo info)
