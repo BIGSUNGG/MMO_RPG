@@ -31,12 +31,26 @@ public class CharacterController : ObjectController
 
     }
 
+    #region Controller
+    public override void ControllerUpdate()
+    {
+        base.ControllerUpdate();
+
+    }
+
+    public override void OnPossess()
+    {
+        base.OnPossess();
+
+    }
+    #endregion
+
     #region Sync
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     protected class CharacterSyncInfo : ObjectSyncInfo
     {
-        public Vector3 pos;
-        public Vector3 rot;
+        public Vector3 position;
+        public Vector3 angle;
     }
 
     public override void ObjectSync(ByteString syncInfo)
@@ -55,7 +69,7 @@ public class CharacterController : ObjectController
 
         if(_movement)
         {
-            _movement.Sync(info.pos, info.rot);
+            _movement.Sync(info.position, info.angle);
         }
 
         base.ObjectSync(info);
@@ -71,29 +85,12 @@ public class CharacterController : ObjectController
     protected void GetObjectSyncInfo(CharacterSyncInfo info)
     {
         if (_movement == null)
-        {
-            Debug.Log("Movement Comp is null");
             return;
-        }
 
-        info.pos = transform.position;
-        info.rot = transform.eulerAngles;
+        info.position = transform.position;
+        info.angle = transform.eulerAngles;
 
         base.GetObjectSyncInfo(info);
-    }
-    #endregion
-
-    #region Controller
-    public override void ControllerUpdate()
-    {
-        base.ControllerUpdate();
-
-    }
-
-    public override void OnPossess()
-    {
-        base.OnPossess();
-
     }
     #endregion
 }

@@ -36,6 +36,30 @@ public class ObjectController : MonoBehaviour
 
     #endregion
 
+    #region Controller
+    // 플레이어가 빙의하고 있다면 매 틱마다 호출
+    public virtual void ControllerUpdate()
+    {
+
+    }
+
+    public virtual void OnPossess()
+    {
+
+    }
+
+    public virtual void OnUnpossess()
+    {
+
+    }
+
+    // return : 플레이어가 빙의하고 있는지
+    public virtual bool IsLocallyControlled()
+    {
+        return this == Managers.Controller.MyController;
+    }
+    #endregion
+
     #region Sync
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     protected class ObjectSyncInfo
@@ -64,30 +88,6 @@ public class ObjectController : MonoBehaviour
 
     protected void GetObjectSyncInfo(ObjectSyncInfo info)
     {
-    }
-    #endregion
-
-    #region Controller
-    // 플레이어가 빙의하고 있다면 매 틱마다 호출
-    public virtual void ControllerUpdate()
-    {
-
-    }
-
-    public virtual void OnPossess()
-    {
-
-    }
-
-    public virtual void OnUnpossess()
-    {
-
-    }
-
-    // return : 플레이어가 빙의하고 있는지
-    public virtual bool IsLocallyControlled()
-    {
-        return this == Managers.Controller.MyController;
     }
     #endregion
 
