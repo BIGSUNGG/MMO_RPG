@@ -11,8 +11,9 @@ using static System.Collections.Specialized.BitVector32;
 #if UNITY_SERVER
 public partial class NetworkManager
 {
-	public int GameSessionId;
+    public bool IsServer { get { return true; } private set { } }
 
+	public int GameSessionId;
 
     public NetworkManager()
 	{
@@ -20,6 +21,7 @@ public partial class NetworkManager
 
     public virtual void Update()
     {
+        // 서버 패킷 처리
         List<ServerPacketMessage> serverList = ServerPacketQueue.Instance.PopAll();
         foreach (ServerPacketMessage packet in serverList)
         {
@@ -28,12 +30,43 @@ public partial class NetworkManager
                 handler.Invoke(_serverSession, packet.Message);
         }
 
+        // 클라이언트 패킷 처리
         List<ClientPacketMessage> clientList = ClientPacketQueue.Instance.PopAll();
         foreach (ClientPacketMessage packet in clientList)
         {
             Action<ISession, IMessage> handler = ClientPacketManager.Instance.GetPacketHandler(packet.Id);
             if (handler != null)
-                handler.Invoke(_serverSession, packet.Message);
+                handler.Invoke(packet.Session, packet.Message);
+        }
+
+
+        if (_clientSessions.Count > 0)
+        {
+            S_ReqeustObjectSync requestPacket = new S_ReqeustObjectSync();
+            SendMulticast(requestPacket);
+
+            // 오브젝트 정보 클라이언트와 싱크맞추기
+            S_ObjectSync syncPacket = new S_ObjectSync();
+            foreach (var tuple in Managers.Object._objects)
+            {
+                GameObject go = tuple.Value;
+                if (go == null)
+                    continue;
+
+                ObjectController oc = go.GetComponent<ObjectController>();
+                if (oc == null)
+                    continue;
+
+                ObjectSyncInfo info = new ObjectSyncInfo();
+                info.ObjectInfo = new ObjectInfo();
+
+                info.SyncInfo = oc.GetObjectSyncInfo();
+                info.ObjectInfo.ObjectId = oc.ObjectId;
+                info.ObjectInfo.ObjectType = oc.ObjectType;
+                syncPacket.SyncInfos.Add(info);
+            }
+
+            SendMulticast(syncPacket);
         }
     }
 
@@ -65,14 +98,23 @@ public partial class NetworkManager
 		string msgName = packet.Descriptor.Name.Replace("_", string.Empty);
 		MsgId msgId = (MsgId)Enum.Parse(typeof(MsgId), msgName);
 		ushort size = (ushort)packet.CalculateSize();
-		byte[] sendBuffer = new byte[size + 8];
-		Array.Copy(BitConverter.GetBytes((int)(sessionId)), 0, sendBuffer, 0, sizeof(int));
-		Array.Copy(BitConverter.GetBytes((ushort)(size + 4)), 0, sendBuffer, 4, sizeof(ushort));
-		Array.Copy(BitConverter.GetBytes((ushort)msgId), 0, sendBuffer, 6, sizeof(ushort));
-		Array.Copy(packet.ToByteArray(), 0, sendBuffer, 8, size);
+        byte[] sendBuffer = new byte[size + 8];
+        Array.Copy(BitConverter.GetBytes((int)(sessionId)), 0, sendBuffer, 0, sizeof(int));
+        Array.Copy(BitConverter.GetBytes((ushort)(size + 8)), 0, sendBuffer, 4, sizeof(ushort));
+        Array.Copy(BitConverter.GetBytes((ushort)msgId), 0, sendBuffer, 6, sizeof(ushort));
+        Array.Copy(packet.ToByteArray(), 0, sendBuffer, 8, size);
 
         // 서버로 패킷 전송
         _serverSession.Send(new ArraySegment<byte>(sendBuffer));
+
+#if false // Log Packet Info
+        Debug.Log(
+            "Send " +
+            "Id : " + sessionId +
+            ", Size : " + (size + 8) +
+            ", MsgId : " + msgId + $"{((int)msgId)}"
+            );
+#endif
     }
 
     // 매개 변수로 들어온 session으로 패킷 전송
@@ -83,13 +125,22 @@ public partial class NetworkManager
 		MsgId msgId = (MsgId)Enum.Parse(typeof(MsgId), msgName);
 		ushort size = (ushort)packet.CalculateSize();
 		byte[] sendBuffer = new byte[size + 8];
-		Array.Copy(BitConverter.GetBytes((int)(session.SessionId)), 0, sendBuffer, 0, sizeof(int));
-		Array.Copy(BitConverter.GetBytes((ushort)(size + 4)), 0, sendBuffer, 4, sizeof(ushort));
-		Array.Copy(BitConverter.GetBytes((ushort)msgId), 0, sendBuffer, 6, sizeof(ushort));
-		Array.Copy(packet.ToByteArray(), 0, sendBuffer, 8, size);
+		Array.Copy(BitConverter.GetBytes((int)(session.AccountDbId)), 0, sendBuffer, 0, sizeof(int));
+        Array.Copy(BitConverter.GetBytes((ushort)(size + 8)), 0, sendBuffer, 4, sizeof(ushort));
+        Array.Copy(BitConverter.GetBytes((ushort)msgId), 0, sendBuffer, 6, sizeof(ushort));
+        Array.Copy(packet.ToByteArray(), 0, sendBuffer, 8, size);
 
         // 서버로 패킷 전송
         _serverSession.Send(new ArraySegment<byte>(sendBuffer));
+
+#if false // Log Packet Info
+        Debug.Log(
+            "Send " +
+            "Id : " + session.AccountDbId +
+            ", Size : " + (size + 8) +
+            ", MsgId : " + msgId + $"{((int)msgId)}"
+            );
+#endif
     }
 
     // 이 Game Room안에 있는 모든 클라이언트에게 패킷 전송
@@ -104,54 +155,63 @@ public partial class NetworkManager
         ushort size = (ushort)packet.CalculateSize();
         byte[] sendBuffer = new byte[size + 8];
         Array.Copy(BitConverter.GetBytes((int)(sessionId)), 0, sendBuffer, 0, sizeof(int));
-        Array.Copy(BitConverter.GetBytes((ushort)(size + 4)), 0, sendBuffer, 4, sizeof(ushort));
+        Array.Copy(BitConverter.GetBytes((ushort)(size + 8)), 0, sendBuffer, 4, sizeof(ushort));
         Array.Copy(BitConverter.GetBytes((ushort)msgId), 0, sendBuffer, 6, sizeof(ushort));
         Array.Copy(packet.ToByteArray(), 0, sendBuffer, 8, size);
 
         // 서버로 패킷 전송
         _serverSession.Send(new ArraySegment<byte>(sendBuffer));
+
+#if false // Log Packet Info
+        Debug.Log(
+            "Send " +
+            "Id : " + sessionId +
+            ", Size : " + (size + 8) +
+            ", MsgId : " + msgId + $"{((int)msgId)}"
+            );
+#endif
     }
 
     #endregion
 
     #region ClientSession
-    Dictionary<int, ClientSession> _clientSessions = new Dictionary<int, ClientSession>();
+    Dictionary<int, ClientSession> _clientSessions = new Dictionary<int, ClientSession>(); // Key : ClientSession의 계정 아이디, Value : 세션 아이디에 맞는 ClientSession
 
-    // sessionId : 만들 세션의 아이디
+    // accountId : 만들 세션의 계정 아이디
     // return : 만든 세션 반환 (실패했을경우 null 반환)
-    public ClientSession CreateClienSession(int sessionId)
+    public ClientSession CreateClienSession(int accountDbId)
     {
-        if(_clientSessions.ContainsKey(sessionId)) // Is exist same client session id
+        if(_clientSessions.ContainsKey(accountDbId)) // Is exist same client session id
         {
-            Debug.Log("Try create ClientSession but session id " + sessionId + "is already exist");
+            Debug.Log("Try create ClientSession but session id " + accountDbId + "is already exist");
             return null;
         }
 
-        ClientSession session = new ClientSession(sessionId);
-        _clientSessions.Add(sessionId, session);
+        ClientSession session = new ClientSession(accountDbId);
+        _clientSessions.Add(accountDbId, session);
         return session;
     }
 
-    // sessionId : 제거할 세션의 아이디
+    // accountId : 제거할 세션의 계정 아이디
     // return : 세션 제거에 성공했는지
-    public bool DeleteClientSession(int sessionId)
+    public bool DeleteClientSession(int accountId)
     {
         // Try remove session
-        if (_clientSessions.Remove(sessionId)) 
+        if (_clientSessions.Remove(accountId)) 
             return true;
 
-        Debug.Log("Try delete ClientSession but session id " + sessionId + "is not exist");
+        Debug.Log("Try delete ClientSession but account id " + accountId + "is not exist");
         return false;
     }
 
-    // sessionId : 찾을 세션의 아이디
+    // accountId : 찾을 세션의 계정 아이디
     // return : 찾은 세션반환 (실패했을경우 null 반환)
-    public ClientSession FindClientSession(int sessionId)
+    public ClientSession FindClientSession(int accountId)
     {
         ClientSession result;
-        if(_clientSessions.TryGetValue(sessionId, out result) == false) // Is failed to find session
+        if(_clientSessions.TryGetValue(accountId, out result) == false) // Is failed to find session
         {
-            Debug.Log("Try find ClientSession but session id " + sessionId + "is not exist");
+            Debug.Log("Try find ClientSession but account id " + accountId + "is not exist");
             return null;
         }
 

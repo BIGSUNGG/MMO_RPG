@@ -41,9 +41,9 @@ public class ServerSession : PacketSession
 
 	public override void OnRecvPacket(ArraySegment<byte> buffer)
 	{
-#if true // Log Packet Info
+#if false // Log Packet Info
         Debug.Log(
-            "Id : " + BitConverter.ToInt32(buffer.Array, buffer.Offset) +
+            "Recieve Id : " + BitConverter.ToInt32(buffer.Array, buffer.Offset) +
             ", Size : " + BitConverter.ToUInt16(buffer.Array, buffer.Offset + 4) +
             ", MsgId : " + BitConverter.ToUInt16(buffer.Array, buffer.Offset + 6)
             );

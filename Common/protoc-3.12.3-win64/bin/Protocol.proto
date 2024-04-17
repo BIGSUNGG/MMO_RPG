@@ -4,32 +4,67 @@ package Protocol;
 option csharp_namespace = "Google.Protobuf.Protocol";
 
 enum MsgId {
-  // Connect
-  S_CONNECTED = 0;
+	// Connect
+	S_CONNECTED = 0;
+	
+	// Ping
+	S_PING = 1;
+	C_PONG = 2;
+	
+	// Login
+	C_LOGIN = 3;
+	S_LOGIN = 4;
+	
+	// Enter
+	S_ENTER_MAP = 5;
+	S_ENTER_PLAYER = 6;
+	
+	// Leave
+	S_LEAVE_MAP = 7;
+	S_LEAVE_PLAYER = 8;
+	
+	// Spawn
+	S_SPAWN_OBJECT = 9;
+	S_SPAWN_OBJECTS = 10;
+	S_DESPAWN_OBJECT = 11;
+	S_DESPAWN_OBJECTS = 12;
+	
+	// Possess
+	S_POSSESS_OBJECT = 13;
+	S_UNPOSSESS_OBJECT = 14;
 
-  // Ping
-  S_PING = 1;
-  C_PONG = 2;
-
-  // Login
-  C_LOGIN = 3;
-  S_LOGIN = 4;
-
-  // Enter
-  S_ENTER_MAP = 5;
+	// Sync
+	S_OBJECT_SYNC = 15;
+	C_OBJECT_SYNC = 16;
+	S_REQEUST_OBJECT_SYNC = 17;
 
 }
 
 // Enums
 
 enum PlayerLoginState {
-  NOT_LOGGED_IN = 0;
-  LOGGED_IN = 1;
+	NOT_LOGGED_IN = 0;
+	LOGGED_IN = 1;
 }
 
 enum LoginResult {
-  LOGIN_SUCCESS = 0;
-  LOGIN_FAIL = 1;
+	LOGIN_SUCCESS = 0;
+	LOGIN_FAIL = 1;
+}
+
+enum GameObjectType {
+	CHARACTER = 0;
+}
+
+// Structs
+message ObjectInfo {	
+	GameObjectType ObjectType= 1;
+	int32 ObjectId = 2;
+}
+
+message ObjectSyncInfo {
+	ObjectInfo ObjectInfo = 1;
+	bytes SyncInfo = 2;
 }
 
 // Packets
@@ -48,15 +83,73 @@ message C_Pong {
 
 // C_LOGIN
 message C_Login {
-  int32 AccountId = 1;
-  int32 Token = 2;
+	int32 AccountId = 1;
+	int32 Token = 2;
 }
 
-// S_LOGIN
+// S_LOGIN  
 message S_Login {
-  LoginResult loginResult = 1;
+	LoginResult loginResult = 1;
 }
 
+// S_ENTER_MAP
 message S_EnterMap {
 	int32 mapId = 1;	
+}
+
+// S_ENTER_PLAYER
+message S_EnterPlayer{
+	int32 accountDbId = 1;
+}
+
+// S_LEAVE_MAP
+message S_LeaveMap{
+}
+
+// S_LEAVE_PLAYER
+message S_LeavePlayer{
+	int32 accountDbId = 1;
+}
+
+// S_SPAWN_OBJECT
+message S_SpawnObject{
+	ObjectInfo spawnInfo = 1;
+}
+
+// S_SPAWN_OBJECTS
+message S_SpawnObjects{
+	repeated ObjectInfo spawnInfos = 1;
+}
+
+// S_DESPAWN_OBJECT
+message S_DespawnObject{
+	int32 objectId = 1;
+}
+
+// S_DESPAWN_OBJECTS
+message S_DespawnObjects{
+	repeated int32 objectIds = 1;
+}
+
+// S_POSSESS_OBJECT
+message S_PossessObject{
+	int32 objectId = 1;
+}
+
+// S_UNPOSSESS_OBJECT
+message S_UnpossessObject{
+}
+
+// S_OBJECT_SYNC
+message S_ObjectSync{
+	repeated ObjectSyncInfo SyncInfos = 1;	
+}
+
+// C_OBJECT_SYNC
+message C_ObjectSync{
+	ObjectSyncInfo SyncInfo = 1;
+}
+
+// S_REQEUST_OBJECT_SYNC
+message S_ReqeustObjectSync{
 }

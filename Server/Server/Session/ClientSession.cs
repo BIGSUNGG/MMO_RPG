@@ -61,14 +61,23 @@ namespace Server
 			Array.Copy(packet.ToByteArray(), 0, sendBuffer, 4, size);
 
 			lock (_lock)
-			{
-				_reserveQueue.Add(sendBuffer);
-				_reservedSendBytes += sendBuffer.Length;
-			}
-		}
+            {
+                _reserveQueue.Add(sendBuffer);
+                _reservedSendBytes += sendBuffer.Length;
+            }
+        }
 
-		// 실제 Network IO 보내는 부분
-		public void FlushSend()
+        public override void Send(ArraySegment<byte> sendBuff)
+        {
+            lock (_lock)
+            {
+                _reserveQueue.Add(sendBuff);
+                _reservedSendBytes += sendBuff.Count;
+            }
+        }
+
+        // 실제 Network IO 보내는 부분
+        public void FlushSend()
 		{
 			List<ArraySegment<byte>> sendList = null;
 

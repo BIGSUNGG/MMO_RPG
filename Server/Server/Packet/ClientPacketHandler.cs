@@ -13,18 +13,28 @@ partial class ClientPacketHandler
 {
 	public static void C_LoginHandler(ISession session, IMessage packet)
 	{
-		C_Login loginPacket = packet as C_Login;
+		C_Login recvPacket = packet as C_Login;
 
         ClientSession clientSession = session as ClientSession;
         if (clientSession == null)
             return;
 
-        clientSession.LoginAccount(loginPacket);
+        clientSession.LoginAccount(recvPacket);
 	}
 
 	public static void C_PongHandler(ISession session, IMessage packet)
 	{
-		ClientSession clientSession = (ClientSession)session;
+		ClientSession clientSession = session as ClientSession;
 		clientSession.HandlePong();
 	}
+
+    public static void C_ObjectSyncHandler(ISession session, IMessage packet)
+    {
+        C_ObjectSync recvPacket = packet as C_ObjectSync;
+		ClientSession clientSession = session as ClientSession;
+
+        GameRoom room = clientSession.MyRoom;
+        room.Push(() => { room.RoomSession.Send(clientSession, packet); });
+
+    }
 }

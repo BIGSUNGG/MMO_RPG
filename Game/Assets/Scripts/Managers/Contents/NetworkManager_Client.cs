@@ -9,7 +9,9 @@ using Google.Protobuf;
 using Google.Protobuf.Protocol;
 
 public partial class NetworkManager
-{ 
+{
+    public bool IsServer { get { return false; } private set { } }
+
     public int AccountId { get; set; }
     public int Token { get; set; }
 
@@ -41,13 +43,14 @@ public partial class NetworkManager
 
     public void Update()
     {
+        // 서버 패킷 처리
         List<ServerPacketMessage> list = ServerPacketQueue.Instance.PopAll();
         foreach (ServerPacketMessage packet in list)
         {
             Action<ISession, IMessage> handler = ServerPacketManager.Instance.GetPacketHandler(packet.Id);
             if (handler != null)
                 handler.Invoke(_serverSession, packet.Message);
-        }
+        }       
     }
 }
 #endif

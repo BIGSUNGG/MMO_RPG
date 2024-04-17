@@ -16,6 +16,32 @@ class ClientPacketHandler
 
     public static void C_PongHandler(ISession session, IMessage packet) { }
 
+    public static void C_ObjectSyncHandler(ISession session, IMessage packet) 
+    {
+        ClientSession clientSession = session as ClientSession;
+        if (clientSession == null)
+        {
+            Debug.Log("Client session is null");
+            return;
+        }
+
+        C_ObjectSync recvPacket = packet as C_ObjectSync;
+        ObjectSyncInfo info = recvPacket.SyncInfo;
+
+        PlayerController pc = clientSession._playerController;
+        if (pc == null)
+        {
+            Debug.Log("Player controller is null");
+            return;
+        }
+        else if(pc.ObjectId != recvPacket.SyncInfo.ObjectInfo.ObjectId)
+        {
+            Debug.Log("Player controller id is not sync info's id");
+            return;
+        }
+
+        pc.ObjectSync(info.SyncInfo);
+    }
 
 }
 #endif
