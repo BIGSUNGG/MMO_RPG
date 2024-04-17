@@ -36,10 +36,11 @@ public class MovementComponent : MonoBehaviour
             _rigidbody.useGravity = false;
 
             _curSyncLerpTime += Time.deltaTime;
-            float lerpVal = _curSyncLerpTime * _syncLerpMultiply;
+            float lerpPosVal = _curSyncLerpTime * _syncPosLerpMultiply;
+            float lerpRotVal = _curSyncLerpTime * _syncRotLerpMultiply;
 
-            transform.position = Vector3.Lerp(_syncStartPos, _syncEndPos, lerpVal);
-            transform.eulerAngles = Vector3.Lerp(_syncStartRot, _syncEndRot, lerpVal);
+            transform.position = Vector3.Lerp(_syncStartPos, _syncEndPos, lerpPosVal);
+            transform.rotation = Quaternion.Lerp(_syncStartRot, _syncEndRot, lerpRotVal);
         }
     }
 
@@ -79,28 +80,29 @@ public class MovementComponent : MonoBehaviour
 	Vector3 _syncStartPos;
 	Vector3 _syncEndPos;
 
-	Vector3 _syncStartRot;
-	Vector3 _syncEndRot;
+	Quaternion _syncStartRot;
+    Quaternion _syncEndRot;
 
 	float _curSyncLerpTime = 0.0f;
-	public float _syncLerpMultiply = 20;
+	float _syncPosLerpMultiply = 10;
+	float _syncRotLerpMultiply = 10;
 
-	public virtual void Sync(Vector3 position, Vector3 angle)
+    public virtual void Sync(Vector3 pos, Quaternion rot)
 	{
 		if (Managers.Network.IsServer)
 		{
-			transform.position = position;
-			transform.eulerAngles = angle;
+			transform.position = pos;
+			transform.rotation = rot;
         }
         else
 		{
 			_curSyncLerpTime = 0.0f;
 
             _syncStartPos = transform.position;
-            _syncStartRot = transform.eulerAngles;
+            _syncStartRot = transform.rotation;
 
-            _syncEndPos = position;
-			_syncEndRot = angle;
+            _syncEndPos = pos;
+			_syncEndRot = rot;
         } 
 	}
 	#endregion

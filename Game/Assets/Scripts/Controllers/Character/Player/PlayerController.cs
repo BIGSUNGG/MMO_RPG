@@ -46,7 +46,7 @@ public class PlayerController : CharacterController
 
         if(_camera)
         {
-            _camera.transform.position = new UnityEngine.Vector3(0.0f, 150.0f, -55.0f) + transform.position;
+            _camera.transform.position = new UnityEngine.Vector3(0.0f, 10.0f, -3.0f) + transform.position;
             _camera.transform.eulerAngles = new UnityEngine.Vector3(70, 0, 0);
         }
 

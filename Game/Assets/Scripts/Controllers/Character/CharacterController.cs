@@ -50,7 +50,7 @@ public class CharacterController : ObjectController
     protected class CharacterSyncInfo : ObjectSyncInfo
     {
         public Vector3 position;
-        public Vector3 angle;
+        public Quaternion rotation;
     }
 
     public override void ObjectSync(ByteString syncInfo)
@@ -69,7 +69,7 @@ public class CharacterController : ObjectController
 
         if(_movement)
         {
-            _movement.Sync(info.position, info.angle);
+            _movement.Sync(info.position, info.rotation);
         }
 
         base.ObjectSync(info);
@@ -88,7 +88,7 @@ public class CharacterController : ObjectController
             return;
 
         info.position = transform.position;
-        info.angle = transform.eulerAngles;
+        info.rotation = transform.rotation;
 
         base.GetObjectSyncInfo(info);
     }
