@@ -27,9 +27,10 @@ public class MovementComponent : MonoBehaviour
         }
         else if (_owner.IsLocallyControlled()) // 클라이언트가 빙의한 오브젝트인 경우
         {
-            _moveDir.Normalize();
-            _velocity = new Vector3(_moveDir.x * _walkMaxSpeed, _velocity.y, _moveDir.y * _walkMaxSpeed);
-            _moveDir = Vector2.zero;
+            _inputDir.Normalize();
+            _lastInputDir = _inputDir;
+            _velocity = new Vector3(_inputDir.x * _walkMaxSpeed, _velocity.y, _inputDir.y * _walkMaxSpeed);
+            _inputDir = Vector2.zero;
         }
         else // 클라이언트가 빙의하지않은 오브젝트인 경우
         {
@@ -48,16 +49,17 @@ public class MovementComponent : MonoBehaviour
 	public Vector3 _velocity { get { return _rigidbody.velocity; }  set { _rigidbody.velocity = value; } }
 
 	float _walkMaxSpeed = 2.5f;
-	Vector2 _moveDir = new Vector2(0, 0);
+    Vector2 _inputDir = Vector2.zero;
+    public Vector2 _lastInputDir = Vector2.zero;
 
-	public virtual void MoveForward(float axis)
+    public virtual void MoveForward(float axis)
 	{
-		_moveDir.y += axis;
+		_inputDir.y += axis;
 	}
 
 	public virtual void MoveRight(float axis)
 	{
-		_moveDir.x += axis;
+		_inputDir.x += axis;
 	}
 
 	float _jumpPower = 5.0f;
@@ -87,12 +89,15 @@ public class MovementComponent : MonoBehaviour
 	float _syncPosLerpMultiply = 10;
 	float _syncRotLerpMultiply = 10;
 
-    public virtual void Sync(Vector3 pos, Quaternion rot)
+    public virtual void Sync(Vector3 pos, Quaternion rot, Vector2 inputDir)
 	{
 		if (Managers.Network.IsServer)
 		{
 			transform.position = pos;
 			transform.rotation = rot;
+
+            _inputDir = inputDir;
+            _lastInputDir = inputDir;
         }
         else
 		{
@@ -103,8 +108,11 @@ public class MovementComponent : MonoBehaviour
 
             _syncEndPos = pos;
 			_syncEndRot = rot;
-        } 
-	}
+
+            _inputDir = inputDir;
+            _lastInputDir = inputDir;
+        }
+    }
 	#endregion
 
 }

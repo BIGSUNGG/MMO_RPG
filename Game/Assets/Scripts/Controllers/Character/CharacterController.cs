@@ -51,6 +51,7 @@ public class CharacterController : ObjectController
     {
         public Vector3 position;
         public Quaternion rotation;
+        public Vector2 inputDir;
     }
 
     public override void ObjectSync(ByteString syncInfo)
@@ -69,7 +70,7 @@ public class CharacterController : ObjectController
 
         if(_movement)
         {
-            _movement.Sync(info.position, info.rotation);
+            _movement.Sync(info.position, info.rotation, info.inputDir);
         }
 
         base.ObjectSync(info);
@@ -89,6 +90,7 @@ public class CharacterController : ObjectController
 
         info.position = transform.position;
         info.rotation = transform.rotation;
+        info.inputDir  = _movement._lastInputDir;
 
         base.GetObjectSyncInfo(info);
     }

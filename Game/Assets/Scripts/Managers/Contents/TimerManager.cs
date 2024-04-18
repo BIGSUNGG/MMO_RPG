@@ -68,5 +68,13 @@ public class TimerManager
         return SetTimer(0.0f, action, false);
     }
 
+    public void RemoveTimer(TimerHandler timer)
+    {
+        lock(_lock)
+        {
+            _timers.Remove(timer);
+        }
+    }
+
     #endregion
 }

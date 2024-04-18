@@ -111,6 +111,7 @@
     <Compile Include="Assets\Scripts\UI\Scene\UI_Stat.cs" />
     <Compile Include="Assets\Scripts\Network\Server\ClientSession.cs" />
     <Compile Include="Assets\Scripts\Controllers\Character\CharacterController.cs" />
+    <Compile Include="Assets\Scripts\Animation\CharacterAnimParameter.cs" />
     <Compile Include="Assets\Scripts\Managers\Contents\ObjectManager_Server.cs" />
     <Compile Include="Assets\Scripts\Network\ServerCore\Session.cs" />
     <Compile Include="Assets\Scripts\UI\UI_EventHandler.cs" />
