@@ -21,6 +21,8 @@ public class MovementComponent : MonoBehaviour
 
 	void Update()
 	{
+        _curMoveSpeed = _bIsRunning ? _runMaxSpeed : _walkMaxSpeed;
+
         if (Managers.Network.IsServer) // 서버인 경우
         {
             _rigidbody.useGravity = false;
@@ -29,7 +31,7 @@ public class MovementComponent : MonoBehaviour
         {
             _inputDir.Normalize();
             _lastInputDir = _inputDir;
-            _velocity = new Vector3(_inputDir.x * _walkMaxSpeed, _velocity.y, _inputDir.y * _walkMaxSpeed);
+            _velocity = new Vector3(_inputDir.x * _curMoveSpeed, _velocity.y, _inputDir.y * _curMoveSpeed);
             _inputDir = Vector2.zero;
         }
         else // 클라이언트가 빙의하지않은 오브젝트인 경우
@@ -46,9 +48,16 @@ public class MovementComponent : MonoBehaviour
     }
 
 	#region Movement
+    // State
 	public Vector3 _velocity { get { return _rigidbody.velocity; }  set { _rigidbody.velocity = value; } }
 
-	float _walkMaxSpeed = 2.5f;
+    // Move
+    public bool _bIsRunning = false; // 달리고 있는지
+    float _curMoveSpeed = 2.5f; // 현재 이동 속도
+	float _walkMaxSpeed = 2.5f; // 걷기 속도
+    float _runMaxSpeed = 7.5f; // 뛰기 속도
+
+    // Input
     Vector2 _inputDir = Vector2.zero;
     public Vector2 _lastInputDir = Vector2.zero;
 
@@ -89,7 +98,7 @@ public class MovementComponent : MonoBehaviour
 	float _syncPosLerpMultiply = 10;
 	float _syncRotLerpMultiply = 10;
 
-    public virtual void Sync(Vector3 pos, Quaternion rot, Vector2 inputDir)
+    public virtual void Sync(Vector3 pos, Quaternion rot, Vector2 inputDir, bool IsRunnung)
 	{
 		if (Managers.Network.IsServer)
 		{
@@ -98,6 +107,8 @@ public class MovementComponent : MonoBehaviour
 
             _inputDir = inputDir;
             _lastInputDir = inputDir;
+
+            _bIsRunning = IsRunnung;
         }
         else
 		{
@@ -111,6 +122,8 @@ public class MovementComponent : MonoBehaviour
 
             _inputDir = inputDir;
             _lastInputDir = inputDir;
+
+            _bIsRunning = IsRunnung;
         }
     }
 	#endregion

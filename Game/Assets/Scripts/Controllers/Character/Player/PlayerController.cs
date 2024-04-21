@@ -42,6 +42,9 @@ public class PlayerController : CharacterController
 
             if (Input.GetKey(KeyCode.Space))
                 _movement.Jump();
+
+            _movement._bIsRunning = Input.GetKey(KeyCode.LeftShift);
+                
         }
 
         if(_camera)
