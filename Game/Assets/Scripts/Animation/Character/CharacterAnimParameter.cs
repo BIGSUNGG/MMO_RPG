@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class CharacterAnimParameter : MonoBehaviour
 {
-    private Animator _animator;
-    private MovementComponent _movement;
+    protected Animator _animator;
+    protected CharacterMovementComponent _movement;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _animator = GetComponent<Animator>();
-        _movement = GetComponent<MovementComponent>();
+        _movement = GetComponent<CharacterMovementComponent>();
     }
 
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
-        
+
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
         Vector3 inputDir = new Vector3(_movement._lastInputDir.x, 0.0f, _movement._lastInputDir.y);
 

@@ -11,8 +11,6 @@ using static System.Collections.Specialized.BitVector32;
 #if UNITY_SERVER
 public partial class NetworkManager
 {
-    public bool IsServer { get { return true; } private set { } }
-
 	public int GameSessionId;
 
     public NetworkManager()

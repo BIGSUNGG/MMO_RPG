@@ -10,14 +10,26 @@ using UnityEngine.XR;
 
 public class PlayerController : CharacterController
 {
+    PlayerAnimParameter _playerAnim = null;
+    PlayerMovementComponent _playerMovement = null;
+
     protected override void Start()
     {
         base.Start();
+
+        _playerAnim = GetComponent<PlayerAnimParameter>();
+        if (_playerAnim == null)
+            Debug.Log("PlayerAnimParameter is null");
+
+        _playerMovement = GetComponent<PlayerMovementComponent>();
+        if (_playerMovement == null)
+            Debug.Log("PlayerMovementComponent is null");
     }
 
     protected override void Update()
     {
         base.Update();
+
     }
 
     #region Controller
@@ -28,23 +40,10 @@ public class PlayerController : CharacterController
         if (IsLocallyControlled() == false)
             return;
 
-        if (_movement)
+        if(_playerMovement)
         {
-            if (Input.GetKey(KeyCode.W))
-                _movement.MoveForward(1.0f);
-            if (Input.GetKey(KeyCode.S))
-                _movement.MoveForward(-1.0f);
-
-            if (Input.GetKey(KeyCode.A))
-                _movement.MoveRight(-1.0f);
-            if (Input.GetKey(KeyCode.D))
-                _movement.MoveRight(1.0f);
-
-            if (Input.GetKey(KeyCode.Space))
-                _movement.Jump();
-
-            _movement._bIsRunning = Input.GetKey(KeyCode.LeftShift);
-                
+            if (Input.GetKeyDown(KeyCode.Space))
+                _playerMovement.DodgeRollStart();
         }
 
         if(_camera)

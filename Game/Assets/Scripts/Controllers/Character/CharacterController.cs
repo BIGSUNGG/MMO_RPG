@@ -9,7 +9,8 @@ using UnityEngine;
 
 public class CharacterController : ObjectController
 {
-    protected MovementComponent _movement = null;
+    protected CharacterAnimParameter _anim = null;
+    protected CharacterMovementComponent _movement = null;
 
     public CharacterController()
     {
@@ -20,7 +21,11 @@ public class CharacterController : ObjectController
     {
         base.Start();
 
-        _movement = GetComponent<MovementComponent>();
+        _anim = GetComponent<CharacterAnimParameter>();
+        if (_anim == null)
+            Debug.Log("CharacterAnimParameter is null");
+
+        _movement = GetComponent<CharacterMovementComponent>();
         if (_movement == null)
             Debug.Log("MovementComponent is null");
     }
@@ -36,6 +41,20 @@ public class CharacterController : ObjectController
     {
         base.ControllerUpdate();
 
+        if (_movement)
+        {
+            if (Input.GetKey(KeyCode.W))
+                _movement.MoveForward(1.0f);
+            if (Input.GetKey(KeyCode.S))
+                _movement.MoveForward(-1.0f);
+
+            if (Input.GetKey(KeyCode.A))
+                _movement.MoveRight(-1.0f);
+            if (Input.GetKey(KeyCode.D))
+                _movement.MoveRight(1.0f);
+
+            _movement._bIsRunning = Input.GetKey(KeyCode.LeftShift);
+        }
     }
 
     public override void OnPossess()

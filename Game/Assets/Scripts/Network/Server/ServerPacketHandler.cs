@@ -154,6 +154,11 @@ class ServerPacketHandler
         S_ReqeustObjectSync recvPacket = packet as S_ReqeustObjectSync;
 
     }
-    
+
+    public static void S_DodgeStartHandler(ISession session, IMessage packet)
+    {
+        S_DodgeStart recvPacket = packet as S_DodgeStart;
+
+    }
 }
 #endif

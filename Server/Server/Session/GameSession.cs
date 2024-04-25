@@ -111,7 +111,7 @@ namespace Server
 
 #if false // Log Packet Info
             Console.WriteLine(
-                "Recieve From Room: " + 
+                "Receive From Room: " + 
                 "Id : " +  id +
                 ", Size : " + size +
                 ", MsgId : " + msg 

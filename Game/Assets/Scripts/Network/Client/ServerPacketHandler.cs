@@ -39,7 +39,7 @@ class ServerPacketHandler
 		S_Ping recvPacket = packet as S_Ping;
 
 		C_Pong pongPacket = new C_Pong();
-		Managers.Network.Send(pongPacket);
+		Managers.Network.SendServer(pongPacket);
 	}
 
 	public static void S_EnterMapHandler(ISession session, IMessage packet)
@@ -142,8 +142,26 @@ class ServerPacketHandler
 		syncPacket.SyncInfo.SyncInfo = pc.GetObjectSyncInfo();
 		syncPacket.SyncInfo.ObjectInfo.ObjectId = pc.ObjectId;
 		syncPacket.SyncInfo.ObjectInfo.ObjectType = pc.ObjectType;
-		Managers.Network.Send(syncPacket);
+		Managers.Network.SendServer(syncPacket);
 	}
+    
+	public static void S_DodgeStartHandler(ISession session, IMessage packet)
+    {
+        S_DodgeStart recvPacket = packet as S_DodgeStart;
+
+        if (Managers.Controller.MyController.ObjectId == recvPacket.ObjectId)
+            return;
+
+        GameObject go = Managers.Object.FindById(recvPacket.ObjectId);
+        if (go == null)
+            return;
+
+        PlayerMovementComponent movement = go.GetComponent<PlayerMovementComponent>();
+        if (movement == null)
+            return;
+
+        movement.Multicast_DodgeRollStart_ReceivePacket(new Vector2(recvPacket.X, recvPacket.Y));
+    }
 }
 
 #endif

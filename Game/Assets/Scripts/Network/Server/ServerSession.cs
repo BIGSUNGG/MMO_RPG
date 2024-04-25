@@ -43,18 +43,18 @@ public class ServerSession : PacketSession
 	{
 #if false // Log Packet Info
         Debug.Log(
-            "Recieve Id : " + BitConverter.ToInt32(buffer.Array, buffer.Offset) +
+            "Receive Id : " + BitConverter.ToInt32(buffer.Array, buffer.Offset) +
             ", Size : " + BitConverter.ToUInt16(buffer.Array, buffer.Offset + 4) +
             ", MsgId : " + BitConverter.ToUInt16(buffer.Array, buffer.Offset + 6)
             );
 #endif
 
         int sessionId = BitConverter.ToInt32(buffer.Array, buffer.Offset);
-        if(sessionId == 0) // Recieve server packet
+        if(sessionId == 0) // Receive server packet
         {           
             ServerPacketManager.Instance.OnRecvPacket(this, new ArraySegment<byte>(buffer.Array, buffer.Offset + 4, buffer.Count - 4));
-        }
-        else // Recieve client packet
+        }   
+        else // Receive client packet
         {        
             ClientSession session = Managers.Network.FindClientSession(sessionId);
 

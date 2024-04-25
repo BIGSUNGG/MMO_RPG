@@ -38,10 +38,13 @@ enum MsgId {
 	C_OBJECT_SYNC = 16;
 	S_REQEUST_OBJECT_SYNC = 17;
 
+	// Content
+	S_DODGE_START = 18;
+	C_DODGE_START = 19;
+
 }
 
 // Enums
-
 enum PlayerLoginState {
 	NOT_LOGGED_IN = 0;
 	LOGGED_IN = 1;
@@ -152,4 +155,17 @@ message C_ObjectSync{
 
 // S_REQEUST_OBJECT_SYNC
 message S_ReqeustObjectSync{
+}
+
+// S_DODGE_START
+message S_DodgeStart{
+	int32 objectId = 1;
+	float x = 2;
+	float y = 3;
+}
+
+// C_DODGE_START
+message C_DodgeStart{
+	float x = 1;
+	float y = 2;
 }

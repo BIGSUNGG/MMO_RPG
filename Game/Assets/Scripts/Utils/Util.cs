@@ -84,6 +84,11 @@ public class Util
         return obj;
     }
 
+    public static float GetAngle(Vector2 vec)
+    {
+        return Mathf.Atan2(vec.x, vec.y) * Mathf.Rad2Deg;
+    }
+
     public static float GetAngleY(Vector3 vec)
     {
         return Mathf.Atan2(vec.x, vec.z) * Mathf.Rad2Deg;

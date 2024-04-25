@@ -52,7 +52,9 @@ class ServerPacketManager
 		_onRecv.Add((ushort)MsgId.SObjectSync, MakePacket<S_ObjectSync>);
 		_handler.Add((ushort)MsgId.SObjectSync, ServerPacketHandler.S_ObjectSyncHandler);		
 		_onRecv.Add((ushort)MsgId.SReqeustObjectSync, MakePacket<S_ReqeustObjectSync>);
-		_handler.Add((ushort)MsgId.SReqeustObjectSync, ServerPacketHandler.S_ReqeustObjectSyncHandler);
+		_handler.Add((ushort)MsgId.SReqeustObjectSync, ServerPacketHandler.S_ReqeustObjectSyncHandler);		
+		_onRecv.Add((ushort)MsgId.SDodgeStart, MakePacket<S_DodgeStart>);
+		_handler.Add((ushort)MsgId.SDodgeStart, ServerPacketHandler.S_DodgeStartHandler);
 	}
 
 	public void OnRecvPacket(ISession session, ArraySegment<byte> buffer)

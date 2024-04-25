@@ -11,30 +11,38 @@ using System.Text;
 
 partial class ClientPacketHandler
 {
-	public static void C_LoginHandler(ISession session, IMessage packet)
-	{
-		C_Login recvPacket = packet as C_Login;
+    public static void C_LoginHandler(ISession session, IMessage packet)
+    {
+        C_Login recvPacket = packet as C_Login;
 
         ClientSession clientSession = session as ClientSession;
         if (clientSession == null)
             return;
 
         clientSession.LoginAccount(recvPacket);
-	}
+    }
 
-	public static void C_PongHandler(ISession session, IMessage packet)
-	{
-		ClientSession clientSession = session as ClientSession;
-		clientSession.HandlePong();
-	}
+    public static void C_PongHandler(ISession session, IMessage packet)
+    {
+        ClientSession clientSession = session as ClientSession;
+        clientSession.HandlePong();
+    }
 
     public static void C_ObjectSyncHandler(ISession session, IMessage packet)
     {
         C_ObjectSync recvPacket = packet as C_ObjectSync;
-		ClientSession clientSession = session as ClientSession;
+        ClientSession clientSession = session as ClientSession;
 
         GameRoom room = clientSession.MyRoom;
         room.Push(() => { room.RoomSession.Send(clientSession, packet); });
+    }
 
+    public static void C_DodgeStartHandler(ISession session, IMessage packet)
+    {
+        C_DodgeStart recvPacket = packet as C_DodgeStart;
+        ClientSession clientSession = session as ClientSession;
+
+        GameRoom room = clientSession.MyRoom;
+        room.Push(() => { room.RoomSession.Send(clientSession, packet); });
     }
 }

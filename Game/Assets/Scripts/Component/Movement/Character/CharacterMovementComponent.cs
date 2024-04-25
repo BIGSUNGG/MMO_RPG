@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovementComponent : MonoBehaviour
+public class CharacterMovementComponent : MonoBehaviour
 {
 	ObjectController _owner = null;
 	Rigidbody _rigidbody = null;
 
-	void Start()
+	public virtual void Start()
 	{
 		_owner = gameObject.GetComponent<ObjectController>();
 		if (_owner == null)
@@ -19,7 +19,7 @@ public class MovementComponent : MonoBehaviour
 		_rigidbody = Util.GetOrAddComponent<Rigidbody>(gameObject);
 	}
 
-	void Update()
+	public virtual void Update()
 	{
         _curMoveSpeed = _bIsRunning ? _runMaxSpeed : _walkMaxSpeed;
 
@@ -31,7 +31,11 @@ public class MovementComponent : MonoBehaviour
         {
             _inputDir.Normalize();
             _lastInputDir = _inputDir;
-            _velocity = new Vector3(_inputDir.x * _curMoveSpeed, _velocity.y, _inputDir.y * _curMoveSpeed);
+            if (CanInputMove()) // 입력이 가능한지
+            {
+                // 입력 방향으로 이동
+	            _velocity = new Vector3(_inputDir.x * _curMoveSpeed, _velocity.y, _inputDir.y * _curMoveSpeed);
+            }
             _inputDir = Vector2.zero;
         }
         else // 클라이언트가 빙의하지않은 오브젝트인 경우
@@ -53,8 +57,8 @@ public class MovementComponent : MonoBehaviour
 
     // Move
     public bool _bIsRunning = false; // 달리고 있는지
-    float _curMoveSpeed = 2.5f; // 현재 이동 속도
-	float _walkMaxSpeed = 2.5f; // 걷기 속도
+    float _curMoveSpeed = 4.0f; // 현재 이동 속도
+	float _walkMaxSpeed = 4.0f; // 걷기 속도
     float _runMaxSpeed = 7.5f; // 뛰기 속도
 
     // Input
@@ -79,6 +83,12 @@ public class MovementComponent : MonoBehaviour
 
 		_rigidbody.velocity = new Vector3(_rigidbody.velocity.x, _jumpPower, _rigidbody.velocity.z);
 	}
+
+    bool _bEnableInput = true;
+    public virtual bool CanInputMove() // 입력받은 방향으로 움직일 수 있는지
+    {
+        return _bEnableInput;
+    }
 
 	public bool IsFalling()
 	{

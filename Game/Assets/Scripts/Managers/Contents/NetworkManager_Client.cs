@@ -10,14 +10,12 @@ using Google.Protobuf.Protocol;
 
 public partial class NetworkManager
 {
-    public bool IsServer { get { return false; } private set { } }
-
     public int AccountId { get; set; }
     public int Token { get; set; }
 
     ServerSession _serverSession = new ServerSession();
 
-    public void Send(IMessage packet)
+    public void SendServer(IMessage packet)
     {
         string msgName = packet.Descriptor.Name.Replace("_", string.Empty);
         MsgId msgId = (MsgId)Enum.Parse(typeof(MsgId), msgName);

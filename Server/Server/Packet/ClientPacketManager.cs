@@ -28,7 +28,9 @@ class ClientPacketManager
 		_onRecv.Add((ushort)MsgId.CLogin, MakePacket<C_Login>);
 		_handler.Add((ushort)MsgId.CLogin, ClientPacketHandler.C_LoginHandler);		
 		_onRecv.Add((ushort)MsgId.CObjectSync, MakePacket<C_ObjectSync>);
-		_handler.Add((ushort)MsgId.CObjectSync, ClientPacketHandler.C_ObjectSyncHandler);
+		_handler.Add((ushort)MsgId.CObjectSync, ClientPacketHandler.C_ObjectSyncHandler);		
+		_onRecv.Add((ushort)MsgId.CDodgeStart, MakePacket<C_DodgeStart>);
+		_handler.Add((ushort)MsgId.CDodgeStart, ClientPacketHandler.C_DodgeStartHandler);
 	}
 
 	public void OnRecvPacket(ISession session, ArraySegment<byte> buffer)

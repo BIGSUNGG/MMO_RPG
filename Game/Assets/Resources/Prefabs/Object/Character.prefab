@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 445334063034108604}
   - component: {fileID: 1512411376908754062}
-  - component: {fileID: 2942525818507545950}
+  - component: {fileID: 7615770812763296422}
+  - component: {fileID: -5648398476204057213}
   - component: {fileID: 4458356079418507880}
-  - component: {fileID: 519177267606592345}
   - component: {fileID: 2763638339198004114}
   m_Layer: 0
   m_Name: Character
@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f29d2578877873342ae7cbde45b5b367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2942525818507545950
+--- !u!114 &7615770812763296422
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -59,10 +59,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 2365248840771035362}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bb5a81eaf1eb2e48999ce4edd15bf99, type: 3}
+  m_Script: {fileID: 11500000, guid: 1542d07a5397b354fa25389b989fc4e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveDir: {x: 0, y: 0}
+  _bIsRunning: 0
+  _lastInputDir: {x: 0, y: 0}
+  _onDodgeStartEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &-5648398476204057213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2365248840771035362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9205411d7f81fb44800ac1d72fddfcc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!54 &4458356079418507880
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -90,18 +106,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &519177267606592345
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2365248840771035362}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e307fc9cde3139b4d94d09ccd12fcec3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!95 &2763638339198004114
 Animator:
   serializedVersion: 5
