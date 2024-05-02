@@ -155,9 +155,9 @@ class ServerPacketHandler
 
     }
 
-    public static void S_DodgeStartHandler(ISession session, IMessage packet)
+    public static void S_RpcFunctionHandler(ISession session, IMessage packet)
     {
-        S_DodgeStart recvPacket = packet as S_DodgeStart;
+        S_RpcFunction recvPacket = packet as S_RpcFunction;
 
     }
 }

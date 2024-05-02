@@ -2,25 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterMovementComponent : MonoBehaviour
+public class CharacterMovementComponent : ObjectComponent
 {
-	ObjectController _owner = null;
+    protected enum RpcFunctionId
+    {
+        Multicast_DodgeRollStart = 0,
+    }
+
 	Rigidbody _rigidbody = null;
 
-	public virtual void Start()
-	{
-		_owner = gameObject.GetComponent<ObjectController>();
-		if (_owner == null)
-		{
-			Debug.Log("Failed to find ObjectController");
-			Debug.Assert(false);
-		}
+    protected override void Start()
+    {
+        base.Start();
 
-		_rigidbody = Util.GetOrAddComponent<Rigidbody>(gameObject);
+        _rigidbody = Util.GetOrAddComponent<Rigidbody>(gameObject);
 	}
 
-	public virtual void Update()
-	{
+    protected override void Update()
+    {
+        base.Update();
+
         _curMoveSpeed = _bIsRunning ? _runMaxSpeed : _walkMaxSpeed;
 
         if (Managers.Network.IsServer) // 서버인 경우
@@ -84,8 +85,9 @@ public class CharacterMovementComponent : MonoBehaviour
 		_rigidbody.velocity = new Vector3(_rigidbody.velocity.x, _jumpPower, _rigidbody.velocity.z);
 	}
 
-    bool _bEnableInput = true;
-    public virtual bool CanInputMove() // 입력받은 방향으로 움직일 수 있는지
+    bool _bEnableInput = true; // 입력을 받을지
+    // 입력받은 방향으로 움직일 수 있는지
+    public virtual bool CanInputMove() 
     {
         return _bEnableInput;
     }

@@ -37,9 +37,9 @@ partial class ClientPacketHandler
         room.Push(() => { room.RoomSession.Send(clientSession, packet); });
     }
 
-    public static void C_DodgeStartHandler(ISession session, IMessage packet)
+    public static void C_RpcFunctionHandler(ISession session, IMessage packet)
     {
-        C_DodgeStart recvPacket = packet as C_DodgeStart;
+        S_RpcFunction recvPacket = packet as S_RpcFunction;
         ClientSession clientSession = session as ClientSession;
 
         GameRoom room = clientSession.MyRoom;

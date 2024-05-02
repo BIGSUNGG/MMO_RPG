@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Util
 {
+    #region Object
     public static T GetOrAddComponent<T>(GameObject go) where T : UnityEngine.Component
     {
         T component = go.GetComponent<T>();
@@ -52,7 +53,51 @@ public class Util
 
         return null;
     }
+    #endregion
 
+    #region Network
+    public static bool IsServer()
+    {
+        return Managers.Network.IsServer;
+    }
+
+    public static bool IsClient()
+    {
+        return Managers.Network.IsClient;
+    }
+
+    public static bool CheckFuncCalledOnServer()
+    {
+        if (IsServer())
+            return true;
+
+        Debug.Log("This function must be called on server");
+        return false;
+    }
+
+    public static bool CheckFuncCalledOnClient()
+    {
+        if (IsClient())
+            return true;
+
+        Debug.Log("This function must be called on client");
+        return false;
+    }
+    #endregion
+
+    #region Math
+    public static float GetAngle(Vector2 vec)
+    {
+        return Mathf.Atan2(vec.x, vec.y) * Mathf.Rad2Deg;
+    }
+
+    public static float GetAngleY(Vector3 vec)
+    {
+        return Mathf.Atan2(vec.x, vec.z) * Mathf.Rad2Deg;
+    }
+    #endregion
+
+    #region Bytes
     public static int GetObjectBytesSize<T>()
     {
         return Marshal.SizeOf(default(T));
@@ -83,14 +128,5 @@ public class Util
 
         return obj;
     }
-
-    public static float GetAngle(Vector2 vec)
-    {
-        return Mathf.Atan2(vec.x, vec.y) * Mathf.Rad2Deg;
-    }
-
-    public static float GetAngleY(Vector3 vec)
-    {
-        return Mathf.Atan2(vec.x, vec.z) * Mathf.Rad2Deg;
-    }
+    #endregion
 }

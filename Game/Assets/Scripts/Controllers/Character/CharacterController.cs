@@ -11,6 +11,7 @@ public class CharacterController : ObjectController
 {
     protected CharacterAnimParameter _anim = null;
     protected CharacterMovementComponent _movement = null;
+    protected HealthComponent _health = null;
 
     public CharacterController()
     {
@@ -28,6 +29,10 @@ public class CharacterController : ObjectController
         _movement = GetComponent<CharacterMovementComponent>();
         if (_movement == null)
             Debug.Log("MovementComponent is null");
+
+        _health = GetComponent<HealthComponent>();
+        if (_health == null)
+            Debug.Log("HealthComponent is null");
     }
 
     protected override void Update()

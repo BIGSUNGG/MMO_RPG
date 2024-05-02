@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 445334063034108604}
   - component: {fileID: 1512411376908754062}
   - component: {fileID: 7615770812763296422}
+  - component: {fileID: 8619395295587409097}
   - component: {fileID: -5648398476204057213}
   - component: {fileID: 4458356079418507880}
   - component: {fileID: 2763638339198004114}
@@ -67,6 +68,19 @@ MonoBehaviour:
   _onDodgeStartEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8619395295587409097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2365248840771035362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4015773a56dfb724b8a9132eea69798d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bDead: 0
 --- !u!114 &-5648398476204057213
 MonoBehaviour:
   m_ObjectHideFlags: 0

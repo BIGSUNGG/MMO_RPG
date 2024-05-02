@@ -27,6 +27,16 @@ public partial class NetworkManager
         _serverSession.Send(new ArraySegment<byte>(sendBuffer));
     }
 
+    public void SendMulticast(IMessage packet)
+    {
+        Debug.Log("This function must be called on server");
+    }
+
+    public void SendClient(IMessage packet)
+    {
+         Debug.Log("This function must be called on server");
+    }
+
     public void ConnectToGame(ServerInfo info)
     {
         IPAddress ipAddr = IPAddress.Parse(info.IpAddress);

@@ -145,22 +145,26 @@ class ServerPacketHandler
 		Managers.Network.SendServer(syncPacket);
 	}
     
-	public static void S_DodgeStartHandler(ISession session, IMessage packet)
+	public static void S_RpcFunctionHandler(ISession session, IMessage packet)
     {
-        S_DodgeStart recvPacket = packet as S_DodgeStart;
-
-        if (Managers.Controller.MyController.ObjectId == recvPacket.ObjectId)
+        S_RpcFunction recvPacket = packet as S_RpcFunction;
+      
+        if (Managers.Controller.MyController.ObjectId == recvPacket.ObjectId) // 내 오브젝트에서 온 Rpc함수일 경우
             return;
 
+        // 오브젝트 아이디에 맞는 오브젝트 찾기
         GameObject go = Managers.Object.FindById(recvPacket.ObjectId);
         if (go == null)
             return;
 
-        PlayerMovementComponent movement = go.GetComponent<PlayerMovementComponent>();
-        if (movement == null)
+        // Rpc함수를 호출한 컴포넌트 찾기
+        ObjectComponent objectComp = go.GetComponent(recvPacket.ComponentType);
+        
+        if (objectComp == null) // 컴포넌트를 못 찾은 경우
             return;
-
-        movement.Multicast_DodgeRollStart_ReceivePacket(new Vector2(recvPacket.X, recvPacket.Y));
+       
+        var parameteByteArr = recvPacket.ParameterBytes.ToByteArray();
+        objectComp.RpcFunction_ReceivePacket(parameteByteArr);
     }
 }
 

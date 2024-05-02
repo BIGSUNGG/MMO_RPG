@@ -58,6 +58,8 @@ public class ObjectController : MonoBehaviour
     {
         return this == Managers.Controller.MyController;
     }
+
+    
     #endregion
 
     #region Sync

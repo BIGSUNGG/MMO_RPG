@@ -39,17 +39,35 @@ class ClientPacketHandler
         pc.ObjectSync(info.SyncInfo);
     }
 
-    public static void C_DodgeStartHandler(ISession session, IMessage packet) 
-    { 
-        C_DodgeStart recvPacket = packet as C_DodgeStart;
+    public static void C_RpcFunctionHandler(ISession session, IMessage packet)
+    {
+        C_RpcFunction recvPacket = packet as C_RpcFunction;
         ClientSession clientSession = session as ClientSession;
 
-        S_DodgeStart sendPacket = new S_DodgeStart();
-        sendPacket.ObjectId = clientSession._playerController.ObjectId;
-        sendPacket.X = recvPacket.X;
-        sendPacket.Y = recvPacket.Y;
-        Managers.Network.SendMulticast(sendPacket);
+        PlayerController pc = clientSession._playerController;
+        if (pc == null)
+            return;
 
+        GameObject go = pc.gameObject;
+        if (go == null)
+            return;
+
+        // Rpc함수를 호출한 컴포넌트 찾기
+        ObjectComponent objectComp = go.GetComponent(recvPacket.ComponentType);
+
+        // 컴포넌트를 못 찾은 경우
+        if (objectComp == null)
+            return;
+
+        // 받은 패킷이 악성 패킷인 경우
+        var parameteByteArr = recvPacket.ParameterBytes.ToByteArray();
+        if (objectComp.RpcFunction_Validate(parameteByteArr) == false)
+        {
+            Debug.Log("Receive wrong rpcFunc packet");
+            return;
+        }
+
+        objectComp.RpcFunction_ReceivePacket(parameteByteArr);
     }
 
 }
