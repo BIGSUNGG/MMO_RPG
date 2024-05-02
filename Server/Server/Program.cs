@@ -125,48 +125,51 @@ namespace Server
             listener.Init(endPoint, () => { return null; });
 
             int processCount = 1;
-            // Get Unity server program path
+            // 유니티 게임 룸 실행파일 경로 구하기
             string processPath = Directory.GetCurrentDirectory().Substring(0, Directory.GetCurrentDirectory().Length - 38) + "\\Game\\Build\\Server\\Game.exe";
 
             for (int i = 0; i < processCount; i++)
             {
                 int mapId = i;
-                bool bProgramConnect = false; // When unity server connect. set true
+                bool bProgramConnect = false; // 유니티 게임 룸이 연결됬을때 true로 설정
 
                 Process process = new Process();
-                GameRoom room = GameLogic.Instance.Add(mapId, process); // Make new game room 
+                GameRoom room = GameLogic.Instance.Add(mapId, process); // 새로운 게임 룸 만들기
 
                 listener.SetSessionFactory(() =>
-                {                    
-                    // Set session and room
+                {
+                    // 세션과 게임 룸 설정
                     GameSession session = GameSessionManager.Instance.Generate();
                     session.Room = room;
-                    room.Session = session;
+                    room.RoomSession = session;
 
-                    // Notify program connect
+                    // 프로그램 연결 알리기
                     bProgramConnect = true;
 
                     return session;
                 });
 
-                // Make program open on new window
-                process.StartInfo.UseShellExecute = true;
-                process.StartInfo.CreateNoWindow = false;
-                // Set Unity server program path
-                process.StartInfo.FileName = processPath;
-                process.Start();
+                if (bTestUnityServer == false || mapId != TestUnityServerId)
+                {
+                    // 새로운 윈도우 창에서 열리도록 설정
+                    process.StartInfo.UseShellExecute = true;
+                    process.StartInfo.CreateNoWindow = false;
+                    // 유니티 경로 설정
+                    process.StartInfo.FileName = processPath;
+                    process.Start();
+                }
 
                 while(true)
                 { 
-                    // Waiting for unity server connect
+                    // 유니티 게임 룸 연결 기다리기
                     if(bProgramConnect)
                     {
-                        // Send map id;
+                        // 게임 룸으로 맵 아이디 전송
                         S_EnterMap packet = new S_EnterMap();
                         packet.MapId = mapId;
 
-                        room.Session.Send(packet);
-                        room.Session.FlushSend();
+                        room.RoomSession.Send(packet);
+                        room.RoomSession.FlushSend();
                         Console.WriteLine("Unity server connect");
                         break;
                     }
@@ -216,8 +219,10 @@ namespace Server
         public static string Name { get; } = "데포르쥬";
 		public static int Port { get; } = 7777;
 		public static string IpAddress { get; set; }
+        public static bool bTestUnityServer = false;
+        public static int TestUnityServerId = 0;
 
-		static void Main(string[] args)
+        static void Main(string[] args)
 		{
             // Get Project Path
             for(int i = 0; i < Environment.CurrentDirectory.Length - 38; i++)

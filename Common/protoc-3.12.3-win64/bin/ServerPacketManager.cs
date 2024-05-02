@@ -30,7 +30,31 @@ class ServerPacketManager
 		_onRecv.Add((ushort)MsgId.SLogin, MakePacket<S_Login>);
 		_handler.Add((ushort)MsgId.SLogin, ServerPacketHandler.S_LoginHandler);		
 		_onRecv.Add((ushort)MsgId.SEnterMap, MakePacket<S_EnterMap>);
-		_handler.Add((ushort)MsgId.SEnterMap, ServerPacketHandler.S_EnterMapHandler);
+		_handler.Add((ushort)MsgId.SEnterMap, ServerPacketHandler.S_EnterMapHandler);		
+		_onRecv.Add((ushort)MsgId.SEnterPlayer, MakePacket<S_EnterPlayer>);
+		_handler.Add((ushort)MsgId.SEnterPlayer, ServerPacketHandler.S_EnterPlayerHandler);		
+		_onRecv.Add((ushort)MsgId.SLeaveMap, MakePacket<S_LeaveMap>);
+		_handler.Add((ushort)MsgId.SLeaveMap, ServerPacketHandler.S_LeaveMapHandler);		
+		_onRecv.Add((ushort)MsgId.SLeavePlayer, MakePacket<S_LeavePlayer>);
+		_handler.Add((ushort)MsgId.SLeavePlayer, ServerPacketHandler.S_LeavePlayerHandler);		
+		_onRecv.Add((ushort)MsgId.SSpawnObject, MakePacket<S_SpawnObject>);
+		_handler.Add((ushort)MsgId.SSpawnObject, ServerPacketHandler.S_SpawnObjectHandler);		
+		_onRecv.Add((ushort)MsgId.SSpawnObjects, MakePacket<S_SpawnObjects>);
+		_handler.Add((ushort)MsgId.SSpawnObjects, ServerPacketHandler.S_SpawnObjectsHandler);		
+		_onRecv.Add((ushort)MsgId.SDespawnObject, MakePacket<S_DespawnObject>);
+		_handler.Add((ushort)MsgId.SDespawnObject, ServerPacketHandler.S_DespawnObjectHandler);		
+		_onRecv.Add((ushort)MsgId.SDespawnObjects, MakePacket<S_DespawnObjects>);
+		_handler.Add((ushort)MsgId.SDespawnObjects, ServerPacketHandler.S_DespawnObjectsHandler);		
+		_onRecv.Add((ushort)MsgId.SPossessObject, MakePacket<S_PossessObject>);
+		_handler.Add((ushort)MsgId.SPossessObject, ServerPacketHandler.S_PossessObjectHandler);		
+		_onRecv.Add((ushort)MsgId.SUnpossessObject, MakePacket<S_UnpossessObject>);
+		_handler.Add((ushort)MsgId.SUnpossessObject, ServerPacketHandler.S_UnpossessObjectHandler);		
+		_onRecv.Add((ushort)MsgId.SObjectSync, MakePacket<S_ObjectSync>);
+		_handler.Add((ushort)MsgId.SObjectSync, ServerPacketHandler.S_ObjectSyncHandler);		
+		_onRecv.Add((ushort)MsgId.SReqeustObjectSync, MakePacket<S_ReqeustObjectSync>);
+		_handler.Add((ushort)MsgId.SReqeustObjectSync, ServerPacketHandler.S_ReqeustObjectSyncHandler);		
+		_onRecv.Add((ushort)MsgId.SRpcFunction, MakePacket<S_RpcFunction>);
+		_handler.Add((ushort)MsgId.SRpcFunction, ServerPacketHandler.S_RpcFunctionHandler);
 	}
 
 	public void OnRecvPacket(ISession session, ArraySegment<byte> buffer)

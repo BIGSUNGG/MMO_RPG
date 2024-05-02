@@ -49,20 +49,24 @@ namespace Server
 			{
 				_reserveQueue.Add(sendBuffer);
 				_reservedSendBytes += sendBuffer.Length;
-
-				Console.WriteLine
-				(
-                    "Id : " + Id +
-                    ", Packet Size : " + (ushort)(size) +
-                    ", All Size : " + (ushort)(size + 8) +
-                    ", MsgId : " + (ushort)msgId
-                );
+                #if false
+                {
+			        Console.WriteLine
+				    	(
+	                        "Send To Room : " + 
+	                        "Id : " + Id +
+	                        ", Packet Size : " + (ushort)(size) +
+	                        ", All Size : " + (ushort)(size + 8) +
+	                        ", MsgId : " + (ushort)msgId
+	                    );
+		        }
+                #endif
 			}
 		}
 
 		public void Send(ClientSession session, IMessage packet)
 		{
-			Send(session.SessionId, packet);
+			Send(session.GameAccountDbId, packet);
 		}
 
 		// Send server packet 
@@ -101,36 +105,63 @@ namespace Server
 
 		public override void OnRecvPacket(ArraySegment<byte> buffer)
         {
-            #if true // Log Packet Info
+            int id = BitConverter.ToInt32(buffer.Array, buffer.Offset);
+            ushort size = BitConverter.ToUInt16(buffer.Array, buffer.Offset + 4);
+            ushort msg = BitConverter.ToUInt16(buffer.Array, buffer.Offset + 6);
+
+#if false // Log Packet Info
             Console.WriteLine(
-                "Id : " + BitConverter.ToInt32(buffer.Array, buffer.Offset) +
-                ", Size : " + BitConverter.ToUInt16(buffer.Array, buffer.Offset + 4) +
-                ", MsgId : " + BitConverter.ToUInt16(buffer.Array, buffer.Offset + 6)
+                "Receive From Room: " + 
+                "Id : " +  id +
+                ", Size : " + size +
+                ", MsgId : " + msg 
                 );
-            #endif
+#endif
 
             int sessionId = BitConverter.ToInt32(buffer.Array, buffer.Offset);
             ArraySegment<byte> recvBuffer = new ArraySegment<byte>(buffer.Array, buffer.Offset + 4, buffer.Count - 4);
+            ushort recvBuffSize = (ushort)(size - 4);
+            byte[] recvBuffSizeByte = BitConverter.GetBytes(recvBuffSize);
+            recvBuffer[0] = recvBuffSizeByte[0];
+            recvBuffer[1] = recvBuffSizeByte[1];
+
             if (sessionId == 0) // 게임 패킷을 받았을경우
             {
                 GamePacketManager.Instance.OnRecvPacket(this, recvBuffer);
             }
             else if(sessionId == -1) // 모든 클라이언트로 보낼 패킷을 받았을 경우
             {
-                Func<ArraySegment<byte>> packetFunc = ()=> { return recvBuffer; };
-                Room.DoActionAll(packetFunc);
+                //Console.WriteLine("Send All");
+
+                byte[] sendBuffer = new byte[recvBuffSize];
+                for (int i = 0; i < recvBuffSize; i++)
+                    sendBuffer[i] = recvBuffer[i];
+
+                Room.Push(() => { Room.SendAll(sendBuffer); });
+                
             }
             else // 클라이언트로 보낼 패킷을 받았을 경우
             {
-                // 패킷을 받을 클라이언트 찾기
+                //패킷을 받을 클라이언트 찾기
                 ClientSession session = Room.FindSession(sessionId);
 
                 if (session != null) // 세션을 찾았는지
-                    session.Send(recvBuffer);
+                {
+                    //Console.WriteLine($"Send to {sessionId} session");
+
+                    byte[] sendBuffer = new byte[recvBuffSize];
+                    for (int i = 0; i < recvBuffSize; i++)
+                        sendBuffer[i] = recvBuffer[i];
+
+                    Room.Push(() => { session.Send(sendBuffer); });                  
+                }
                 else
+                {
                     Console.WriteLine("Recv null session's id");
+                }
             }
-		}
+
+        }
 
 		public override void OnDisconnected(EndPoint endPoint)
 		{
@@ -141,6 +172,6 @@ namespace Server
 		{
 			//Console.WriteLine($"Transferred bytes: {numOfBytes}");
 		}
-		#endregion
+#endregion
 	}
 }

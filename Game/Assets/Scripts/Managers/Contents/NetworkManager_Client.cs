@@ -9,13 +9,13 @@ using Google.Protobuf;
 using Google.Protobuf.Protocol;
 
 public partial class NetworkManager
-{ 
+{
     public int AccountId { get; set; }
     public int Token { get; set; }
 
     ServerSession _serverSession = new ServerSession();
 
-    public void Send(IMessage packet)
+    public void SendServer(IMessage packet)
     {
         string msgName = packet.Descriptor.Name.Replace("_", string.Empty);
         MsgId msgId = (MsgId)Enum.Parse(typeof(MsgId), msgName);
@@ -25,6 +25,16 @@ public partial class NetworkManager
         Array.Copy(BitConverter.GetBytes((ushort)msgId), 0, sendBuffer, 2, sizeof(ushort));
         Array.Copy(packet.ToByteArray(), 0, sendBuffer, 4, size);
         _serverSession.Send(new ArraySegment<byte>(sendBuffer));
+    }
+
+    public void SendMulticast(IMessage packet)
+    {
+        Debug.Log("This function must be called on server");
+    }
+
+    public void SendClient(IMessage packet)
+    {
+         Debug.Log("This function must be called on server");
     }
 
     public void ConnectToGame(ServerInfo info)
@@ -41,13 +51,14 @@ public partial class NetworkManager
 
     public void Update()
     {
+        // 서버 패킷 처리
         List<ServerPacketMessage> list = ServerPacketQueue.Instance.PopAll();
         foreach (ServerPacketMessage packet in list)
         {
             Action<ISession, IMessage> handler = ServerPacketManager.Instance.GetPacketHandler(packet.Id);
             if (handler != null)
                 handler.Invoke(_serverSession, packet.Message);
-        }
+        }       
     }
 }
 #endif

@@ -13,8 +13,6 @@ namespace Server
 {
 	public partial class ClientSession : PacketSession
 	{
-		public Player MyPlayer { get; set; }
-
         #region Account
         public int GameAccountDbId { get; private set; }
         public PlayerLoginState LoginState { get; private set; } = PlayerLoginState.NotLoggedIn;
@@ -67,8 +65,7 @@ namespace Server
                 if (session != null && session.LoginState == PlayerLoginState.LoggedIn) // 찾은 계정이 다른 클라이언트에서 이미 플레이 중이라면
                 {
                     Console.WriteLine("Already playing this account");
-                    LoginFail();
-                    return;
+                    session.Disconnect(); // 이미 연결중인 클라이언트 연결해제
                 }
             }
 
@@ -91,6 +88,9 @@ namespace Server
 
             // 계정 추가하기
             GameAccountManager.Instance.Add(GameAccountDbId, this);
+
+            // 유저를 GameRoom에 추가
+            GameLogic.Instance.Push(() => { EnterRoom(GameLogic.Instance.Find(0)); });
         }
 
         private void LoginFail()
@@ -113,8 +113,15 @@ namespace Server
             LoginState = PlayerLoginState.NotLoggedIn;
 
             // 계정 제거하기
-            if(LoginState == PlayerLoginState.LoggedIn)
-                GameAccountManager.Instance.Remove(GameAccountDbId);
+            if(LoginState == PlayerLoginState.LoggedIn) // 이미 로그인 중이라면
+            {
+                GameAccountManager.Instance.Remove(GameAccountDbId);                
+            }
+
+            if (MyRoom != null)
+                MyRoom.LeaveRoom(this);
+
+            GameLogic.Instance.Push(LeaveRoom);
         }
 
         private GameAccountDb CreateAccount(int accountDbId)
@@ -161,6 +168,33 @@ namespace Server
 
 			return false;
 		}
-		#endregion
-	}
+        #endregion
+
+        #region Room
+        public GameRoom MyRoom { get; private set; }
+
+        // room : 입장할 GameRoom
+        public void EnterRoom(GameRoom room)
+        {
+            if (room == null) // 입장맵이 없는 경우
+                return;          
+
+            // 현재 입장해있는 GameRoom에서 나오기
+            LeaveRoom();
+
+            // GameRoom 입장하자
+            MyRoom = room;
+            MyRoom.EnterRoom(this);
+        }
+
+        // 현재 입장해있는 GameRoom에서 나오기
+        public void LeaveRoom()
+        {
+            if (MyRoom == null) // 현재 입장해있는 맵이 없는경우
+                return;
+
+            MyRoom.LeaveRoom(this);
+        }
+        #endregion
+    }
 }
