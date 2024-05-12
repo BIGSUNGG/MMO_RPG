@@ -12,7 +12,7 @@ public class ObjectController : MonoBehaviour
 {
     public ObjectController()
     {
-        ObjectType = GameObjectType.Character;
+        ObjectType = GameObjectType.Knight;
     }
 
     protected virtual void Start()

@@ -13,22 +13,15 @@ public static class Extension
         {
             case GameComponentType.ObjectComponent:
                 return go.GetComponent<ObjectComponent>();
-                break;
             case GameComponentType.CharacterMovementComponent:
                 return go.GetComponent<CharacterMovementComponent>();
-                break;
             case GameComponentType.PlayerMovementComponent:
                 return go.GetComponent<PlayerMovementComponent>();
-                break;
             case GameComponentType.HealthComponent:
                 return go.GetComponent<HealthComponent>();
-                break;
             default:
                 return null;
-                break;
         }
-
-        return null;
     }
 
     public static T GetOrAddComponent<T>(this GameObject go) where T : UnityEngine.Component

@@ -10,8 +10,8 @@ using UnityEngine.XR;
 
 public class PlayerController : CharacterController
 {
-    PlayerAnimParameter _playerAnim = null;
-    PlayerMovementComponent _playerMovement = null;
+    protected PlayerAnimParameter _playerAnim = null;
+    protected PlayerMovementComponent _playerMovement = null;
 
     protected override void Start()
     {
@@ -24,6 +24,7 @@ public class PlayerController : CharacterController
         _playerMovement = GetComponent<PlayerMovementComponent>();
         if (_playerMovement == null)
             Debug.Log("PlayerMovementComponent is null");
+
     }
 
     protected override void Update()
@@ -42,7 +43,7 @@ public class PlayerController : CharacterController
 
         if(_playerMovement)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space) && CanDodgeInput())
                 _playerMovement.DodgeRollStart();
         }
 
@@ -52,11 +53,15 @@ public class PlayerController : CharacterController
             _camera.transform.eulerAngles = new UnityEngine.Vector3(70, 0, 0);
         }
 
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); // 마우스 좌표에서 쏘는 ray
-        if (Physics.Raycast(ray, out var hit, Mathf.Infinity, LayerMask.GetMask("Ground")))
+        // 마우스 방향으로 회전
+        if(CanRotationInput())
         {
-            Vector3 dir = hit.point - transform.position;
-            transform.eulerAngles = new Vector3(0.0f, Util.GetAngleY(dir), 0.0f);
+	        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); 
+	        if (Physics.Raycast(ray, out var hit, Mathf.Infinity, LayerMask.GetMask("Ground")))
+	        {
+	            Vector3 dir = hit.point - transform.position;
+	            transform.eulerAngles = new Vector3(0.0f, Util.GetAngleY(dir), 0.0f);
+	        }
         }
     }
 
@@ -68,6 +73,19 @@ public class PlayerController : CharacterController
 
         _camera = GameObject.Find("Main Camera");
 
+    }
+
+    public virtual bool CanDodgeInput()
+    {
+        return true;
+    }
+
+    public override bool CanAttack()
+    {
+        if (_playerMovement._bIsdodging)
+            return false;
+
+        return true;
     }
     #endregion
 

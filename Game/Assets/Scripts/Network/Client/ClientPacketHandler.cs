@@ -14,7 +14,7 @@ class ClientPacketHandler
 
     public static void C_ObjectSyncHandler(ISession session, IMessage packet) { C_ObjectSync recvPacket = packet as C_ObjectSync; }
 
-    public static void C_RpcFunctionHandler(ISession session, IMessage packet) { C_RpcFunction recvPacket = packet as C_RpcFunction; }
+    public static void C_RpcComponentFunctionHandler(ISession session, IMessage packet) { C_RpcComponentFunction recvPacket = packet as C_RpcComponentFunction; }
 
 
 }

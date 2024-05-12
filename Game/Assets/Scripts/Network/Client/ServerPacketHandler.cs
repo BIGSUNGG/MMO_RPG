@@ -145,9 +145,9 @@ class ServerPacketHandler
 		Managers.Network.SendServer(syncPacket);
 	}
     
-	public static void S_RpcFunctionHandler(ISession session, IMessage packet)
+	public static void S_RpcComponentFunctionHandler(ISession session, IMessage packet)
     {
-        S_RpcFunction recvPacket = packet as S_RpcFunction;
+        S_RpcComponentFunction recvPacket = packet as S_RpcComponentFunction;
       
         if (Managers.Controller.MyController.ObjectId == recvPacket.ObjectId) // 내 오브젝트에서 온 Rpc함수일 경우
             return;

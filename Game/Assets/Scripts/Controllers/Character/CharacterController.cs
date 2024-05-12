@@ -12,10 +12,11 @@ public class CharacterController : ObjectController
     protected CharacterAnimParameter _anim = null;
     protected CharacterMovementComponent _movement = null;
     protected HealthComponent _health = null;
+    protected InventoryComponent _inventory = null;
 
     public CharacterController()
     {
-        ObjectType = GameObjectType.Character;
+        ObjectType = GameObjectType.Knight;
     }
 
     protected override void Start()
@@ -33,6 +34,10 @@ public class CharacterController : ObjectController
         _health = GetComponent<HealthComponent>();
         if (_health == null)
             Debug.Log("HealthComponent is null");
+
+        _inventory = GetComponent<InventoryComponent>();
+        if (_inventory == null)
+            Debug.Log("InventoryComponent is null");
     }
 
     protected override void Update()
@@ -42,21 +47,36 @@ public class CharacterController : ObjectController
     }
 
     #region Controller
+    public Vector2 _inputDir = Vector2.zero;
     public override void ControllerUpdate()
     {
         base.ControllerUpdate();
 
+        _inputDir = Vector2.zero;
         if (_movement)
         {
+            if (CanMovementInput())
+            {
+                if (Input.GetKey(KeyCode.W))
+                    _movement.MoveForward(1.0f);
+                if (Input.GetKey(KeyCode.S))
+                    _movement.MoveForward(-1.0f);
+
+                if (Input.GetKey(KeyCode.A))
+                    _movement.MoveRight(-1.0f);
+                if (Input.GetKey(KeyCode.D))
+                    _movement.MoveRight(1.0f);
+            }
+
             if (Input.GetKey(KeyCode.W))
-                _movement.MoveForward(1.0f);
+                _inputDir.y += 1.0f;
             if (Input.GetKey(KeyCode.S))
-                _movement.MoveForward(-1.0f);
+                _inputDir.y -= 1.0f;
 
             if (Input.GetKey(KeyCode.A))
-                _movement.MoveRight(-1.0f);
+                _inputDir.x -= 1.0f;
             if (Input.GetKey(KeyCode.D))
-                _movement.MoveRight(1.0f);
+                _inputDir.x += 1.0f;
 
             _movement._bIsRunning = Input.GetKey(KeyCode.LeftShift);
         }
@@ -66,6 +86,21 @@ public class CharacterController : ObjectController
     {
         base.OnPossess();
 
+    }
+
+    public virtual bool CanAttack()
+    {
+        return true;
+    }
+
+    public virtual bool CanRotationInput()
+    {
+        return true;
+    }
+
+    public virtual bool CanMovementInput()
+    {
+        return true;
     }
     #endregion
 
@@ -115,7 +150,7 @@ public class CharacterController : ObjectController
 
         info.position = transform.position;
         info.rotation = transform.rotation;
-        info.inputDir  = _movement._lastInputDir;
+        info.inputDir  = _inputDir;
         info.bIsRunning = _movement._bIsRunning;
 
         base.GetObjectSyncInfo(info);

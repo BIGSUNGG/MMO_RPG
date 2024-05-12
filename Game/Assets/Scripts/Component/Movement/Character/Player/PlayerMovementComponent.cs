@@ -10,10 +10,18 @@ using UnityEngine.XR;
 
 public class PlayerMovementComponent : CharacterMovementComponent
 {
+    PlayerController _ownerPlayer = null;
     protected override void Start()
 	{
         base.Start();
-	}
+
+        _ownerPlayer = gameObject.GetComponent<PlayerController>();
+        if (_ownerPlayer == null)
+        {
+            Debug.Log("Failed to find PlayerController");
+            Debug.Assert(false);
+        }
+    }
 
     protected override void Update()
 	{
@@ -34,7 +42,7 @@ public class PlayerMovementComponent : CharacterMovementComponent
 
     // Dodge
     bool _bEnableDodge = true;
-    bool _bIsdodging = false;           // 구르고 있는지
+    public bool _bIsdodging { get; protected set; } = false;           // 구르고 있는지
     Vector2 _dodgeDir = Vector2.zero;   // 구르는 방향
     float _dodgeSpeed = 12.5f;          // 구르는 속도
     const float _dodgeTime = 0.5f;      // 구르는 시간
@@ -48,10 +56,12 @@ public class PlayerMovementComponent : CharacterMovementComponent
     // 구르기 시작 시 호출
     public virtual void DodgeRollStart() 
     {
-        if (!_bEnableDodge || _bIsdodging || _lastInputDir == Vector2.zero) // 구르고 있거나 움직일 방향이 없는경우
+        if (!_bEnableDodge || _bIsdodging || _ownerPlayer._inputDir == Vector2.zero) // 구르고 있거나 움직일 방향이 없는경우
             return;
 
-        Multicast_DodgeRollStart(_lastInputDir);
+        Vector2 moveDir = _ownerPlayer._inputDir;
+        moveDir.Normalize();
+        Multicast_DodgeRollStart(moveDir);
     }
 
     // 다른 클라이언트에 구르기 시작 패킷을 보냄
@@ -61,12 +71,13 @@ public class PlayerMovementComponent : CharacterMovementComponent
         // 패킷 보내기
         if (Managers.Network.IsClient) // 클라이언트에서 호출된 경우 
         {
-            C_RpcFunction dodgeStartPacket = new C_RpcFunction();
+            C_RpcComponentFunction dodgeStartPacket = new C_RpcComponentFunction();
             byte[] parameterBuffer = new byte[9];
             Array.Copy(BitConverter.GetBytes((byte)RpcFunctionId.Multicast_DodgeRollStart), 0, parameterBuffer, 0, sizeof(byte));
             Array.Copy(BitConverter.GetBytes((float)dir.x), 0, parameterBuffer, 1, sizeof(float));
             Array.Copy(BitConverter.GetBytes((float)dir.y), 0, parameterBuffer, 5, sizeof(float));
 
+            dodgeStartPacket.ObjectId = _owner.ObjectId;
             dodgeStartPacket.ComponentType = GameComponentType.PlayerMovementComponent;
             dodgeStartPacket.ParameterBytes = ByteString.CopyFrom(parameterBuffer);
 
@@ -74,7 +85,7 @@ public class PlayerMovementComponent : CharacterMovementComponent
         }
         else // 서버에서 호출된 경우
         {
-            S_RpcFunction dodgeStartPacket = new S_RpcFunction();
+            S_RpcComponentFunction dodgeStartPacket = new S_RpcComponentFunction();
             byte[] parameterBuffer = new byte[9];
             Array.Copy(BitConverter.GetBytes((byte)RpcFunctionId.Multicast_DodgeRollStart), 0, parameterBuffer, 0, sizeof(byte));
             Array.Copy(BitConverter.GetBytes((float)dir.x), 0, parameterBuffer, 1, sizeof(float));
@@ -111,7 +122,7 @@ public class PlayerMovementComponent : CharacterMovementComponent
             if (Managers.Network.IsServer) // 서버에서 패킷을 받았을 경우
             {
                 // 다른 클라이언트에게 패킷 보내기
-                S_RpcFunction sendPacket = new S_RpcFunction();
+                S_RpcComponentFunction sendPacket = new S_RpcComponentFunction();
                 sendPacket.ObjectId = _owner.ObjectId;
                 sendPacket.ComponentType = GameComponentType.PlayerMovementComponent;
                 sendPacket.ParameterBytes = ByteString.CopyFrom(packet);
@@ -182,12 +193,12 @@ public class PlayerMovementComponent : CharacterMovementComponent
         _dodgeDelayTimer = null;
     }
 
-    public override bool CanInputMove()
+    public override bool CanMovementInput()
     {
         if (_bIsdodging)
             return false;
 
-        return base.CanInputMove();
+        return base.CanMovementInput();
     }
 
     #endregion

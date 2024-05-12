@@ -42,27 +42,28 @@ namespace Google.Protobuf.Protocol {
             "cG9zc2Vzc09iamVjdCI7CgxTX09iamVjdFN5bmMSKwoJU3luY0luZm9zGAEg",
             "AygLMhguUHJvdG9jb2wuT2JqZWN0U3luY0luZm8iOgoMQ19PYmplY3RTeW5j",
             "EioKCFN5bmNJbmZvGAEgASgLMhguUHJvdG9jb2wuT2JqZWN0U3luY0luZm8i",
-            "FQoTU19SZXFldXN0T2JqZWN0U3luYyJtCg1TX1JwY0Z1bmN0aW9uEhAKCG9i",
-            "amVjdElkGAEgASgFEjIKDWNvbXBvbmVudFR5cGUYAiABKA4yGy5Qcm90b2Nv",
-            "bC5HYW1lQ29tcG9uZW50VHlwZRIWCg5wYXJhbWV0ZXJCeXRlcxgDIAEoDCJb",
-            "Cg1DX1JwY0Z1bmN0aW9uEjIKDWNvbXBvbmVudFR5cGUYASABKA4yGy5Qcm90",
-            "b2NvbC5HYW1lQ29tcG9uZW50VHlwZRIWCg5wYXJhbWV0ZXJCeXRlcxgCIAEo",
-            "DCqBAwoFTXNnSWQSDwoLU19DT05ORUNURUQQABIKCgZTX1BJTkcQARIKCgZD",
-            "X1BPTkcQAhILCgdDX0xPR0lOEAMSCwoHU19MT0dJThAEEg8KC1NfRU5URVJf",
-            "TUFQEAUSEgoOU19FTlRFUl9QTEFZRVIQBhIPCgtTX0xFQVZFX01BUBAHEhIK",
-            "DlNfTEVBVkVfUExBWUVSEAgSEgoOU19TUEFXTl9PQkpFQ1QQCRITCg9TX1NQ",
-            "QVdOX09CSkVDVFMQChIUChBTX0RFU1BBV05fT0JKRUNUEAsSFQoRU19ERVNQ",
-            "QVdOX09CSkVDVFMQDBIUChBTX1BPU1NFU1NfT0JKRUNUEA0SFgoSU19VTlBP",
-            "U1NFU1NfT0JKRUNUEA4SEQoNU19PQkpFQ1RfU1lOQxAPEhEKDUNfT0JKRUNU",
-            "X1NZTkMQEBIZChVTX1JFUUVVU1RfT0JKRUNUX1NZTkMQERISCg5TX1JQQ19G",
-            "VU5DVElPThASEhIKDkNfUlBDX0ZVTkNUSU9OEBMqNAoQUGxheWVyTG9naW5T",
-            "dGF0ZRIRCg1OT1RfTE9HR0VEX0lOEAASDQoJTE9HR0VEX0lOEAEqMAoLTG9n",
-            "aW5SZXN1bHQSEQoNTE9HSU5fU1VDQ0VTUxAAEg4KCkxPR0lOX0ZBSUwQASof",
-            "Cg5HYW1lT2JqZWN0VHlwZRINCglDSEFSQUNURVIQACqAAQoRR2FtZUNvbXBv",
-            "bmVudFR5cGUSFAoQT0JKRUNUX0NPTVBPTkVOVBAAEiAKHENIQVJBQ1RFUl9N",
-            "T1ZFTUVOVF9DT01QT05FTlQQARIdChlQTEFZRVJfTU9WRU1FTlRfQ09NUE9O",
-            "RU5UEAISFAoQSEVBTFRIX0NPTVBPTkVOVBADQhuqAhhHb29nbGUuUHJvdG9i",
-            "dWYuUHJvdG9jb2xiBnByb3RvMw=="));
+            "FQoTU19SZXFldXN0T2JqZWN0U3luYyJ2ChZTX1JwY0NvbXBvbmVudEZ1bmN0",
+            "aW9uEhAKCG9iamVjdElkGAEgASgFEjIKDWNvbXBvbmVudFR5cGUYAiABKA4y",
+            "Gy5Qcm90b2NvbC5HYW1lQ29tcG9uZW50VHlwZRIWCg5wYXJhbWV0ZXJCeXRl",
+            "cxgDIAEoDCJ2ChZDX1JwY0NvbXBvbmVudEZ1bmN0aW9uEhAKCG9iamVjdElk",
+            "GAEgASgFEjIKDWNvbXBvbmVudFR5cGUYAiABKA4yGy5Qcm90b2NvbC5HYW1l",
+            "Q29tcG9uZW50VHlwZRIWCg5wYXJhbWV0ZXJCeXRlcxgDIAEoDCqVAwoFTXNn",
+            "SWQSDwoLU19DT05ORUNURUQQABIKCgZTX1BJTkcQARIKCgZDX1BPTkcQAhIL",
+            "CgdDX0xPR0lOEAMSCwoHU19MT0dJThAEEg8KC1NfRU5URVJfTUFQEAUSEgoO",
+            "U19FTlRFUl9QTEFZRVIQBhIPCgtTX0xFQVZFX01BUBAHEhIKDlNfTEVBVkVf",
+            "UExBWUVSEAgSEgoOU19TUEFXTl9PQkpFQ1QQCRITCg9TX1NQQVdOX09CSkVD",
+            "VFMQChIUChBTX0RFU1BBV05fT0JKRUNUEAsSFQoRU19ERVNQQVdOX09CSkVD",
+            "VFMQDBIUChBTX1BPU1NFU1NfT0JKRUNUEA0SFgoSU19VTlBPU1NFU1NfT0JK",
+            "RUNUEA4SEQoNU19PQkpFQ1RfU1lOQxAPEhEKDUNfT0JKRUNUX1NZTkMQEBIZ",
+            "ChVTX1JFUUVVU1RfT0JKRUNUX1NZTkMQERIcChhTX1JQQ19DT01QT05FTlRf",
+            "RlVOQ1RJT04QEhIcChhDX1JQQ19DT01QT05FTlRfRlVOQ1RJT04QEyo0ChBQ",
+            "bGF5ZXJMb2dpblN0YXRlEhEKDU5PVF9MT0dHRURfSU4QABINCglMT0dHRURf",
+            "SU4QASowCgtMb2dpblJlc3VsdBIRCg1MT0dJTl9TVUNDRVNTEAASDgoKTE9H",
+            "SU5fRkFJTBABKhwKDkdhbWVPYmplY3RUeXBlEgoKBktOSUdIVBAAKoABChFH",
+            "YW1lQ29tcG9uZW50VHlwZRIUChBPQkpFQ1RfQ09NUE9ORU5UEAASIAocQ0hB",
+            "UkFDVEVSX01PVkVNRU5UX0NPTVBPTkVOVBABEh0KGVBMQVlFUl9NT1ZFTUVO",
+            "VF9DT01QT05FTlQQAhIUChBIRUFMVEhfQ09NUE9ORU5UEANCG6oCGEdvb2ds",
+            "ZS5Qcm90b2J1Zi5Qcm90b2NvbGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.MsgId), typeof(global::Google.Protobuf.Protocol.PlayerLoginState), typeof(global::Google.Protobuf.Protocol.LoginResult), typeof(global::Google.Protobuf.Protocol.GameObjectType), typeof(global::Google.Protobuf.Protocol.GameComponentType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -86,8 +87,8 @@ namespace Google.Protobuf.Protocol {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_ObjectSync), global::Google.Protobuf.Protocol.S_ObjectSync.Parser, new[]{ "SyncInfos" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.C_ObjectSync), global::Google.Protobuf.Protocol.C_ObjectSync.Parser, new[]{ "SyncInfo" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_ReqeustObjectSync), global::Google.Protobuf.Protocol.S_ReqeustObjectSync.Parser, null, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_RpcFunction), global::Google.Protobuf.Protocol.S_RpcFunction.Parser, new[]{ "ObjectId", "ComponentType", "ParameterBytes" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.C_RpcFunction), global::Google.Protobuf.Protocol.C_RpcFunction.Parser, new[]{ "ComponentType", "ParameterBytes" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_RpcComponentFunction), global::Google.Protobuf.Protocol.S_RpcComponentFunction.Parser, new[]{ "ObjectId", "ComponentType", "ParameterBytes" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.C_RpcComponentFunction), global::Google.Protobuf.Protocol.C_RpcComponentFunction.Parser, new[]{ "ObjectId", "ComponentType", "ParameterBytes" }, null, null, null, null)
           }));
     }
     #endregion
@@ -140,8 +141,8 @@ namespace Google.Protobuf.Protocol {
     /// <summary>
     /// Content
     /// </summary>
-    [pbr::OriginalName("S_RPC_FUNCTION")] SRpcFunction = 18,
-    [pbr::OriginalName("C_RPC_FUNCTION")] CRpcFunction = 19,
+    [pbr::OriginalName("S_RPC_COMPONENT_FUNCTION")] SRpcComponentFunction = 18,
+    [pbr::OriginalName("C_RPC_COMPONENT_FUNCTION")] CRpcComponentFunction = 19,
   }
 
   /// <summary>
@@ -158,7 +159,7 @@ namespace Google.Protobuf.Protocol {
   }
 
   public enum GameObjectType {
-    [pbr::OriginalName("CHARACTER")] Character = 0,
+    [pbr::OriginalName("KNIGHT")] Knight = 0,
   }
 
   public enum GameComponentType {
@@ -211,7 +212,7 @@ namespace Google.Protobuf.Protocol {
 
     /// <summary>Field number for the "ObjectType" field.</summary>
     public const int ObjectTypeFieldNumber = 1;
-    private global::Google.Protobuf.Protocol.GameObjectType objectType_ = global::Google.Protobuf.Protocol.GameObjectType.Character;
+    private global::Google.Protobuf.Protocol.GameObjectType objectType_ = global::Google.Protobuf.Protocol.GameObjectType.Knight;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Protobuf.Protocol.GameObjectType ObjectType {
       get { return objectType_; }
@@ -252,7 +253,7 @@ namespace Google.Protobuf.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (ObjectType != global::Google.Protobuf.Protocol.GameObjectType.Character) hash ^= ObjectType.GetHashCode();
+      if (ObjectType != global::Google.Protobuf.Protocol.GameObjectType.Knight) hash ^= ObjectType.GetHashCode();
       if (ObjectId != 0) hash ^= ObjectId.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -267,7 +268,7 @@ namespace Google.Protobuf.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (ObjectType != global::Google.Protobuf.Protocol.GameObjectType.Character) {
+      if (ObjectType != global::Google.Protobuf.Protocol.GameObjectType.Knight) {
         output.WriteRawTag(8);
         output.WriteEnum((int) ObjectType);
       }
@@ -283,7 +284,7 @@ namespace Google.Protobuf.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (ObjectType != global::Google.Protobuf.Protocol.GameObjectType.Character) {
+      if (ObjectType != global::Google.Protobuf.Protocol.GameObjectType.Knight) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) ObjectType);
       }
       if (ObjectId != 0) {
@@ -300,7 +301,7 @@ namespace Google.Protobuf.Protocol {
       if (other == null) {
         return;
       }
-      if (other.ObjectType != global::Google.Protobuf.Protocol.GameObjectType.Character) {
+      if (other.ObjectType != global::Google.Protobuf.Protocol.GameObjectType.Knight) {
         ObjectType = other.ObjectType;
       }
       if (other.ObjectId != 0) {
@@ -2720,13 +2721,13 @@ namespace Google.Protobuf.Protocol {
   }
 
   /// <summary>
-  /// S_RPC_FUNCTION
+  /// S_RPC_COMPONENT_FUNCTION
   /// </summary>
-  public sealed partial class S_RpcFunction : pb::IMessage<S_RpcFunction> {
-    private static readonly pb::MessageParser<S_RpcFunction> _parser = new pb::MessageParser<S_RpcFunction>(() => new S_RpcFunction());
+  public sealed partial class S_RpcComponentFunction : pb::IMessage<S_RpcComponentFunction> {
+    private static readonly pb::MessageParser<S_RpcComponentFunction> _parser = new pb::MessageParser<S_RpcComponentFunction>(() => new S_RpcComponentFunction());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<S_RpcFunction> Parser { get { return _parser; } }
+    public static pb::MessageParser<S_RpcComponentFunction> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -2739,14 +2740,14 @@ namespace Google.Protobuf.Protocol {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public S_RpcFunction() {
+    public S_RpcComponentFunction() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public S_RpcFunction(S_RpcFunction other) : this() {
+    public S_RpcComponentFunction(S_RpcComponentFunction other) : this() {
       objectId_ = other.objectId_;
       componentType_ = other.componentType_;
       parameterBytes_ = other.parameterBytes_;
@@ -2754,8 +2755,8 @@ namespace Google.Protobuf.Protocol {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public S_RpcFunction Clone() {
-      return new S_RpcFunction(this);
+    public S_RpcComponentFunction Clone() {
+      return new S_RpcComponentFunction(this);
     }
 
     /// <summary>Field number for the "objectId" field.</summary>
@@ -2793,11 +2794,11 @@ namespace Google.Protobuf.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as S_RpcFunction);
+      return Equals(other as S_RpcComponentFunction);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(S_RpcFunction other) {
+    public bool Equals(S_RpcComponentFunction other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -2865,7 +2866,7 @@ namespace Google.Protobuf.Protocol {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(S_RpcFunction other) {
+    public void MergeFrom(S_RpcComponentFunction other) {
       if (other == null) {
         return;
       }
@@ -2908,13 +2909,13 @@ namespace Google.Protobuf.Protocol {
   }
 
   /// <summary>
-  /// C_RPC_FUNCTION
+  /// C_RPC_COMPONENT_FUNCTION
   /// </summary>
-  public sealed partial class C_RpcFunction : pb::IMessage<C_RpcFunction> {
-    private static readonly pb::MessageParser<C_RpcFunction> _parser = new pb::MessageParser<C_RpcFunction>(() => new C_RpcFunction());
+  public sealed partial class C_RpcComponentFunction : pb::IMessage<C_RpcComponentFunction> {
+    private static readonly pb::MessageParser<C_RpcComponentFunction> _parser = new pb::MessageParser<C_RpcComponentFunction>(() => new C_RpcComponentFunction());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<C_RpcFunction> Parser { get { return _parser; } }
+    public static pb::MessageParser<C_RpcComponentFunction> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -2927,26 +2928,38 @@ namespace Google.Protobuf.Protocol {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public C_RpcFunction() {
+    public C_RpcComponentFunction() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public C_RpcFunction(C_RpcFunction other) : this() {
+    public C_RpcComponentFunction(C_RpcComponentFunction other) : this() {
+      objectId_ = other.objectId_;
       componentType_ = other.componentType_;
       parameterBytes_ = other.parameterBytes_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public C_RpcFunction Clone() {
-      return new C_RpcFunction(this);
+    public C_RpcComponentFunction Clone() {
+      return new C_RpcComponentFunction(this);
+    }
+
+    /// <summary>Field number for the "objectId" field.</summary>
+    public const int ObjectIdFieldNumber = 1;
+    private int objectId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int ObjectId {
+      get { return objectId_; }
+      set {
+        objectId_ = value;
+      }
     }
 
     /// <summary>Field number for the "componentType" field.</summary>
-    public const int ComponentTypeFieldNumber = 1;
+    public const int ComponentTypeFieldNumber = 2;
     private global::Google.Protobuf.Protocol.GameComponentType componentType_ = global::Google.Protobuf.Protocol.GameComponentType.ObjectComponent;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Protobuf.Protocol.GameComponentType ComponentType {
@@ -2957,7 +2970,7 @@ namespace Google.Protobuf.Protocol {
     }
 
     /// <summary>Field number for the "parameterBytes" field.</summary>
-    public const int ParameterBytesFieldNumber = 2;
+    public const int ParameterBytesFieldNumber = 3;
     private pb::ByteString parameterBytes_ = pb::ByteString.Empty;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pb::ByteString ParameterBytes {
@@ -2969,17 +2982,18 @@ namespace Google.Protobuf.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as C_RpcFunction);
+      return Equals(other as C_RpcComponentFunction);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(C_RpcFunction other) {
+    public bool Equals(C_RpcComponentFunction other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (ObjectId != other.ObjectId) return false;
       if (ComponentType != other.ComponentType) return false;
       if (ParameterBytes != other.ParameterBytes) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -2988,6 +3002,7 @@ namespace Google.Protobuf.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
+      if (ObjectId != 0) hash ^= ObjectId.GetHashCode();
       if (ComponentType != global::Google.Protobuf.Protocol.GameComponentType.ObjectComponent) hash ^= ComponentType.GetHashCode();
       if (ParameterBytes.Length != 0) hash ^= ParameterBytes.GetHashCode();
       if (_unknownFields != null) {
@@ -3003,12 +3018,16 @@ namespace Google.Protobuf.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (ComponentType != global::Google.Protobuf.Protocol.GameComponentType.ObjectComponent) {
+      if (ObjectId != 0) {
         output.WriteRawTag(8);
+        output.WriteInt32(ObjectId);
+      }
+      if (ComponentType != global::Google.Protobuf.Protocol.GameComponentType.ObjectComponent) {
+        output.WriteRawTag(16);
         output.WriteEnum((int) ComponentType);
       }
       if (ParameterBytes.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(26);
         output.WriteBytes(ParameterBytes);
       }
       if (_unknownFields != null) {
@@ -3019,6 +3038,9 @@ namespace Google.Protobuf.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
+      if (ObjectId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(ObjectId);
+      }
       if (ComponentType != global::Google.Protobuf.Protocol.GameComponentType.ObjectComponent) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) ComponentType);
       }
@@ -3032,9 +3054,12 @@ namespace Google.Protobuf.Protocol {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(C_RpcFunction other) {
+    public void MergeFrom(C_RpcComponentFunction other) {
       if (other == null) {
         return;
+      }
+      if (other.ObjectId != 0) {
+        ObjectId = other.ObjectId;
       }
       if (other.ComponentType != global::Google.Protobuf.Protocol.GameComponentType.ObjectComponent) {
         ComponentType = other.ComponentType;
@@ -3054,10 +3079,14 @@ namespace Google.Protobuf.Protocol {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
+            ObjectId = input.ReadInt32();
+            break;
+          }
+          case 16: {
             ComponentType = (global::Google.Protobuf.Protocol.GameComponentType) input.ReadEnum();
             break;
           }
-          case 18: {
+          case 26: {
             ParameterBytes = input.ReadBytes();
             break;
           }

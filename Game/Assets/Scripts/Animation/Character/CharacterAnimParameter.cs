@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class CharacterAnimParameter : MonoBehaviour
 {
+    protected CharacterController _character = null;
     protected Animator _animator;
     protected CharacterMovementComponent _movement;
 
     protected virtual void Awake()
     {
+        _character = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
         _movement = GetComponent<CharacterMovementComponent>();
     }
@@ -22,12 +25,12 @@ public class CharacterAnimParameter : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        Vector3 inputDir = new Vector3(_movement._lastInputDir.x, 0.0f, _movement._lastInputDir.y);
+        Vector3 moveDir = new Vector3(_character._inputDir.x, 0.0f, _character._inputDir.y);
 
-        bool bIsMoving = _movement._lastInputDir != Vector2.zero; // 캐릭터가 움직이고 있는지
+        bool bIsMoving = _character._inputDir != Vector2.zero; // 캐릭터가 움직이고 있는지
         bool bIsRunning = bIsMoving && _movement._bIsRunning; // 캐릭터가 움직이고 있는지
-        float forwardSpeed = Vector3.Dot(transform.forward, inputDir); // 정면 속도 구하기
-        float horizonSpeed = Vector3.Dot(transform.right  , inputDir); // 수평 속도 구하기
+        float forwardSpeed = Vector3.Dot(transform.forward, moveDir); // 정면 속도 구하기
+        float horizonSpeed = Vector3.Dot(transform.right  , moveDir); // 수평 속도 구하기
 
         // 애니메이터에 값 적용
         _animator.SetBool("IsMoving", bIsMoving);

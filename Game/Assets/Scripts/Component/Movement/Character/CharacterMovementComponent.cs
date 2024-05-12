@@ -30,14 +30,13 @@ public class CharacterMovementComponent : ObjectComponent
         }
         else if (_owner.IsLocallyControlled()) // 클라이언트가 빙의한 오브젝트인 경우
         {
-            _inputDir.Normalize();
-            _lastInputDir = _inputDir;
-            if (CanInputMove()) // 입력이 가능한지
+            _moveDir.Normalize();
+            if (CanMovementInput()) // 입력이 가능한지
             {
                 // 입력 방향으로 이동
-	            _velocity = new Vector3(_inputDir.x * _curMoveSpeed, _velocity.y, _inputDir.y * _curMoveSpeed);
+	            _velocity = new Vector3(_moveDir.x * _curMoveSpeed, _velocity.y, _moveDir.y * _curMoveSpeed);
             }
-            _inputDir = Vector2.zero;
+            _moveDir = Vector2.zero;
         }
         else // 클라이언트가 빙의하지않은 오브젝트인 경우
         {
@@ -63,17 +62,16 @@ public class CharacterMovementComponent : ObjectComponent
     float _runMaxSpeed = 7.5f; // 뛰기 속도
 
     // Input
-    Vector2 _inputDir = Vector2.zero;
-    public Vector2 _lastInputDir = Vector2.zero;
+    Vector2 _moveDir = Vector2.zero;
 
     public virtual void MoveForward(float axis)
 	{
-		_inputDir.y += axis;
+		_moveDir.y += axis;
 	}
 
 	public virtual void MoveRight(float axis)
 	{
-		_inputDir.x += axis;
+		_moveDir.x += axis;
 	}
 
 	float _jumpPower = 5.0f;
@@ -87,7 +85,7 @@ public class CharacterMovementComponent : ObjectComponent
 
     bool _bEnableInput = true; // 입력을 받을지
     // 입력받은 방향으로 움직일 수 있는지
-    public virtual bool CanInputMove() 
+    public virtual bool CanMovementInput() 
     {
         return _bEnableInput;
     }
@@ -117,9 +115,8 @@ public class CharacterMovementComponent : ObjectComponent
 			transform.position = pos;
 			transform.rotation = rot;
 
-            _inputDir = inputDir;
-            _lastInputDir = inputDir;
-
+            _moveDir = inputDir;
+            _moveDir.Normalize();
             _bIsRunning = IsRunnung;
         }
         else
@@ -132,9 +129,8 @@ public class CharacterMovementComponent : ObjectComponent
             _syncEndPos = pos;
 			_syncEndRot = rot;
 
-            _inputDir = inputDir;
-            _lastInputDir = inputDir;
-
+            _moveDir = inputDir;
+            _moveDir.Normalize();
             _bIsRunning = IsRunnung;
         }
     }

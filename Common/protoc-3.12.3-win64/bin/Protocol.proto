@@ -39,8 +39,8 @@ enum MsgId {
 	S_REQEUST_OBJECT_SYNC = 17;
 
 	// Content
-	S_RPC_FUNCTION = 18;
-	C_RPC_FUNCTION = 19;
+	S_RPC_COMPONENT_FUNCTION = 18;
+	C_RPC_COMPONENT_FUNCTION = 19;
 
 }
 
@@ -56,7 +56,7 @@ enum LoginResult {
 }
 
 enum GameObjectType {
-	CHARACTER = 0;
+	KNIGHT = 0;
 }
 
 enum GameComponentType {
@@ -164,15 +164,16 @@ message C_ObjectSync{
 message S_ReqeustObjectSync{
 }
 
-// S_RPC_FUNCTION
-message S_RpcFunction{
+// S_RPC_COMPONENT_FUNCTION
+message S_RpcComponentFunction{
 	int32 objectId = 1;
 	GameComponentType componentType = 2;
 	bytes  parameterBytes = 3;
 }
 
-// C_RPC_FUNCTION
-message C_RpcFunction{
-	GameComponentType componentType = 1;
-	bytes  parameterBytes = 2;
+// C_RPC_COMPONENT_FUNCTION
+message C_RpcComponentFunction{
+	int32 objectId = 1;
+	GameComponentType componentType = 2;
+	bytes  parameterBytes = 3;
 }

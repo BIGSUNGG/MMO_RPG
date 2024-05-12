@@ -68,7 +68,7 @@ class ServerPacketHandler
         // 접속한 플레이어가 빙의할 오브젝트 만들기
         {
 	        ObjectInfo info = new ObjectInfo();
-	        info.ObjectType = GameObjectType.Character;
+	        info.ObjectType = GameObjectType.Knight;
 	        GameObject go = Managers.Object.Create(info);
 
             PlayerController pc = go.GetComponent<PlayerController>();
@@ -155,9 +155,9 @@ class ServerPacketHandler
 
     }
 
-    public static void S_RpcFunctionHandler(ISession session, IMessage packet)
+    public static void S_RpcComponentFunctionHandler(ISession session, IMessage packet)
     {
-        S_RpcFunction recvPacket = packet as S_RpcFunction;
+        S_RpcComponentFunction recvPacket = packet as S_RpcComponentFunction;
 
     }
 }

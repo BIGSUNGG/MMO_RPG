@@ -39,13 +39,13 @@ class ClientPacketHandler
         pc.ObjectSync(info.SyncInfo);
     }
 
-    public static void C_RpcFunctionHandler(ISession session, IMessage packet)
+    public static void C_RpcComponentFunctionHandler(ISession session, IMessage packet)
     {
-        C_RpcFunction recvPacket = packet as C_RpcFunction;
+        C_RpcComponentFunction recvPacket = packet as C_RpcComponentFunction;
         ClientSession clientSession = session as ClientSession;
 
         PlayerController pc = clientSession._playerController;
-        if (pc == null)
+        if (pc == null || pc.ObjectId != recvPacket.ObjectId)
             return;
 
         GameObject go = pc.gameObject;
