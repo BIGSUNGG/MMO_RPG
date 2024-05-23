@@ -73,12 +73,12 @@ public class PlayerMovementComponent : CharacterMovementComponent
         {
             C_RpcComponentFunction dodgeStartPacket = new C_RpcComponentFunction();
             byte[] parameterBuffer = new byte[9];
-            Array.Copy(BitConverter.GetBytes((byte)RpcFunctionId.Multicast_DodgeRollStart), 0, parameterBuffer, 0, sizeof(byte));
-            Array.Copy(BitConverter.GetBytes((float)dir.x), 0, parameterBuffer, 1, sizeof(float));
-            Array.Copy(BitConverter.GetBytes((float)dir.y), 0, parameterBuffer, 5, sizeof(float));
+            Array.Copy(BitConverter.GetBytes((float)dir.x), 0, parameterBuffer, 0, sizeof(float));
+            Array.Copy(BitConverter.GetBytes((float)dir.y), 0, parameterBuffer, 4, sizeof(float));
 
             dodgeStartPacket.ObjectId = _owner.ObjectId;
             dodgeStartPacket.ComponentType = GameComponentType.PlayerMovementComponent;
+            dodgeStartPacket.RpcFunctionId = RpcComponentFunctionId.MulticastDodgeRollStart;
             dodgeStartPacket.ParameterBytes = ByteString.CopyFrom(parameterBuffer);
 
             Managers.Network.SendServer(dodgeStartPacket);
@@ -87,12 +87,12 @@ public class PlayerMovementComponent : CharacterMovementComponent
         {
             S_RpcComponentFunction dodgeStartPacket = new S_RpcComponentFunction();
             byte[] parameterBuffer = new byte[9];
-            Array.Copy(BitConverter.GetBytes((byte)RpcFunctionId.Multicast_DodgeRollStart), 0, parameterBuffer, 0, sizeof(byte));
-            Array.Copy(BitConverter.GetBytes((float)dir.x), 0, parameterBuffer, 1, sizeof(float));
-            Array.Copy(BitConverter.GetBytes((float)dir.y), 0, parameterBuffer, 5, sizeof(float));
+            Array.Copy(BitConverter.GetBytes((float)dir.x), 0, parameterBuffer, 0, sizeof(float));
+            Array.Copy(BitConverter.GetBytes((float)dir.y), 0, parameterBuffer, 4, sizeof(float));
 
             dodgeStartPacket.ObjectId = _owner.ObjectId;
             dodgeStartPacket.ComponentType = GameComponentType.PlayerMovementComponent;
+            dodgeStartPacket.RpcFunctionId = RpcComponentFunctionId.MulticastDodgeRollStart;
             dodgeStartPacket.ParameterBytes = ByteString.CopyFrom(parameterBuffer);
 
             Managers.Network.SendMulticast(dodgeStartPacket);
@@ -102,21 +102,14 @@ public class PlayerMovementComponent : CharacterMovementComponent
     }
 
     // 다른 클라이언트로 부터 구르기 시작 패킷을 받으면 호출
-    // ByteString : 구를 방향의 바이트 배열
+    // packet : 구를 방향의 바이트 배열 
     protected virtual void Multicast_DodgeRollStart_ReceivePacket(byte[] packet)
     {
         try
         {
-            byte funcId = packet[0];
-            if (funcId != (byte)RpcFunctionId.Multicast_DodgeRollStart)
-            {
-                Debug.Log("Function id is not correct");
-                return;
-            }
-
             Vector2 dir = new Vector2();
-            dir.x = BitConverter.ToSingle(packet, 1);
-            dir.y = BitConverter.ToSingle(packet, 5);
+            dir.x = BitConverter.ToSingle(packet, 0);
+            dir.y = BitConverter.ToSingle(packet, 4);
             Multicast_DodgeRollStart_Implementation(dir);
 
             if (Managers.Network.IsServer) // 서버에서 패킷을 받았을 경우
@@ -136,19 +129,12 @@ public class PlayerMovementComponent : CharacterMovementComponent
     }
 
     // 서버에서 패킷을 받았을 때 악성 패킷을 감지하기 위한 인증
-    // ByteString : 받은 패킷의 바이트 배열
+    // packet : 받은 패킷의 바이트 배열
     // return : 받은 패킷이 악성 패킷이 아닌지
     protected virtual bool Multicast_DodgeRollStart_Validate(byte[] packet)
     {
         try
         {
-            byte funcId = packet[0];
-            if (funcId != (byte)RpcFunctionId.Multicast_DodgeRollStart)
-            {
-                Debug.Log("Function id is not correct");
-                return false;
-            }
-
             Vector2 dir = new Vector2();
             dir.x = BitConverter.ToSingle(packet, 1);
             dir.y = BitConverter.ToSingle(packet, 5);
@@ -205,15 +191,15 @@ public class PlayerMovementComponent : CharacterMovementComponent
 
     #region RpcFunction
     // 다른 클라이언트로 패킷을 받으면 FunctionId에 맞는 함수 호출
-    // ByteString : 받은 패킷의 바이트 배열
-    public override void RpcFunction_ReceivePacket(byte[] packet)
+    // functionId : 받은 패킷의 함수 아이디
+    // packet : 받은 패킷의 바이트 배열
+    public override void RpcFunction_ReceivePacket(RpcComponentFunctionId functionId, byte[] packet)
     {
         try
         {
-            byte funcId = packet[0];
-            switch (funcId)
+            switch (functionId)
             {
-                case (byte)RpcFunctionId.Multicast_DodgeRollStart:
+                case RpcComponentFunctionId.MulticastDodgeRollStart:
                     Multicast_DodgeRollStart_ReceivePacket(packet);
                     return;
             }
@@ -223,20 +209,20 @@ public class PlayerMovementComponent : CharacterMovementComponent
         	
         }
 
-        base.RpcFunction_ReceivePacket(packet);
+        base.RpcFunction_ReceivePacket(functionId, packet);
     }
 
     // 클라이언트에서 받은 패킷이 악성 패킷인지 확인
-    // ByteString : 받은 패킷의 바이트 배열
+    // functionId : 받은 패킷의 함수 아이디
+    // packet : 받은 패킷의 바이트 배열
     // return : 받은 패킷이 악성 패킷이 아닌지
-    public override bool RpcFunction_Validate(byte[] packet)
+    public override bool RpcFunction_Validate(RpcComponentFunctionId functionId, byte[] packet)
     {
         try
         {
-            byte funcId = packet[0];
-            switch (funcId)
+            switch (functionId)
             {
-                case (byte)RpcFunctionId.Multicast_DodgeRollStart:
+                case RpcComponentFunctionId.MulticastDodgeRollStart:
                     return Multicast_DodgeRollStart_Validate(packet);                    
             }
         }
@@ -245,7 +231,7 @@ public class PlayerMovementComponent : CharacterMovementComponent
             Debug.Log($"{ex}");
         }
 
-        return base.RpcFunction_Validate(packet);
+        return base.RpcFunction_Validate(functionId, packet);
     }
     #endregion
 

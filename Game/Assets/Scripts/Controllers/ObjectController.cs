@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-public class ObjectController : MonoBehaviour
+public class ObjectController : MonoBehaviour, RpcObjectFunction
 {
     public ObjectController()
     {
@@ -91,6 +91,27 @@ public class ObjectController : MonoBehaviour
     protected void GetObjectSyncInfo(ObjectSyncInfo info)
     {
     }
+
     #endregion
 
+    #region RpcFunction
+    // 다른 클라이언트로 패킷을 받으면 FunctionId에 맞는 함수 호출
+    // functionId : 받은 패킷의 함수 아이디
+    // packet : 받은 패킷의 바이트 배열
+    public virtual void RpcFunction_ReceivePacket(RpcObjectFunctionId functionId, byte[] packet)
+    {
+
+    }
+
+    // 클라이언트에서 받은 패킷이 악성 패킷인지 확인
+    // functionId : 받은 패킷의 함수 아이디
+    // packet : 받은 패킷의 바이트 배열
+    // return : 받은 패킷이 악성 패킷이 아닌지
+    public virtual bool RpcFunction_Validate(RpcObjectFunctionId functionId, byte[] packet)
+    {
+        Debug.Log("Receive wrong function id");
+        return false;
+    }
+
+    #endregion
 }

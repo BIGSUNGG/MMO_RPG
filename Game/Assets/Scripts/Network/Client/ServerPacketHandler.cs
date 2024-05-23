@@ -144,8 +144,30 @@ class ServerPacketHandler
 		syncPacket.SyncInfo.ObjectInfo.ObjectType = pc.ObjectType;
 		Managers.Network.SendServer(syncPacket);
 	}
-    
-	public static void S_RpcComponentFunctionHandler(ISession session, IMessage packet)
+
+	public static void S_RpcObjectFunctionHandler(ISession session, IMessage packet)
+    {
+        S_RpcObjectFunction recvPacket = packet as S_RpcObjectFunction;
+              
+        if (Managers.Controller.MyController.ObjectId == recvPacket.ObjectId) // 내 오브젝트에서 온 Rpc함수일 경우
+            return;
+
+        // 오브젝트 아이디에 맞는 오브젝트 찾기
+        GameObject go = Managers.Object.FindById(recvPacket.ObjectId);
+        if (go == null)
+            return;
+
+        // Rpc함수를 호출한 컨트롤러 찾기
+        ObjectController oc = go.GetComponent<ObjectController>();
+        
+        if (oc == null) // 컨트롤러 못 찾은 경우
+            return;
+       
+        var parameteByteArr = recvPacket.ParameterBytes.ToByteArray();
+        oc.RpcFunction_ReceivePacket(recvPacket.RpcFunctionId, parameteByteArr);
+    }
+
+    public static void S_RpcComponentFunctionHandler(ISession session, IMessage packet)
     {
         S_RpcComponentFunction recvPacket = packet as S_RpcComponentFunction;
       
@@ -164,7 +186,7 @@ class ServerPacketHandler
             return;
        
         var parameteByteArr = recvPacket.ParameterBytes.ToByteArray();
-        objectComp.RpcFunction_ReceivePacket(parameteByteArr);
+        objectComp.RpcFunction_ReceivePacket(recvPacket.RpcFunctionId, parameteByteArr);
     }
 }
 

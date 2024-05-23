@@ -9,8 +9,9 @@ public class DodgeRollState : StateMachineBehaviour
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
-        animator.applyRootMotion = false;
-
+        ObjectController oc = animator.GetComponent<ObjectController>();
+        if (oc && oc.IsLocallyControlled())
+            animator.applyRootMotion = false;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

@@ -20,16 +20,19 @@ public class KnightAnimParameter : PlayerAnimParameter
     {
         base.Update();
 
-        _animator.SetBool("DoNextCombo", _knight._bDoNextCombo);
+        _animator.SetInteger("Current Combo", _knight._curCombo);
     }
 
     protected virtual void OnComboStartEvent()
     {
-        _animator.SetTrigger("OnComboStart");
+        _animator.SetTrigger("On Combo Start");
+        _animator.ResetTrigger("On Combo End");
     }
 
     protected virtual void OnComboEndEvent()
     {
+        _animator.SetTrigger("On Combo End");
+        _animator.ResetTrigger("On Combo Start");
     }
 
 }

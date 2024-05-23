@@ -42,31 +42,44 @@ namespace Google.Protobuf.Protocol {
             "cG9zc2Vzc09iamVjdCI7CgxTX09iamVjdFN5bmMSKwoJU3luY0luZm9zGAEg",
             "AygLMhguUHJvdG9jb2wuT2JqZWN0U3luY0luZm8iOgoMQ19PYmplY3RTeW5j",
             "EioKCFN5bmNJbmZvGAEgASgLMhguUHJvdG9jb2wuT2JqZWN0U3luY0luZm8i",
-            "FQoTU19SZXFldXN0T2JqZWN0U3luYyJ2ChZTX1JwY0NvbXBvbmVudEZ1bmN0",
-            "aW9uEhAKCG9iamVjdElkGAEgASgFEjIKDWNvbXBvbmVudFR5cGUYAiABKA4y",
-            "Gy5Qcm90b2NvbC5HYW1lQ29tcG9uZW50VHlwZRIWCg5wYXJhbWV0ZXJCeXRl",
-            "cxgDIAEoDCJ2ChZDX1JwY0NvbXBvbmVudEZ1bmN0aW9uEhAKCG9iamVjdElk",
-            "GAEgASgFEjIKDWNvbXBvbmVudFR5cGUYAiABKA4yGy5Qcm90b2NvbC5HYW1l",
-            "Q29tcG9uZW50VHlwZRIWCg5wYXJhbWV0ZXJCeXRlcxgDIAEoDCqVAwoFTXNn",
-            "SWQSDwoLU19DT05ORUNURUQQABIKCgZTX1BJTkcQARIKCgZDX1BPTkcQAhIL",
-            "CgdDX0xPR0lOEAMSCwoHU19MT0dJThAEEg8KC1NfRU5URVJfTUFQEAUSEgoO",
-            "U19FTlRFUl9QTEFZRVIQBhIPCgtTX0xFQVZFX01BUBAHEhIKDlNfTEVBVkVf",
-            "UExBWUVSEAgSEgoOU19TUEFXTl9PQkpFQ1QQCRITCg9TX1NQQVdOX09CSkVD",
-            "VFMQChIUChBTX0RFU1BBV05fT0JKRUNUEAsSFQoRU19ERVNQQVdOX09CSkVD",
-            "VFMQDBIUChBTX1BPU1NFU1NfT0JKRUNUEA0SFgoSU19VTlBPU1NFU1NfT0JK",
-            "RUNUEA4SEQoNU19PQkpFQ1RfU1lOQxAPEhEKDUNfT0JKRUNUX1NZTkMQEBIZ",
-            "ChVTX1JFUUVVU1RfT0JKRUNUX1NZTkMQERIcChhTX1JQQ19DT01QT05FTlRf",
-            "RlVOQ1RJT04QEhIcChhDX1JQQ19DT01QT05FTlRfRlVOQ1RJT04QEyo0ChBQ",
-            "bGF5ZXJMb2dpblN0YXRlEhEKDU5PVF9MT0dHRURfSU4QABINCglMT0dHRURf",
-            "SU4QASowCgtMb2dpblJlc3VsdBIRCg1MT0dJTl9TVUNDRVNTEAASDgoKTE9H",
-            "SU5fRkFJTBABKhwKDkdhbWVPYmplY3RUeXBlEgoKBktOSUdIVBAAKoABChFH",
-            "YW1lQ29tcG9uZW50VHlwZRIUChBPQkpFQ1RfQ09NUE9ORU5UEAASIAocQ0hB",
-            "UkFDVEVSX01PVkVNRU5UX0NPTVBPTkVOVBABEh0KGVBMQVlFUl9NT1ZFTUVO",
-            "VF9DT01QT05FTlQQAhIUChBIRUFMVEhfQ09NUE9ORU5UEANCG6oCGEdvb2ds",
-            "ZS5Qcm90b2J1Zi5Qcm90b2NvbGIGcHJvdG8z"));
+            "FQoTU19SZXFldXN0T2JqZWN0U3luYyJ1ChNTX1JwY09iamVjdEZ1bmN0aW9u",
+            "EhAKCG9iamVjdElkGAEgASgFEjQKDXJwY0Z1bmN0aW9uSWQYAiABKA4yHS5Q",
+            "cm90b2NvbC5ScGNPYmplY3RGdW5jdGlvbklkEhYKDnBhcmFtZXRlckJ5dGVz",
+            "GAMgASgMInUKE0NfUnBjT2JqZWN0RnVuY3Rpb24SEAoIb2JqZWN0SWQYASAB",
+            "KAUSNAoNcnBjRnVuY3Rpb25JZBgCIAEoDjIdLlByb3RvY29sLlJwY09iamVj",
+            "dEZ1bmN0aW9uSWQSFgoOcGFyYW1ldGVyQnl0ZXMYAyABKAwirwEKFlNfUnBj",
+            "Q29tcG9uZW50RnVuY3Rpb24SEAoIb2JqZWN0SWQYASABKAUSMgoNY29tcG9u",
+            "ZW50VHlwZRgCIAEoDjIbLlByb3RvY29sLkdhbWVDb21wb25lbnRUeXBlEjcK",
+            "DXJwY0Z1bmN0aW9uSWQYAyABKA4yIC5Qcm90b2NvbC5ScGNDb21wb25lbnRG",
+            "dW5jdGlvbklkEhYKDnBhcmFtZXRlckJ5dGVzGAQgASgMIq8BChZDX1JwY0Nv",
+            "bXBvbmVudEZ1bmN0aW9uEhAKCG9iamVjdElkGAEgASgFEjIKDWNvbXBvbmVu",
+            "dFR5cGUYAiABKA4yGy5Qcm90b2NvbC5HYW1lQ29tcG9uZW50VHlwZRI3Cg1y",
+            "cGNGdW5jdGlvbklkGAMgASgOMiAuUHJvdG9jb2wuUnBjQ29tcG9uZW50RnVu",
+            "Y3Rpb25JZBIWCg5wYXJhbWV0ZXJCeXRlcxgEIAEoDCrLAwoFTXNnSWQSDwoL",
+            "U19DT05ORUNURUQQABIKCgZTX1BJTkcQARIKCgZDX1BPTkcQAhILCgdDX0xP",
+            "R0lOEAMSCwoHU19MT0dJThAEEg8KC1NfRU5URVJfTUFQEAUSEgoOU19FTlRF",
+            "Ul9QTEFZRVIQBhIPCgtTX0xFQVZFX01BUBAHEhIKDlNfTEVBVkVfUExBWUVS",
+            "EAgSEgoOU19TUEFXTl9PQkpFQ1QQCRITCg9TX1NQQVdOX09CSkVDVFMQChIU",
+            "ChBTX0RFU1BBV05fT0JKRUNUEAsSFQoRU19ERVNQQVdOX09CSkVDVFMQDBIU",
+            "ChBTX1BPU1NFU1NfT0JKRUNUEA0SFgoSU19VTlBPU1NFU1NfT0JKRUNUEA4S",
+            "EQoNU19PQkpFQ1RfU1lOQxAPEhEKDUNfT0JKRUNUX1NZTkMQEBIZChVTX1JF",
+            "UUVVU1RfT0JKRUNUX1NZTkMQERIZChVTX1JQQ19PQkpFQ1RfRlVOQ1RJT04Q",
+            "EhIZChVDX1JQQ19PQkpFQ1RfRlVOQ1RJT04QExIcChhTX1JQQ19DT01QT05F",
+            "TlRfRlVOQ1RJT04QFBIcChhDX1JQQ19DT01QT05FTlRfRlVOQ1RJT04QFSo0",
+            "ChBQbGF5ZXJMb2dpblN0YXRlEhEKDU5PVF9MT0dHRURfSU4QABINCglMT0dH",
+            "RURfSU4QASowCgtMb2dpblJlc3VsdBIRCg1MT0dJTl9TVUNDRVNTEAASDgoK",
+            "TE9HSU5fRkFJTBABKhwKDkdhbWVPYmplY3RUeXBlEgoKBktOSUdIVBAAKoAB",
+            "ChFHYW1lQ29tcG9uZW50VHlwZRIUChBPQkpFQ1RfQ09NUE9ORU5UEAASIAoc",
+            "Q0hBUkFDVEVSX01PVkVNRU5UX0NPTVBPTkVOVBABEh0KGVBMQVlFUl9NT1ZF",
+            "TUVOVF9DT01QT05FTlQQAhIUChBIRUFMVEhfQ09NUE9ORU5UEAMqYgoTUnBj",
+            "T2JqZWN0RnVuY3Rpb25JZBIYChRNdWx0aWNhc3RfQ29tYm9TdGFydBAAEhkK",
+            "FU11bHRpY2FzdF9Db21ib0F0dGFjaxABEhYKEk11bHRpY2FzdF9Db21ib0Vu",
+            "ZBACKjYKFlJwY0NvbXBvbmVudEZ1bmN0aW9uSWQSHAoYTXVsdGljYXN0X0Rv",
+            "ZGdlUm9sbFN0YXJ0EABCG6oCGEdvb2dsZS5Qcm90b2J1Zi5Qcm90b2NvbGIG",
+            "cHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.MsgId), typeof(global::Google.Protobuf.Protocol.PlayerLoginState), typeof(global::Google.Protobuf.Protocol.LoginResult), typeof(global::Google.Protobuf.Protocol.GameObjectType), typeof(global::Google.Protobuf.Protocol.GameComponentType), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.MsgId), typeof(global::Google.Protobuf.Protocol.PlayerLoginState), typeof(global::Google.Protobuf.Protocol.LoginResult), typeof(global::Google.Protobuf.Protocol.GameObjectType), typeof(global::Google.Protobuf.Protocol.GameComponentType), typeof(global::Google.Protobuf.Protocol.RpcObjectFunctionId), typeof(global::Google.Protobuf.Protocol.RpcComponentFunctionId), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.ObjectInfo), global::Google.Protobuf.Protocol.ObjectInfo.Parser, new[]{ "ObjectType", "ObjectId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.ObjectSyncInfo), global::Google.Protobuf.Protocol.ObjectSyncInfo.Parser, new[]{ "ObjectInfo", "SyncInfo" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_Connected), global::Google.Protobuf.Protocol.S_Connected.Parser, null, null, null, null, null),
@@ -87,8 +100,10 @@ namespace Google.Protobuf.Protocol {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_ObjectSync), global::Google.Protobuf.Protocol.S_ObjectSync.Parser, new[]{ "SyncInfos" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.C_ObjectSync), global::Google.Protobuf.Protocol.C_ObjectSync.Parser, new[]{ "SyncInfo" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_ReqeustObjectSync), global::Google.Protobuf.Protocol.S_ReqeustObjectSync.Parser, null, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_RpcComponentFunction), global::Google.Protobuf.Protocol.S_RpcComponentFunction.Parser, new[]{ "ObjectId", "ComponentType", "ParameterBytes" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.C_RpcComponentFunction), global::Google.Protobuf.Protocol.C_RpcComponentFunction.Parser, new[]{ "ObjectId", "ComponentType", "ParameterBytes" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_RpcObjectFunction), global::Google.Protobuf.Protocol.S_RpcObjectFunction.Parser, new[]{ "ObjectId", "RpcFunctionId", "ParameterBytes" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.C_RpcObjectFunction), global::Google.Protobuf.Protocol.C_RpcObjectFunction.Parser, new[]{ "ObjectId", "RpcFunctionId", "ParameterBytes" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_RpcComponentFunction), global::Google.Protobuf.Protocol.S_RpcComponentFunction.Parser, new[]{ "ObjectId", "ComponentType", "RpcFunctionId", "ParameterBytes" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.C_RpcComponentFunction), global::Google.Protobuf.Protocol.C_RpcComponentFunction.Parser, new[]{ "ObjectId", "ComponentType", "RpcFunctionId", "ParameterBytes" }, null, null, null, null)
           }));
     }
     #endregion
@@ -141,8 +156,10 @@ namespace Google.Protobuf.Protocol {
     /// <summary>
     /// Content
     /// </summary>
-    [pbr::OriginalName("S_RPC_COMPONENT_FUNCTION")] SRpcComponentFunction = 18,
-    [pbr::OriginalName("C_RPC_COMPONENT_FUNCTION")] CRpcComponentFunction = 19,
+    [pbr::OriginalName("S_RPC_OBJECT_FUNCTION")] SRpcObjectFunction = 18,
+    [pbr::OriginalName("C_RPC_OBJECT_FUNCTION")] CRpcObjectFunction = 19,
+    [pbr::OriginalName("S_RPC_COMPONENT_FUNCTION")] SRpcComponentFunction = 20,
+    [pbr::OriginalName("C_RPC_COMPONENT_FUNCTION")] CRpcComponentFunction = 21,
   }
 
   /// <summary>
@@ -167,6 +184,16 @@ namespace Google.Protobuf.Protocol {
     [pbr::OriginalName("CHARACTER_MOVEMENT_COMPONENT")] CharacterMovementComponent = 1,
     [pbr::OriginalName("PLAYER_MOVEMENT_COMPONENT")] PlayerMovementComponent = 2,
     [pbr::OriginalName("HEALTH_COMPONENT")] HealthComponent = 3,
+  }
+
+  public enum RpcObjectFunctionId {
+    [pbr::OriginalName("Multicast_ComboStart")] MulticastComboStart = 0,
+    [pbr::OriginalName("Multicast_ComboAttack")] MulticastComboAttack = 1,
+    [pbr::OriginalName("Multicast_ComboEnd")] MulticastComboEnd = 2,
+  }
+
+  public enum RpcComponentFunctionId {
+    [pbr::OriginalName("Multicast_DodgeRollStart")] MulticastDodgeRollStart = 0,
   }
 
   #endregion
@@ -2721,6 +2748,382 @@ namespace Google.Protobuf.Protocol {
   }
 
   /// <summary>
+  /// S_RPC_OBJECT_FUNCTION
+  /// </summary>
+  public sealed partial class S_RpcObjectFunction : pb::IMessage<S_RpcObjectFunction> {
+    private static readonly pb::MessageParser<S_RpcObjectFunction> _parser = new pb::MessageParser<S_RpcObjectFunction>(() => new S_RpcObjectFunction());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<S_RpcObjectFunction> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Protobuf.Protocol.ProtocolReflection.Descriptor.MessageTypes[20]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public S_RpcObjectFunction() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public S_RpcObjectFunction(S_RpcObjectFunction other) : this() {
+      objectId_ = other.objectId_;
+      rpcFunctionId_ = other.rpcFunctionId_;
+      parameterBytes_ = other.parameterBytes_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public S_RpcObjectFunction Clone() {
+      return new S_RpcObjectFunction(this);
+    }
+
+    /// <summary>Field number for the "objectId" field.</summary>
+    public const int ObjectIdFieldNumber = 1;
+    private int objectId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int ObjectId {
+      get { return objectId_; }
+      set {
+        objectId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "rpcFunctionId" field.</summary>
+    public const int RpcFunctionIdFieldNumber = 2;
+    private global::Google.Protobuf.Protocol.RpcObjectFunctionId rpcFunctionId_ = global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastComboStart;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Google.Protobuf.Protocol.RpcObjectFunctionId RpcFunctionId {
+      get { return rpcFunctionId_; }
+      set {
+        rpcFunctionId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "parameterBytes" field.</summary>
+    public const int ParameterBytesFieldNumber = 3;
+    private pb::ByteString parameterBytes_ = pb::ByteString.Empty;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pb::ByteString ParameterBytes {
+      get { return parameterBytes_; }
+      set {
+        parameterBytes_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as S_RpcObjectFunction);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(S_RpcObjectFunction other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (ObjectId != other.ObjectId) return false;
+      if (RpcFunctionId != other.RpcFunctionId) return false;
+      if (ParameterBytes != other.ParameterBytes) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (ObjectId != 0) hash ^= ObjectId.GetHashCode();
+      if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastComboStart) hash ^= RpcFunctionId.GetHashCode();
+      if (ParameterBytes.Length != 0) hash ^= ParameterBytes.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (ObjectId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(ObjectId);
+      }
+      if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastComboStart) {
+        output.WriteRawTag(16);
+        output.WriteEnum((int) RpcFunctionId);
+      }
+      if (ParameterBytes.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteBytes(ParameterBytes);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (ObjectId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(ObjectId);
+      }
+      if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastComboStart) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) RpcFunctionId);
+      }
+      if (ParameterBytes.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeBytesSize(ParameterBytes);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(S_RpcObjectFunction other) {
+      if (other == null) {
+        return;
+      }
+      if (other.ObjectId != 0) {
+        ObjectId = other.ObjectId;
+      }
+      if (other.RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastComboStart) {
+        RpcFunctionId = other.RpcFunctionId;
+      }
+      if (other.ParameterBytes.Length != 0) {
+        ParameterBytes = other.ParameterBytes;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            ObjectId = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            RpcFunctionId = (global::Google.Protobuf.Protocol.RpcObjectFunctionId) input.ReadEnum();
+            break;
+          }
+          case 26: {
+            ParameterBytes = input.ReadBytes();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  /// <summary>
+  /// C_RPC_OBJECT_FUNCTION
+  /// </summary>
+  public sealed partial class C_RpcObjectFunction : pb::IMessage<C_RpcObjectFunction> {
+    private static readonly pb::MessageParser<C_RpcObjectFunction> _parser = new pb::MessageParser<C_RpcObjectFunction>(() => new C_RpcObjectFunction());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<C_RpcObjectFunction> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Google.Protobuf.Protocol.ProtocolReflection.Descriptor.MessageTypes[21]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public C_RpcObjectFunction() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public C_RpcObjectFunction(C_RpcObjectFunction other) : this() {
+      objectId_ = other.objectId_;
+      rpcFunctionId_ = other.rpcFunctionId_;
+      parameterBytes_ = other.parameterBytes_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public C_RpcObjectFunction Clone() {
+      return new C_RpcObjectFunction(this);
+    }
+
+    /// <summary>Field number for the "objectId" field.</summary>
+    public const int ObjectIdFieldNumber = 1;
+    private int objectId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int ObjectId {
+      get { return objectId_; }
+      set {
+        objectId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "rpcFunctionId" field.</summary>
+    public const int RpcFunctionIdFieldNumber = 2;
+    private global::Google.Protobuf.Protocol.RpcObjectFunctionId rpcFunctionId_ = global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastComboStart;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Google.Protobuf.Protocol.RpcObjectFunctionId RpcFunctionId {
+      get { return rpcFunctionId_; }
+      set {
+        rpcFunctionId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "parameterBytes" field.</summary>
+    public const int ParameterBytesFieldNumber = 3;
+    private pb::ByteString parameterBytes_ = pb::ByteString.Empty;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pb::ByteString ParameterBytes {
+      get { return parameterBytes_; }
+      set {
+        parameterBytes_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as C_RpcObjectFunction);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(C_RpcObjectFunction other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (ObjectId != other.ObjectId) return false;
+      if (RpcFunctionId != other.RpcFunctionId) return false;
+      if (ParameterBytes != other.ParameterBytes) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (ObjectId != 0) hash ^= ObjectId.GetHashCode();
+      if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastComboStart) hash ^= RpcFunctionId.GetHashCode();
+      if (ParameterBytes.Length != 0) hash ^= ParameterBytes.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (ObjectId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(ObjectId);
+      }
+      if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastComboStart) {
+        output.WriteRawTag(16);
+        output.WriteEnum((int) RpcFunctionId);
+      }
+      if (ParameterBytes.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteBytes(ParameterBytes);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (ObjectId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(ObjectId);
+      }
+      if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastComboStart) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) RpcFunctionId);
+      }
+      if (ParameterBytes.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeBytesSize(ParameterBytes);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(C_RpcObjectFunction other) {
+      if (other == null) {
+        return;
+      }
+      if (other.ObjectId != 0) {
+        ObjectId = other.ObjectId;
+      }
+      if (other.RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastComboStart) {
+        RpcFunctionId = other.RpcFunctionId;
+      }
+      if (other.ParameterBytes.Length != 0) {
+        ParameterBytes = other.ParameterBytes;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            ObjectId = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            RpcFunctionId = (global::Google.Protobuf.Protocol.RpcObjectFunctionId) input.ReadEnum();
+            break;
+          }
+          case 26: {
+            ParameterBytes = input.ReadBytes();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  /// <summary>
   /// S_RPC_COMPONENT_FUNCTION
   /// </summary>
   public sealed partial class S_RpcComponentFunction : pb::IMessage<S_RpcComponentFunction> {
@@ -2731,7 +3134,7 @@ namespace Google.Protobuf.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Protobuf.Protocol.ProtocolReflection.Descriptor.MessageTypes[20]; }
+      get { return global::Google.Protobuf.Protocol.ProtocolReflection.Descriptor.MessageTypes[22]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2750,6 +3153,7 @@ namespace Google.Protobuf.Protocol {
     public S_RpcComponentFunction(S_RpcComponentFunction other) : this() {
       objectId_ = other.objectId_;
       componentType_ = other.componentType_;
+      rpcFunctionId_ = other.rpcFunctionId_;
       parameterBytes_ = other.parameterBytes_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -2781,8 +3185,19 @@ namespace Google.Protobuf.Protocol {
       }
     }
 
+    /// <summary>Field number for the "rpcFunctionId" field.</summary>
+    public const int RpcFunctionIdFieldNumber = 3;
+    private global::Google.Protobuf.Protocol.RpcComponentFunctionId rpcFunctionId_ = global::Google.Protobuf.Protocol.RpcComponentFunctionId.MulticastDodgeRollStart;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Google.Protobuf.Protocol.RpcComponentFunctionId RpcFunctionId {
+      get { return rpcFunctionId_; }
+      set {
+        rpcFunctionId_ = value;
+      }
+    }
+
     /// <summary>Field number for the "parameterBytes" field.</summary>
-    public const int ParameterBytesFieldNumber = 3;
+    public const int ParameterBytesFieldNumber = 4;
     private pb::ByteString parameterBytes_ = pb::ByteString.Empty;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pb::ByteString ParameterBytes {
@@ -2807,6 +3222,7 @@ namespace Google.Protobuf.Protocol {
       }
       if (ObjectId != other.ObjectId) return false;
       if (ComponentType != other.ComponentType) return false;
+      if (RpcFunctionId != other.RpcFunctionId) return false;
       if (ParameterBytes != other.ParameterBytes) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -2816,6 +3232,7 @@ namespace Google.Protobuf.Protocol {
       int hash = 1;
       if (ObjectId != 0) hash ^= ObjectId.GetHashCode();
       if (ComponentType != global::Google.Protobuf.Protocol.GameComponentType.ObjectComponent) hash ^= ComponentType.GetHashCode();
+      if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcComponentFunctionId.MulticastDodgeRollStart) hash ^= RpcFunctionId.GetHashCode();
       if (ParameterBytes.Length != 0) hash ^= ParameterBytes.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -2838,8 +3255,12 @@ namespace Google.Protobuf.Protocol {
         output.WriteRawTag(16);
         output.WriteEnum((int) ComponentType);
       }
+      if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcComponentFunctionId.MulticastDodgeRollStart) {
+        output.WriteRawTag(24);
+        output.WriteEnum((int) RpcFunctionId);
+      }
       if (ParameterBytes.Length != 0) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(34);
         output.WriteBytes(ParameterBytes);
       }
       if (_unknownFields != null) {
@@ -2855,6 +3276,9 @@ namespace Google.Protobuf.Protocol {
       }
       if (ComponentType != global::Google.Protobuf.Protocol.GameComponentType.ObjectComponent) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) ComponentType);
+      }
+      if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcComponentFunctionId.MulticastDodgeRollStart) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) RpcFunctionId);
       }
       if (ParameterBytes.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(ParameterBytes);
@@ -2875,6 +3299,9 @@ namespace Google.Protobuf.Protocol {
       }
       if (other.ComponentType != global::Google.Protobuf.Protocol.GameComponentType.ObjectComponent) {
         ComponentType = other.ComponentType;
+      }
+      if (other.RpcFunctionId != global::Google.Protobuf.Protocol.RpcComponentFunctionId.MulticastDodgeRollStart) {
+        RpcFunctionId = other.RpcFunctionId;
       }
       if (other.ParameterBytes.Length != 0) {
         ParameterBytes = other.ParameterBytes;
@@ -2898,7 +3325,11 @@ namespace Google.Protobuf.Protocol {
             ComponentType = (global::Google.Protobuf.Protocol.GameComponentType) input.ReadEnum();
             break;
           }
-          case 26: {
+          case 24: {
+            RpcFunctionId = (global::Google.Protobuf.Protocol.RpcComponentFunctionId) input.ReadEnum();
+            break;
+          }
+          case 34: {
             ParameterBytes = input.ReadBytes();
             break;
           }
@@ -2919,7 +3350,7 @@ namespace Google.Protobuf.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Google.Protobuf.Protocol.ProtocolReflection.Descriptor.MessageTypes[21]; }
+      get { return global::Google.Protobuf.Protocol.ProtocolReflection.Descriptor.MessageTypes[23]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2938,6 +3369,7 @@ namespace Google.Protobuf.Protocol {
     public C_RpcComponentFunction(C_RpcComponentFunction other) : this() {
       objectId_ = other.objectId_;
       componentType_ = other.componentType_;
+      rpcFunctionId_ = other.rpcFunctionId_;
       parameterBytes_ = other.parameterBytes_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -2969,8 +3401,19 @@ namespace Google.Protobuf.Protocol {
       }
     }
 
+    /// <summary>Field number for the "rpcFunctionId" field.</summary>
+    public const int RpcFunctionIdFieldNumber = 3;
+    private global::Google.Protobuf.Protocol.RpcComponentFunctionId rpcFunctionId_ = global::Google.Protobuf.Protocol.RpcComponentFunctionId.MulticastDodgeRollStart;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Google.Protobuf.Protocol.RpcComponentFunctionId RpcFunctionId {
+      get { return rpcFunctionId_; }
+      set {
+        rpcFunctionId_ = value;
+      }
+    }
+
     /// <summary>Field number for the "parameterBytes" field.</summary>
-    public const int ParameterBytesFieldNumber = 3;
+    public const int ParameterBytesFieldNumber = 4;
     private pb::ByteString parameterBytes_ = pb::ByteString.Empty;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pb::ByteString ParameterBytes {
@@ -2995,6 +3438,7 @@ namespace Google.Protobuf.Protocol {
       }
       if (ObjectId != other.ObjectId) return false;
       if (ComponentType != other.ComponentType) return false;
+      if (RpcFunctionId != other.RpcFunctionId) return false;
       if (ParameterBytes != other.ParameterBytes) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -3004,6 +3448,7 @@ namespace Google.Protobuf.Protocol {
       int hash = 1;
       if (ObjectId != 0) hash ^= ObjectId.GetHashCode();
       if (ComponentType != global::Google.Protobuf.Protocol.GameComponentType.ObjectComponent) hash ^= ComponentType.GetHashCode();
+      if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcComponentFunctionId.MulticastDodgeRollStart) hash ^= RpcFunctionId.GetHashCode();
       if (ParameterBytes.Length != 0) hash ^= ParameterBytes.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -3026,8 +3471,12 @@ namespace Google.Protobuf.Protocol {
         output.WriteRawTag(16);
         output.WriteEnum((int) ComponentType);
       }
+      if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcComponentFunctionId.MulticastDodgeRollStart) {
+        output.WriteRawTag(24);
+        output.WriteEnum((int) RpcFunctionId);
+      }
       if (ParameterBytes.Length != 0) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(34);
         output.WriteBytes(ParameterBytes);
       }
       if (_unknownFields != null) {
@@ -3043,6 +3492,9 @@ namespace Google.Protobuf.Protocol {
       }
       if (ComponentType != global::Google.Protobuf.Protocol.GameComponentType.ObjectComponent) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) ComponentType);
+      }
+      if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcComponentFunctionId.MulticastDodgeRollStart) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) RpcFunctionId);
       }
       if (ParameterBytes.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(ParameterBytes);
@@ -3063,6 +3515,9 @@ namespace Google.Protobuf.Protocol {
       }
       if (other.ComponentType != global::Google.Protobuf.Protocol.GameComponentType.ObjectComponent) {
         ComponentType = other.ComponentType;
+      }
+      if (other.RpcFunctionId != global::Google.Protobuf.Protocol.RpcComponentFunctionId.MulticastDodgeRollStart) {
+        RpcFunctionId = other.RpcFunctionId;
       }
       if (other.ParameterBytes.Length != 0) {
         ParameterBytes = other.ParameterBytes;
@@ -3086,7 +3541,11 @@ namespace Google.Protobuf.Protocol {
             ComponentType = (global::Google.Protobuf.Protocol.GameComponentType) input.ReadEnum();
             break;
           }
-          case 26: {
+          case 24: {
+            RpcFunctionId = (global::Google.Protobuf.Protocol.RpcComponentFunctionId) input.ReadEnum();
+            break;
+          }
+          case 34: {
             ParameterBytes = input.ReadBytes();
             break;
           }

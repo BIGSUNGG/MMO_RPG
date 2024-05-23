@@ -39,8 +39,11 @@ enum MsgId {
 	S_REQEUST_OBJECT_SYNC = 17;
 
 	// Content
-	S_RPC_COMPONENT_FUNCTION = 18;
-	C_RPC_COMPONENT_FUNCTION = 19;
+	S_RPC_OBJECT_FUNCTION = 18;
+	C_RPC_OBJECT_FUNCTION = 19;
+	
+	S_RPC_COMPONENT_FUNCTION = 20;
+	C_RPC_COMPONENT_FUNCTION = 21;
 
 }
 
@@ -64,6 +67,16 @@ enum GameComponentType {
 	CHARACTER_MOVEMENT_COMPONENT = 1;
 	PLAYER_MOVEMENT_COMPONENT = 2;
 	HEALTH_COMPONENT = 3;
+}
+
+enum RpcObjectFunctionId {
+    Multicast_ComboStart = 0;
+    Multicast_ComboAttack = 1;
+    Multicast_ComboEnd = 2;
+}
+
+enum RpcComponentFunctionId {
+    Multicast_DodgeRollStart = 0;
 }
 
 // Structs
@@ -164,16 +177,32 @@ message C_ObjectSync{
 message S_ReqeustObjectSync{
 }
 
+// S_RPC_OBJECT_FUNCTION
+message S_RpcObjectFunction{
+	int32 objectId = 1;
+	RpcObjectFunctionId rpcFunctionId = 2;
+	bytes  parameterBytes = 3;
+}
+
+// C_RPC_OBJECT_FUNCTION
+message C_RpcObjectFunction{
+	int32 objectId = 1;
+	RpcObjectFunctionId rpcFunctionId = 2;
+	bytes  parameterBytes = 3;
+}
+
 // S_RPC_COMPONENT_FUNCTION
 message S_RpcComponentFunction{
 	int32 objectId = 1;
 	GameComponentType componentType = 2;
-	bytes  parameterBytes = 3;
+	RpcComponentFunctionId rpcFunctionId = 3;
+	bytes  parameterBytes = 4;
 }
 
 // C_RPC_COMPONENT_FUNCTION
 message C_RpcComponentFunction{
 	int32 objectId = 1;
 	GameComponentType componentType = 2;
-	bytes  parameterBytes = 3;
+	RpcComponentFunctionId rpcFunctionId = 3;
+	bytes  parameterBytes = 4;
 }

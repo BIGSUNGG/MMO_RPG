@@ -4,12 +4,7 @@ using UnityEngine;
 
 public class CharacterMovementComponent : ObjectComponent
 {
-    protected enum RpcFunctionId
-    {
-        Multicast_DodgeRollStart = 0,
-    }
-
-	Rigidbody _rigidbody = null;
+    Rigidbody _rigidbody = null;
 
     protected override void Start()
     {

@@ -27,16 +27,21 @@ public class TimerManager
     public void Update()
     {
         float deltaTime = Time.deltaTime;
-        List<TimerHandler> newTimers = new List<TimerHandler>(); // 아직 타이머가 끝나지 않은 타이머들을 가질 리스트
 
+        List<Action> actions = new List<Action>();
         lock (_lock)
         {
-	        foreach (var timer in _timers)
+            List<TimerHandler> newTimers = new List<TimerHandler>(_timers.Count); // 아직 타이머가 끝나지 않은 타이머들을 가질 리스트
+
+            foreach (var timer in _timers)
 	        {
+                if (timer == null)
+                    continue;
+
 	            timer._remainTime -= deltaTime;
 	            if (timer._remainTime <= 0.0f) // 타이머가 끝났다면
 	            {
-	                timer._action.Invoke(); // 액션 실행
+                    actions.Add(timer._action); // 액션 추가
 	
 	                if(timer._bLoop == true) // 반복되는 타이머라면
 	                    newTimers.Add(timer); // 타이머에 남기기
@@ -46,10 +51,16 @@ public class TimerManager
 	            {
 	                newTimers.Add(timer); // 타이머에 남기기
 	            }
-	        }
+	        }        
+            
+            _timers = newTimers;
+
         }
 
-        _timers = newTimers;
+        foreach (var action in actions)
+        {
+            action.Invoke(); // 액션 실행
+        }
     }
 
     #region Timer

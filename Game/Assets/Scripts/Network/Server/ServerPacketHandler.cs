@@ -155,10 +155,16 @@ class ServerPacketHandler
 
     }
 
+    public static void S_RpcObjectFunctionHandler(ISession session, IMessage packet)
+    {
+        S_RpcObjectFunction recvPacket = packet as S_RpcObjectFunction;
+    }
+
     public static void S_RpcComponentFunctionHandler(ISession session, IMessage packet)
     {
         S_RpcComponentFunction recvPacket = packet as S_RpcComponentFunction;
 
     }
+    
 }
 #endif

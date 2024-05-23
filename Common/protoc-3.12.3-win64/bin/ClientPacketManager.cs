@@ -29,6 +29,8 @@ class ClientPacketManager
 		_handler.Add((ushort)MsgId.CLogin, ClientPacketHandler.C_LoginHandler);		
 		_onRecv.Add((ushort)MsgId.CObjectSync, MakePacket<C_ObjectSync>);
 		_handler.Add((ushort)MsgId.CObjectSync, ClientPacketHandler.C_ObjectSyncHandler);		
+		_onRecv.Add((ushort)MsgId.CRpcObjectFunction, MakePacket<C_RpcObjectFunction>);
+		_handler.Add((ushort)MsgId.CRpcObjectFunction, ClientPacketHandler.C_RpcObjectFunctionHandler);		
 		_onRecv.Add((ushort)MsgId.CRpcComponentFunction, MakePacket<C_RpcComponentFunction>);
 		_handler.Add((ushort)MsgId.CRpcComponentFunction, ClientPacketHandler.C_RpcComponentFunctionHandler);
 	}
