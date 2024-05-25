@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 2763638339198004114}
   m_Layer: 0
   m_Name: Knight
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52,6 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b10b60196e357c49bb5c54f0e83c440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputDir: {x: 0, y: 0}
   _onComboStartEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -71,7 +72,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bIsRunning: 0
-  _lastInputDir: {x: 0, y: 0}
   _onDodgeStartEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -120,7 +120,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2365248840771035362}
   serializedVersion: 4
-  m_Mass: 5
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -172,7 +172,7 @@ GameObject:
   - component: {fileID: 5693175890376105844}
   - component: {fileID: 4914098661252190255}
   - component: {fileID: 1818990036925489569}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CapsuleCollision
   m_TagString: Untagged
   m_Icon: {fileID: 0}

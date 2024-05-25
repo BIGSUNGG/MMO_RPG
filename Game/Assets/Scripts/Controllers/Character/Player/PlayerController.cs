@@ -19,11 +19,11 @@ public class PlayerController : CharacterController
 
         _playerAnim = GetComponent<PlayerAnimParameter>();
         if (_playerAnim == null)
-            Debug.Log("PlayerAnimParameter is null");
+            Debug.LogWarning("PlayerAnimParameter is null");
 
         _playerMovement = GetComponent<PlayerMovementComponent>();
         if (_playerMovement == null)
-            Debug.Log("PlayerMovementComponent is null");
+            Debug.LogWarning("PlayerMovementComponent is null");
 
     }
 

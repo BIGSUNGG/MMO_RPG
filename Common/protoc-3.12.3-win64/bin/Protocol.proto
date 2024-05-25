@@ -73,6 +73,8 @@ enum RpcObjectFunctionId {
     Multicast_ComboStart = 0;
     Multicast_ComboAttack = 1;
     Multicast_ComboEnd = 2;
+	
+	Server_ComboAttackResult = 3;
 }
 
 enum RpcComponentFunctionId {

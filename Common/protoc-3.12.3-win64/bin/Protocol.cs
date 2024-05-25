@@ -71,12 +71,12 @@ namespace Google.Protobuf.Protocol {
             "TE9HSU5fRkFJTBABKhwKDkdhbWVPYmplY3RUeXBlEgoKBktOSUdIVBAAKoAB",
             "ChFHYW1lQ29tcG9uZW50VHlwZRIUChBPQkpFQ1RfQ09NUE9ORU5UEAASIAoc",
             "Q0hBUkFDVEVSX01PVkVNRU5UX0NPTVBPTkVOVBABEh0KGVBMQVlFUl9NT1ZF",
-            "TUVOVF9DT01QT05FTlQQAhIUChBIRUFMVEhfQ09NUE9ORU5UEAMqYgoTUnBj",
-            "T2JqZWN0RnVuY3Rpb25JZBIYChRNdWx0aWNhc3RfQ29tYm9TdGFydBAAEhkK",
-            "FU11bHRpY2FzdF9Db21ib0F0dGFjaxABEhYKEk11bHRpY2FzdF9Db21ib0Vu",
-            "ZBACKjYKFlJwY0NvbXBvbmVudEZ1bmN0aW9uSWQSHAoYTXVsdGljYXN0X0Rv",
-            "ZGdlUm9sbFN0YXJ0EABCG6oCGEdvb2dsZS5Qcm90b2J1Zi5Qcm90b2NvbGIG",
-            "cHJvdG8z"));
+            "TUVOVF9DT01QT05FTlQQAhIUChBIRUFMVEhfQ09NUE9ORU5UEAMqgAEKE1Jw",
+            "Y09iamVjdEZ1bmN0aW9uSWQSGAoUTXVsdGljYXN0X0NvbWJvU3RhcnQQABIZ",
+            "ChVNdWx0aWNhc3RfQ29tYm9BdHRhY2sQARIWChJNdWx0aWNhc3RfQ29tYm9F",
+            "bmQQAhIcChhTZXJ2ZXJfQ29tYm9BdHRhY2tSZXN1bHQQAyo2ChZScGNDb21w",
+            "b25lbnRGdW5jdGlvbklkEhwKGE11bHRpY2FzdF9Eb2RnZVJvbGxTdGFydBAA",
+            "QhuqAhhHb29nbGUuUHJvdG9idWYuUHJvdG9jb2xiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.MsgId), typeof(global::Google.Protobuf.Protocol.PlayerLoginState), typeof(global::Google.Protobuf.Protocol.LoginResult), typeof(global::Google.Protobuf.Protocol.GameObjectType), typeof(global::Google.Protobuf.Protocol.GameComponentType), typeof(global::Google.Protobuf.Protocol.RpcObjectFunctionId), typeof(global::Google.Protobuf.Protocol.RpcComponentFunctionId), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -190,6 +190,7 @@ namespace Google.Protobuf.Protocol {
     [pbr::OriginalName("Multicast_ComboStart")] MulticastComboStart = 0,
     [pbr::OriginalName("Multicast_ComboAttack")] MulticastComboAttack = 1,
     [pbr::OriginalName("Multicast_ComboEnd")] MulticastComboEnd = 2,
+    [pbr::OriginalName("Server_ComboAttackResult")] ServerComboAttackResult = 3,
   }
 
   public enum RpcComponentFunctionId {

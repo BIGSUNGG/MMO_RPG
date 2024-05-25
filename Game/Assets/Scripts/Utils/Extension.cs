@@ -7,6 +7,35 @@ using UnityEngine.EventSystems;
 
 public static class Extension
 {
+    public static float GiveDamage(this GameObject go, GameObject victim, float damage)
+    {
+        HealthComponent health = go.GetComponentInChildren<HealthComponent>();
+        if (health != null)
+        {
+            return health.OnServer_GiveDamage(victim, damage);
+        }
+        else
+        {
+            Debug.LogWarning("HealthComponent is not exist");
+            return 0.0f;
+        }
+    }
+
+    public static float TakeDamage(this GameObject go, GameObject attacker, float damage)
+    {
+        HealthComponent health = go.GetComponentInChildren<HealthComponent>();
+        if (health != null)
+        {
+            return health.OnServer_TakeDamage(attacker, damage);
+        }
+        else
+        {
+            Debug.LogWarning("HealthComponent is not exist");
+            return 0.0f;
+        }
+    }
+
+
     public static ObjectComponent GetComponent(this GameObject go, GameComponentType compType)
     {
         switch (compType)

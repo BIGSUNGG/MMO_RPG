@@ -15,4 +15,5 @@ public interface RpcComponentFunction
     // packet : 받은 패킷의 바이트 배열
     // return : 받은 패킷이 악성 패킷이 아닌지
     public bool RpcFunction_Validate(RpcComponentFunctionId functionId, byte[] packet);
+    
 }

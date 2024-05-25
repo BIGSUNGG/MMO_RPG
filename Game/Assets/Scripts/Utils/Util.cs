@@ -98,11 +98,49 @@ public class Util
     #endregion
 
     #region Bytes
+    // 바이트 배열을 인티저 리스트로 변환
+    // bytes : 변환할 바이트 배열
+    // offset : 바이트 시작 인덱스
+    // count : 리스트 사이즈
+    // return : 변환한 인티저 리스트
+    public static List<int> BytesToIntList(byte[] bytes, int offset, int count)
+    {
+        List<int> list = new List<int>(count);
+        for(int i = 0; i < count; i++)
+        {
+            int value = BitConverter.ToInt32(bytes, offset + i * sizeof(int));
+            list.Add(value);
+        }
+
+        return list;
+    }
+
+    // 바이트 배열을 실수 리스트로 변환
+    // bytes : 변환할 바이트 배열
+    // offset : 바이트 시작 인덱스
+    // count : 리스트 사이즈
+    // return : 변환한 실수 리스트
+    public static List<float> BytesToFloatList(byte[] bytes, int offset, int count)
+    {
+        List<float> list = new List<float>(count);
+        for (int i = 0; i < count; i++)
+        {
+            float value = BitConverter.ToSingle(bytes, offset + i * sizeof(float));
+            list.Add(value);
+        }
+
+        return list;
+    }
+
+    // T의 자료형의 사이트를 구함
     public static int GetObjectBytesSize<T>()
     {
         return Marshal.SizeOf(default(T));
     }
 
+    // 구조체를 바이트 배열로 변환
+    // obj : 변환할 구조체
+    // return : 변환한 바이트 배열
     public static byte[] ObjectToBytes<T>(T obj)
     {
         int datasize = Marshal.SizeOf<T>(obj);
@@ -116,6 +154,9 @@ public class Util
 
     }
 
+    // 바이트 배열을 T 구조체로 변환
+    // data : 변환할 바이트 배열
+    // return : 변환한 구조체
     public static T BytesToObject<T>(byte[] data)
     {
         IntPtr ptr = Marshal.AllocHGlobal(data.Length);

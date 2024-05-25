@@ -13,6 +13,7 @@ public class CharacterController : ObjectController
     protected CharacterMovementComponent _movement = null;
     protected HealthComponent _health = null;
     protected InventoryComponent _inventory = null;
+    protected CapsuleCollider _capsule = null;
 
     public CharacterController()
     {
@@ -25,19 +26,23 @@ public class CharacterController : ObjectController
 
         _anim = GetComponent<CharacterAnimParameter>();
         if (_anim == null)
-            Debug.Log("CharacterAnimParameter is null");
+            Debug.LogWarning("CharacterAnimParameter is null");
 
         _movement = GetComponent<CharacterMovementComponent>();
         if (_movement == null)
-            Debug.Log("MovementComponent is null");
+            Debug.LogWarning("MovementComponent is null");
 
         _health = GetComponent<HealthComponent>();
         if (_health == null)
-            Debug.Log("HealthComponent is null");
+            Debug.LogWarning("HealthComponent is null");
 
         _inventory = GetComponent<InventoryComponent>();
         if (_inventory == null)
-            Debug.Log("InventoryComponent is null");
+            Debug.LogWarning("InventoryComponent is null");
+
+        _capsule = GetComponentInChildren<CapsuleCollider>();
+        if (_capsule == null)
+            Debug.LogWarning("CapsuleCollider is null");
     }
 
     protected override void Update()
