@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class CharacterMovementComponent : ObjectComponent
 {
+    CharacterController _character = null;
     Rigidbody _rigidbody = null;
 
     protected override void Start()
     {
         base.Start();
 
+        _character = GetComponent<CharacterController>();
         _rigidbody = Util.GetOrAddComponent<Rigidbody>(gameObject);
 	}
 
@@ -22,20 +24,22 @@ public class CharacterMovementComponent : ObjectComponent
         if (Managers.Network.IsServer) // 서버인 경우
         {
             _rigidbody.useGravity = false;
+            _rigidbody.isKinematic = true;
         }
         else if (_owner.IsLocallyControlled()) // 클라이언트가 빙의한 오브젝트인 경우
         {
+            Vector2 _moveDir = _character._inputDir;
             _moveDir.Normalize();
             if (CanMovementInput()) // 입력이 가능한지
             {
                 // 입력 방향으로 이동
-	            _velocity = new Vector3(_moveDir.x * _curMoveSpeed, _velocity.y, _moveDir.y * _curMoveSpeed);
+	            _velocity = new Vector3(_moveDir.x * _curMoveSpeed, _velocity.y < _curMoveSpeed ? _velocity.y : _curMoveSpeed, _moveDir.y * _curMoveSpeed);
             }
-            _moveDir = Vector2.zero;
         }
         else // 클라이언트가 빙의하지않은 오브젝트인 경우
         {
             _rigidbody.useGravity = false;
+            _rigidbody.isKinematic = true;
 
             _curSyncLerpTime += Time.deltaTime;
             float lerpPosVal = _curSyncLerpTime * _syncPosLerpMultiply;
@@ -57,18 +61,6 @@ public class CharacterMovementComponent : ObjectComponent
     float _runMaxSpeed = 7.5f; // 뛰기 속도
 
     // Input
-    Vector2 _moveDir = Vector2.zero;
-
-    public virtual void MoveForward(float axis)
-	{
-		_moveDir.y += axis;
-	}
-
-	public virtual void MoveRight(float axis)
-	{
-		_moveDir.x += axis;
-	}
-
 	float _jumpPower = 5.0f;
 	public virtual void Jump()
 	{
@@ -103,15 +95,13 @@ public class CharacterMovementComponent : ObjectComponent
 	float _syncPosLerpMultiply = 10;
 	float _syncRotLerpMultiply = 10;
 
-    public virtual void Sync(Vector3 pos, Quaternion rot, Vector2 inputDir, bool IsRunnung)
+    public virtual void Sync(Vector3 pos, Quaternion rot, bool IsRunnung)
 	{
 		if (Managers.Network.IsServer)
 		{
 			transform.position = pos;
 			transform.rotation = rot;
 
-            _moveDir = inputDir;
-            _moveDir.Normalize();
             _bIsRunning = IsRunnung;
         }
         else
@@ -124,8 +114,6 @@ public class CharacterMovementComponent : ObjectComponent
             _syncEndPos = pos;
 			_syncEndRot = rot;
 
-            _moveDir = inputDir;
-            _moveDir.Normalize();
             _bIsRunning = IsRunnung;
         }
     }

@@ -52,6 +52,8 @@ public class PlayerMovementComponent : CharacterMovementComponent
     TimerHandler _dodgeDelayTimer;      // 구르기 딜레이 타이머
 
     public UnityEvent _onDodgeStartEvent; // 구르기 시작 시 호출
+    
+    #region DodgeRoll
 
     // 구르기 시작 시 호출
     public virtual void DodgeRollStart() 
@@ -71,31 +73,32 @@ public class PlayerMovementComponent : CharacterMovementComponent
         // 패킷 보내기
         if (Managers.Network.IsClient) // 클라이언트에서 호출된 경우 
         {
-            C_RpcComponentFunction dodgeStartPacket = new C_RpcComponentFunction();
+            C_RpcComponentFunction rpcFuncPacket = new C_RpcComponentFunction();
             byte[] parameterBuffer = new byte[9];
             Array.Copy(BitConverter.GetBytes((float)dir.x), 0, parameterBuffer, 0, sizeof(float));
             Array.Copy(BitConverter.GetBytes((float)dir.y), 0, parameterBuffer, 4, sizeof(float));
 
-            dodgeStartPacket.ObjectId = _owner.ObjectId;
-            dodgeStartPacket.ComponentType = GameComponentType.PlayerMovementComponent;
-            dodgeStartPacket.RpcFunctionId = RpcComponentFunctionId.MulticastDodgeRollStart;
-            dodgeStartPacket.ParameterBytes = ByteString.CopyFrom(parameterBuffer);
+            rpcFuncPacket.ObjectId = _owner.ObjectId;
+            rpcFuncPacket.ComponentType = GameComponentType.PlayerMovementComponent;
+            rpcFuncPacket.RpcFunctionId = RpcComponentFunctionId.MulticastDodgeRollStart;
+            rpcFuncPacket.ParameterBytes = ByteString.CopyFrom(parameterBuffer);
 
-            Managers.Network.SendServer(dodgeStartPacket);
+            Managers.Network.SendServer(rpcFuncPacket);
         }
         else // 서버에서 호출된 경우
         {
-            S_RpcComponentFunction dodgeStartPacket = new S_RpcComponentFunction();
+            S_RpcComponentFunction rpcFuncPacket = new S_RpcComponentFunction();
             byte[] parameterBuffer = new byte[9];
             Array.Copy(BitConverter.GetBytes((float)dir.x), 0, parameterBuffer, 0, sizeof(float));
             Array.Copy(BitConverter.GetBytes((float)dir.y), 0, parameterBuffer, 4, sizeof(float));
 
-            dodgeStartPacket.ObjectId = _owner.ObjectId;
-            dodgeStartPacket.ComponentType = GameComponentType.PlayerMovementComponent;
-            dodgeStartPacket.RpcFunctionId = RpcComponentFunctionId.MulticastDodgeRollStart;
-            dodgeStartPacket.ParameterBytes = ByteString.CopyFrom(parameterBuffer);
+            rpcFuncPacket.ObjectId = _owner.ObjectId;
+            rpcFuncPacket.AbsolutelyExcute = true;
+            rpcFuncPacket.ComponentType = GameComponentType.PlayerMovementComponent;
+            rpcFuncPacket.RpcFunctionId = RpcComponentFunctionId.MulticastDodgeRollStart;
+            rpcFuncPacket.ParameterBytes = ByteString.CopyFrom(parameterBuffer);
 
-            Managers.Network.SendMulticast(dodgeStartPacket);
+            Managers.Network.SendMulticast(rpcFuncPacket);
         }
 
         Multicast_DodgeRollStart_Implementation(dir);
@@ -178,6 +181,7 @@ public class PlayerMovementComponent : CharacterMovementComponent
         _bEnableDodge = true;
         _dodgeDelayTimer = null;
     }
+#endregion
 
     public override bool CanMovementInput()
     {

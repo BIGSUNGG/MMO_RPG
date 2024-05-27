@@ -149,7 +149,7 @@ class ServerPacketHandler
     {
         S_RpcObjectFunction recvPacket = packet as S_RpcObjectFunction;
               
-        if (Managers.Controller.MyController.ObjectId == recvPacket.ObjectId) // 내 오브젝트에서 온 Rpc함수일 경우
+        if (recvPacket.AbsolutelyExcute == false && Managers.Controller.MyController.ObjectId == recvPacket.ObjectId) // 내 오브젝트에서 온 Rpc함수일 경우
             return;
 
         // 오브젝트 아이디에 맞는 오브젝트 찾기
@@ -171,7 +171,7 @@ class ServerPacketHandler
     {
         S_RpcComponentFunction recvPacket = packet as S_RpcComponentFunction;
       
-        if (Managers.Controller.MyController.ObjectId == recvPacket.ObjectId) // 내 오브젝트에서 온 Rpc함수일 경우
+        if (recvPacket.AbsolutelyExcute == false && Managers.Controller.MyController.ObjectId == recvPacket.ObjectId) // 내 오브젝트에서 온 Rpc함수일 경우
             return;
 
         // 오브젝트 아이디에 맞는 오브젝트 찾기

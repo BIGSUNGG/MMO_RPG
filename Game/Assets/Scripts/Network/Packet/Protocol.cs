@@ -42,41 +42,44 @@ namespace Google.Protobuf.Protocol {
             "cG9zc2Vzc09iamVjdCI7CgxTX09iamVjdFN5bmMSKwoJU3luY0luZm9zGAEg",
             "AygLMhguUHJvdG9jb2wuT2JqZWN0U3luY0luZm8iOgoMQ19PYmplY3RTeW5j",
             "EioKCFN5bmNJbmZvGAEgASgLMhguUHJvdG9jb2wuT2JqZWN0U3luY0luZm8i",
-            "FQoTU19SZXFldXN0T2JqZWN0U3luYyJ1ChNTX1JwY09iamVjdEZ1bmN0aW9u",
-            "EhAKCG9iamVjdElkGAEgASgFEjQKDXJwY0Z1bmN0aW9uSWQYAiABKA4yHS5Q",
-            "cm90b2NvbC5ScGNPYmplY3RGdW5jdGlvbklkEhYKDnBhcmFtZXRlckJ5dGVz",
-            "GAMgASgMInUKE0NfUnBjT2JqZWN0RnVuY3Rpb24SEAoIb2JqZWN0SWQYASAB",
-            "KAUSNAoNcnBjRnVuY3Rpb25JZBgCIAEoDjIdLlByb3RvY29sLlJwY09iamVj",
-            "dEZ1bmN0aW9uSWQSFgoOcGFyYW1ldGVyQnl0ZXMYAyABKAwirwEKFlNfUnBj",
-            "Q29tcG9uZW50RnVuY3Rpb24SEAoIb2JqZWN0SWQYASABKAUSMgoNY29tcG9u",
-            "ZW50VHlwZRgCIAEoDjIbLlByb3RvY29sLkdhbWVDb21wb25lbnRUeXBlEjcK",
-            "DXJwY0Z1bmN0aW9uSWQYAyABKA4yIC5Qcm90b2NvbC5ScGNDb21wb25lbnRG",
-            "dW5jdGlvbklkEhYKDnBhcmFtZXRlckJ5dGVzGAQgASgMIq8BChZDX1JwY0Nv",
-            "bXBvbmVudEZ1bmN0aW9uEhAKCG9iamVjdElkGAEgASgFEjIKDWNvbXBvbmVu",
-            "dFR5cGUYAiABKA4yGy5Qcm90b2NvbC5HYW1lQ29tcG9uZW50VHlwZRI3Cg1y",
-            "cGNGdW5jdGlvbklkGAMgASgOMiAuUHJvdG9jb2wuUnBjQ29tcG9uZW50RnVu",
-            "Y3Rpb25JZBIWCg5wYXJhbWV0ZXJCeXRlcxgEIAEoDCrLAwoFTXNnSWQSDwoL",
-            "U19DT05ORUNURUQQABIKCgZTX1BJTkcQARIKCgZDX1BPTkcQAhILCgdDX0xP",
-            "R0lOEAMSCwoHU19MT0dJThAEEg8KC1NfRU5URVJfTUFQEAUSEgoOU19FTlRF",
-            "Ul9QTEFZRVIQBhIPCgtTX0xFQVZFX01BUBAHEhIKDlNfTEVBVkVfUExBWUVS",
-            "EAgSEgoOU19TUEFXTl9PQkpFQ1QQCRITCg9TX1NQQVdOX09CSkVDVFMQChIU",
-            "ChBTX0RFU1BBV05fT0JKRUNUEAsSFQoRU19ERVNQQVdOX09CSkVDVFMQDBIU",
-            "ChBTX1BPU1NFU1NfT0JKRUNUEA0SFgoSU19VTlBPU1NFU1NfT0JKRUNUEA4S",
-            "EQoNU19PQkpFQ1RfU1lOQxAPEhEKDUNfT0JKRUNUX1NZTkMQEBIZChVTX1JF",
-            "UUVVU1RfT0JKRUNUX1NZTkMQERIZChVTX1JQQ19PQkpFQ1RfRlVOQ1RJT04Q",
-            "EhIZChVDX1JQQ19PQkpFQ1RfRlVOQ1RJT04QExIcChhTX1JQQ19DT01QT05F",
-            "TlRfRlVOQ1RJT04QFBIcChhDX1JQQ19DT01QT05FTlRfRlVOQ1RJT04QFSo0",
-            "ChBQbGF5ZXJMb2dpblN0YXRlEhEKDU5PVF9MT0dHRURfSU4QABINCglMT0dH",
-            "RURfSU4QASowCgtMb2dpblJlc3VsdBIRCg1MT0dJTl9TVUNDRVNTEAASDgoK",
-            "TE9HSU5fRkFJTBABKhwKDkdhbWVPYmplY3RUeXBlEgoKBktOSUdIVBAAKoAB",
-            "ChFHYW1lQ29tcG9uZW50VHlwZRIUChBPQkpFQ1RfQ09NUE9ORU5UEAASIAoc",
-            "Q0hBUkFDVEVSX01PVkVNRU5UX0NPTVBPTkVOVBABEh0KGVBMQVlFUl9NT1ZF",
-            "TUVOVF9DT01QT05FTlQQAhIUChBIRUFMVEhfQ09NUE9ORU5UEAMqgAEKE1Jw",
-            "Y09iamVjdEZ1bmN0aW9uSWQSGAoUTXVsdGljYXN0X0NvbWJvU3RhcnQQABIZ",
-            "ChVNdWx0aWNhc3RfQ29tYm9BdHRhY2sQARIWChJNdWx0aWNhc3RfQ29tYm9F",
-            "bmQQAhIcChhTZXJ2ZXJfQ29tYm9BdHRhY2tSZXN1bHQQAyo2ChZScGNDb21w",
-            "b25lbnRGdW5jdGlvbklkEhwKGE11bHRpY2FzdF9Eb2RnZVJvbGxTdGFydBAA",
-            "QhuqAhhHb29nbGUuUHJvdG9idWYuUHJvdG9jb2xiBnByb3RvMw=="));
+            "FQoTU19SZXFldXN0T2JqZWN0U3luYyKPAQoTU19ScGNPYmplY3RGdW5jdGlv",
+            "bhIQCghvYmplY3RJZBgBIAEoBRIYChBBYnNvbHV0ZWx5RXhjdXRlGAIgASgI",
+            "EjQKDXJwY0Z1bmN0aW9uSWQYAyABKA4yHS5Qcm90b2NvbC5ScGNPYmplY3RG",
+            "dW5jdGlvbklkEhYKDnBhcmFtZXRlckJ5dGVzGAQgASgMInUKE0NfUnBjT2Jq",
+            "ZWN0RnVuY3Rpb24SEAoIb2JqZWN0SWQYASABKAUSNAoNcnBjRnVuY3Rpb25J",
+            "ZBgCIAEoDjIdLlByb3RvY29sLlJwY09iamVjdEZ1bmN0aW9uSWQSFgoOcGFy",
+            "YW1ldGVyQnl0ZXMYAyABKAwiyQEKFlNfUnBjQ29tcG9uZW50RnVuY3Rpb24S",
+            "EAoIb2JqZWN0SWQYASABKAUSGAoQQWJzb2x1dGVseUV4Y3V0ZRgCIAEoCBIy",
+            "Cg1jb21wb25lbnRUeXBlGAMgASgOMhsuUHJvdG9jb2wuR2FtZUNvbXBvbmVu",
+            "dFR5cGUSNwoNcnBjRnVuY3Rpb25JZBgEIAEoDjIgLlByb3RvY29sLlJwY0Nv",
+            "bXBvbmVudEZ1bmN0aW9uSWQSFgoOcGFyYW1ldGVyQnl0ZXMYBSABKAwirwEK",
+            "FkNfUnBjQ29tcG9uZW50RnVuY3Rpb24SEAoIb2JqZWN0SWQYASABKAUSMgoN",
+            "Y29tcG9uZW50VHlwZRgCIAEoDjIbLlByb3RvY29sLkdhbWVDb21wb25lbnRU",
+            "eXBlEjcKDXJwY0Z1bmN0aW9uSWQYAyABKA4yIC5Qcm90b2NvbC5ScGNDb21w",
+            "b25lbnRGdW5jdGlvbklkEhYKDnBhcmFtZXRlckJ5dGVzGAQgASgMKssDCgVN",
+            "c2dJZBIPCgtTX0NPTk5FQ1RFRBAAEgoKBlNfUElORxABEgoKBkNfUE9ORxAC",
+            "EgsKB0NfTE9HSU4QAxILCgdTX0xPR0lOEAQSDwoLU19FTlRFUl9NQVAQBRIS",
+            "Cg5TX0VOVEVSX1BMQVlFUhAGEg8KC1NfTEVBVkVfTUFQEAcSEgoOU19MRUFW",
+            "RV9QTEFZRVIQCBISCg5TX1NQQVdOX09CSkVDVBAJEhMKD1NfU1BBV05fT0JK",
+            "RUNUUxAKEhQKEFNfREVTUEFXTl9PQkpFQ1QQCxIVChFTX0RFU1BBV05fT0JK",
+            "RUNUUxAMEhQKEFNfUE9TU0VTU19PQkpFQ1QQDRIWChJTX1VOUE9TU0VTU19P",
+            "QkpFQ1QQDhIRCg1TX09CSkVDVF9TWU5DEA8SEQoNQ19PQkpFQ1RfU1lOQxAQ",
+            "EhkKFVNfUkVRRVVTVF9PQkpFQ1RfU1lOQxAREhkKFVNfUlBDX09CSkVDVF9G",
+            "VU5DVElPThASEhkKFUNfUlBDX09CSkVDVF9GVU5DVElPThATEhwKGFNfUlBD",
+            "X0NPTVBPTkVOVF9GVU5DVElPThAUEhwKGENfUlBDX0NPTVBPTkVOVF9GVU5D",
+            "VElPThAVKjQKEFBsYXllckxvZ2luU3RhdGUSEQoNTk9UX0xPR0dFRF9JThAA",
+            "Eg0KCUxPR0dFRF9JThABKjAKC0xvZ2luUmVzdWx0EhEKDUxPR0lOX1NVQ0NF",
+            "U1MQABIOCgpMT0dJTl9GQUlMEAEqHAoOR2FtZU9iamVjdFR5cGUSCgoGS05J",
+            "R0hUEAAqgAEKEUdhbWVDb21wb25lbnRUeXBlEhQKEE9CSkVDVF9DT01QT05F",
+            "TlQQABIgChxDSEFSQUNURVJfTU9WRU1FTlRfQ09NUE9ORU5UEAESHQoZUExB",
+            "WUVSX01PVkVNRU5UX0NPTVBPTkVOVBACEhQKEEhFQUxUSF9DT01QT05FTlQQ",
+            "AyqAAQoTUnBjT2JqZWN0RnVuY3Rpb25JZBIYChRNdWx0aWNhc3RfQ29tYm9T",
+            "dGFydBAAEhkKFU11bHRpY2FzdF9Db21ib0F0dGFjaxABEhYKEk11bHRpY2Fz",
+            "dF9Db21ib0VuZBACEhwKGFNlcnZlcl9Db21ib0F0dGFja1Jlc3VsdBADKn8K",
+            "FlJwY0NvbXBvbmVudEZ1bmN0aW9uSWQSHAoYTXVsdGljYXN0X0RvZGdlUm9s",
+            "bFN0YXJ0EAASGAoUTXVsdGljYXN0X1Rha2VEYW1hZ2UQARIYChRNdWx0aWNh",
+            "c3RfR2l2ZURhbWFnZRACEhMKD011bHRpY2FzdF9EZWF0aBADQhuqAhhHb29n",
+            "bGUuUHJvdG9idWYuUHJvdG9jb2xiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.MsgId), typeof(global::Google.Protobuf.Protocol.PlayerLoginState), typeof(global::Google.Protobuf.Protocol.LoginResult), typeof(global::Google.Protobuf.Protocol.GameObjectType), typeof(global::Google.Protobuf.Protocol.GameComponentType), typeof(global::Google.Protobuf.Protocol.RpcObjectFunctionId), typeof(global::Google.Protobuf.Protocol.RpcComponentFunctionId), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -100,9 +103,9 @@ namespace Google.Protobuf.Protocol {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_ObjectSync), global::Google.Protobuf.Protocol.S_ObjectSync.Parser, new[]{ "SyncInfos" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.C_ObjectSync), global::Google.Protobuf.Protocol.C_ObjectSync.Parser, new[]{ "SyncInfo" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_ReqeustObjectSync), global::Google.Protobuf.Protocol.S_ReqeustObjectSync.Parser, null, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_RpcObjectFunction), global::Google.Protobuf.Protocol.S_RpcObjectFunction.Parser, new[]{ "ObjectId", "RpcFunctionId", "ParameterBytes" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_RpcObjectFunction), global::Google.Protobuf.Protocol.S_RpcObjectFunction.Parser, new[]{ "ObjectId", "AbsolutelyExcute", "RpcFunctionId", "ParameterBytes" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.C_RpcObjectFunction), global::Google.Protobuf.Protocol.C_RpcObjectFunction.Parser, new[]{ "ObjectId", "RpcFunctionId", "ParameterBytes" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_RpcComponentFunction), global::Google.Protobuf.Protocol.S_RpcComponentFunction.Parser, new[]{ "ObjectId", "ComponentType", "RpcFunctionId", "ParameterBytes" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_RpcComponentFunction), global::Google.Protobuf.Protocol.S_RpcComponentFunction.Parser, new[]{ "ObjectId", "AbsolutelyExcute", "ComponentType", "RpcFunctionId", "ParameterBytes" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.C_RpcComponentFunction), global::Google.Protobuf.Protocol.C_RpcComponentFunction.Parser, new[]{ "ObjectId", "ComponentType", "RpcFunctionId", "ParameterBytes" }, null, null, null, null)
           }));
     }
@@ -195,6 +198,9 @@ namespace Google.Protobuf.Protocol {
 
   public enum RpcComponentFunctionId {
     [pbr::OriginalName("Multicast_DodgeRollStart")] MulticastDodgeRollStart = 0,
+    [pbr::OriginalName("Multicast_TakeDamage")] MulticastTakeDamage = 1,
+    [pbr::OriginalName("Multicast_GiveDamage")] MulticastGiveDamage = 2,
+    [pbr::OriginalName("Multicast_Death")] MulticastDeath = 3,
   }
 
   #endregion
@@ -2777,6 +2783,7 @@ namespace Google.Protobuf.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public S_RpcObjectFunction(S_RpcObjectFunction other) : this() {
       objectId_ = other.objectId_;
+      absolutelyExcute_ = other.absolutelyExcute_;
       rpcFunctionId_ = other.rpcFunctionId_;
       parameterBytes_ = other.parameterBytes_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -2798,8 +2805,19 @@ namespace Google.Protobuf.Protocol {
       }
     }
 
+    /// <summary>Field number for the "AbsolutelyExcute" field.</summary>
+    public const int AbsolutelyExcuteFieldNumber = 2;
+    private bool absolutelyExcute_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool AbsolutelyExcute {
+      get { return absolutelyExcute_; }
+      set {
+        absolutelyExcute_ = value;
+      }
+    }
+
     /// <summary>Field number for the "rpcFunctionId" field.</summary>
-    public const int RpcFunctionIdFieldNumber = 2;
+    public const int RpcFunctionIdFieldNumber = 3;
     private global::Google.Protobuf.Protocol.RpcObjectFunctionId rpcFunctionId_ = global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastComboStart;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Protobuf.Protocol.RpcObjectFunctionId RpcFunctionId {
@@ -2810,7 +2828,7 @@ namespace Google.Protobuf.Protocol {
     }
 
     /// <summary>Field number for the "parameterBytes" field.</summary>
-    public const int ParameterBytesFieldNumber = 3;
+    public const int ParameterBytesFieldNumber = 4;
     private pb::ByteString parameterBytes_ = pb::ByteString.Empty;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pb::ByteString ParameterBytes {
@@ -2834,6 +2852,7 @@ namespace Google.Protobuf.Protocol {
         return true;
       }
       if (ObjectId != other.ObjectId) return false;
+      if (AbsolutelyExcute != other.AbsolutelyExcute) return false;
       if (RpcFunctionId != other.RpcFunctionId) return false;
       if (ParameterBytes != other.ParameterBytes) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -2843,6 +2862,7 @@ namespace Google.Protobuf.Protocol {
     public override int GetHashCode() {
       int hash = 1;
       if (ObjectId != 0) hash ^= ObjectId.GetHashCode();
+      if (AbsolutelyExcute != false) hash ^= AbsolutelyExcute.GetHashCode();
       if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastComboStart) hash ^= RpcFunctionId.GetHashCode();
       if (ParameterBytes.Length != 0) hash ^= ParameterBytes.GetHashCode();
       if (_unknownFields != null) {
@@ -2862,12 +2882,16 @@ namespace Google.Protobuf.Protocol {
         output.WriteRawTag(8);
         output.WriteInt32(ObjectId);
       }
-      if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastComboStart) {
+      if (AbsolutelyExcute != false) {
         output.WriteRawTag(16);
+        output.WriteBool(AbsolutelyExcute);
+      }
+      if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastComboStart) {
+        output.WriteRawTag(24);
         output.WriteEnum((int) RpcFunctionId);
       }
       if (ParameterBytes.Length != 0) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(34);
         output.WriteBytes(ParameterBytes);
       }
       if (_unknownFields != null) {
@@ -2880,6 +2904,9 @@ namespace Google.Protobuf.Protocol {
       int size = 0;
       if (ObjectId != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(ObjectId);
+      }
+      if (AbsolutelyExcute != false) {
+        size += 1 + 1;
       }
       if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastComboStart) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) RpcFunctionId);
@@ -2900,6 +2927,9 @@ namespace Google.Protobuf.Protocol {
       }
       if (other.ObjectId != 0) {
         ObjectId = other.ObjectId;
+      }
+      if (other.AbsolutelyExcute != false) {
+        AbsolutelyExcute = other.AbsolutelyExcute;
       }
       if (other.RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastComboStart) {
         RpcFunctionId = other.RpcFunctionId;
@@ -2923,10 +2953,14 @@ namespace Google.Protobuf.Protocol {
             break;
           }
           case 16: {
+            AbsolutelyExcute = input.ReadBool();
+            break;
+          }
+          case 24: {
             RpcFunctionId = (global::Google.Protobuf.Protocol.RpcObjectFunctionId) input.ReadEnum();
             break;
           }
-          case 26: {
+          case 34: {
             ParameterBytes = input.ReadBytes();
             break;
           }
@@ -3153,6 +3187,7 @@ namespace Google.Protobuf.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public S_RpcComponentFunction(S_RpcComponentFunction other) : this() {
       objectId_ = other.objectId_;
+      absolutelyExcute_ = other.absolutelyExcute_;
       componentType_ = other.componentType_;
       rpcFunctionId_ = other.rpcFunctionId_;
       parameterBytes_ = other.parameterBytes_;
@@ -3175,8 +3210,19 @@ namespace Google.Protobuf.Protocol {
       }
     }
 
+    /// <summary>Field number for the "AbsolutelyExcute" field.</summary>
+    public const int AbsolutelyExcuteFieldNumber = 2;
+    private bool absolutelyExcute_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool AbsolutelyExcute {
+      get { return absolutelyExcute_; }
+      set {
+        absolutelyExcute_ = value;
+      }
+    }
+
     /// <summary>Field number for the "componentType" field.</summary>
-    public const int ComponentTypeFieldNumber = 2;
+    public const int ComponentTypeFieldNumber = 3;
     private global::Google.Protobuf.Protocol.GameComponentType componentType_ = global::Google.Protobuf.Protocol.GameComponentType.ObjectComponent;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Protobuf.Protocol.GameComponentType ComponentType {
@@ -3187,7 +3233,7 @@ namespace Google.Protobuf.Protocol {
     }
 
     /// <summary>Field number for the "rpcFunctionId" field.</summary>
-    public const int RpcFunctionIdFieldNumber = 3;
+    public const int RpcFunctionIdFieldNumber = 4;
     private global::Google.Protobuf.Protocol.RpcComponentFunctionId rpcFunctionId_ = global::Google.Protobuf.Protocol.RpcComponentFunctionId.MulticastDodgeRollStart;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Protobuf.Protocol.RpcComponentFunctionId RpcFunctionId {
@@ -3198,7 +3244,7 @@ namespace Google.Protobuf.Protocol {
     }
 
     /// <summary>Field number for the "parameterBytes" field.</summary>
-    public const int ParameterBytesFieldNumber = 4;
+    public const int ParameterBytesFieldNumber = 5;
     private pb::ByteString parameterBytes_ = pb::ByteString.Empty;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pb::ByteString ParameterBytes {
@@ -3222,6 +3268,7 @@ namespace Google.Protobuf.Protocol {
         return true;
       }
       if (ObjectId != other.ObjectId) return false;
+      if (AbsolutelyExcute != other.AbsolutelyExcute) return false;
       if (ComponentType != other.ComponentType) return false;
       if (RpcFunctionId != other.RpcFunctionId) return false;
       if (ParameterBytes != other.ParameterBytes) return false;
@@ -3232,6 +3279,7 @@ namespace Google.Protobuf.Protocol {
     public override int GetHashCode() {
       int hash = 1;
       if (ObjectId != 0) hash ^= ObjectId.GetHashCode();
+      if (AbsolutelyExcute != false) hash ^= AbsolutelyExcute.GetHashCode();
       if (ComponentType != global::Google.Protobuf.Protocol.GameComponentType.ObjectComponent) hash ^= ComponentType.GetHashCode();
       if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcComponentFunctionId.MulticastDodgeRollStart) hash ^= RpcFunctionId.GetHashCode();
       if (ParameterBytes.Length != 0) hash ^= ParameterBytes.GetHashCode();
@@ -3252,16 +3300,20 @@ namespace Google.Protobuf.Protocol {
         output.WriteRawTag(8);
         output.WriteInt32(ObjectId);
       }
-      if (ComponentType != global::Google.Protobuf.Protocol.GameComponentType.ObjectComponent) {
+      if (AbsolutelyExcute != false) {
         output.WriteRawTag(16);
+        output.WriteBool(AbsolutelyExcute);
+      }
+      if (ComponentType != global::Google.Protobuf.Protocol.GameComponentType.ObjectComponent) {
+        output.WriteRawTag(24);
         output.WriteEnum((int) ComponentType);
       }
       if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcComponentFunctionId.MulticastDodgeRollStart) {
-        output.WriteRawTag(24);
+        output.WriteRawTag(32);
         output.WriteEnum((int) RpcFunctionId);
       }
       if (ParameterBytes.Length != 0) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(42);
         output.WriteBytes(ParameterBytes);
       }
       if (_unknownFields != null) {
@@ -3274,6 +3326,9 @@ namespace Google.Protobuf.Protocol {
       int size = 0;
       if (ObjectId != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(ObjectId);
+      }
+      if (AbsolutelyExcute != false) {
+        size += 1 + 1;
       }
       if (ComponentType != global::Google.Protobuf.Protocol.GameComponentType.ObjectComponent) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) ComponentType);
@@ -3297,6 +3352,9 @@ namespace Google.Protobuf.Protocol {
       }
       if (other.ObjectId != 0) {
         ObjectId = other.ObjectId;
+      }
+      if (other.AbsolutelyExcute != false) {
+        AbsolutelyExcute = other.AbsolutelyExcute;
       }
       if (other.ComponentType != global::Google.Protobuf.Protocol.GameComponentType.ObjectComponent) {
         ComponentType = other.ComponentType;
@@ -3323,14 +3381,18 @@ namespace Google.Protobuf.Protocol {
             break;
           }
           case 16: {
-            ComponentType = (global::Google.Protobuf.Protocol.GameComponentType) input.ReadEnum();
+            AbsolutelyExcute = input.ReadBool();
             break;
           }
           case 24: {
+            ComponentType = (global::Google.Protobuf.Protocol.GameComponentType) input.ReadEnum();
+            break;
+          }
+          case 32: {
             RpcFunctionId = (global::Google.Protobuf.Protocol.RpcComponentFunctionId) input.ReadEnum();
             break;
           }
-          case 34: {
+          case 42: {
             ParameterBytes = input.ReadBytes();
             break;
           }

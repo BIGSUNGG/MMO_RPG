@@ -10,8 +10,8 @@ using UnityEngine.XR;
 
 public class PlayerController : CharacterController
 {
-    protected PlayerAnimParameter _playerAnim = null;
-    protected PlayerMovementComponent _playerMovement = null;
+    public PlayerAnimParameter      _playerAnim     { get; protected set; } = null;
+    public PlayerMovementComponent  _playerMovement { get; protected set; } = null;
 
     protected override void Start()
     {

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 using UnityEngine;
 
 public class Util
@@ -130,6 +132,30 @@ public class Util
         }
 
         return list;
+    }
+
+    // 인티저 리스트를 바이트 배열로 변환
+    // list : 변환할 인티저 리스트
+    // return : 변환한 바이트 배열
+    public static byte[] IntListToBytes(List<int> list)
+    {
+        byte[] bytes = new byte[list.Count * sizeof(int)];
+        for (int i = 0; i < list.Count; i++)
+            Array.Copy(BitConverter.GetBytes((int)list[i]), 0, bytes, sizeof(int) * i, sizeof(int));
+
+        return bytes;
+    }
+
+    // 실수 리스트를 바이트 배열로 변환
+    // list : 변환할 실수 리스트
+    // return : 변환한 바이트 배열
+    public static byte[] FloatListToBytes(List<float> list)
+    {
+        byte[] bytes = new byte[list.Count * sizeof(float)];
+        for (int i = 0; i < list.Count; i++)
+            Array.Copy(BitConverter.GetBytes((float)list[i]), 0, bytes, sizeof(float) * i, sizeof(float));
+
+        return bytes;
     }
 
     // T의 자료형의 사이트를 구함

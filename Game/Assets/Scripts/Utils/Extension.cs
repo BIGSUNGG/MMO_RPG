@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 public static class Extension
 {
-    public static float GiveDamage(this GameObject go, GameObject victim, float damage)
+    public static int GiveDamage(this GameObject go, ObjectController victim, float damage)
     {
         HealthComponent health = go.GetComponentInChildren<HealthComponent>();
         if (health != null)
@@ -17,11 +17,11 @@ public static class Extension
         else
         {
             Debug.LogWarning("HealthComponent is not exist");
-            return 0.0f;
+            return 0;
         }
     }
 
-    public static float TakeDamage(this GameObject go, GameObject attacker, float damage)
+    public static int TakeDamage(this GameObject go, ObjectController attacker, float damage)
     {
         HealthComponent health = go.GetComponentInChildren<HealthComponent>();
         if (health != null)
@@ -31,7 +31,7 @@ public static class Extension
         else
         {
             Debug.LogWarning("HealthComponent is not exist");
-            return 0.0f;
+            return 0;
         }
     }
 

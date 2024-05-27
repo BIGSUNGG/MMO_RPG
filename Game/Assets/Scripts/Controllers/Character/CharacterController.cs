@@ -9,11 +9,11 @@ using UnityEngine;
 
 public class CharacterController : ObjectController
 {
-    protected CharacterAnimParameter _anim = null;
-    protected CharacterMovementComponent _movement = null;
-    protected HealthComponent _health = null;
-    protected InventoryComponent _inventory = null;
-    protected CapsuleCollider _capsule = null;
+    public CharacterAnimParameter       _anim       { get; protected set; } = null;
+    public CharacterMovementComponent   _movement   { get; protected set; } = null;
+    public HealthComponent              _health     { get; protected set; } = null;
+    public InventoryComponent           _inventory  { get; protected set; } = null;
+    public CapsuleCollider              _capsule    { get; protected set; } = null;
 
     public CharacterController()
     {
@@ -60,28 +60,20 @@ public class CharacterController : ObjectController
         _inputDir = Vector2.zero;
         if (_movement)
         {
+            _inputDir = Vector2.zero;
+
             if (CanMovementInput())
             {
                 if (Input.GetKey(KeyCode.W))
-                    _movement.MoveForward(1.0f);
+                    _inputDir.y += 1.0f;
                 if (Input.GetKey(KeyCode.S))
-                    _movement.MoveForward(-1.0f);
+                    _inputDir.y -= 1.0f;
 
                 if (Input.GetKey(KeyCode.A))
-                    _movement.MoveRight(-1.0f);
+                    _inputDir.x -= 1.0f;
                 if (Input.GetKey(KeyCode.D))
-                    _movement.MoveRight(1.0f);
+                    _inputDir.x += 1.0f;
             }
-
-            if (Input.GetKey(KeyCode.W))
-                _inputDir.y += 1.0f;
-            if (Input.GetKey(KeyCode.S))
-                _inputDir.y -= 1.0f;
-
-            if (Input.GetKey(KeyCode.A))
-                _inputDir.x -= 1.0f;
-            if (Input.GetKey(KeyCode.D))
-                _inputDir.x += 1.0f;
 
             _movement._bIsRunning = Input.GetKey(KeyCode.LeftShift);
         }
@@ -95,16 +87,25 @@ public class CharacterController : ObjectController
 
     public virtual bool CanAttack()
     {
+        if (_health._bDead)
+            return false;
+
         return true;
     }
 
     public virtual bool CanRotationInput()
     {
+        if (_health._bDead)
+            return false;
+
         return true;
     }
 
     public virtual bool CanMovementInput()
     {
+        if (_health._bDead)
+            return false;
+
         return true;
     }
     #endregion
@@ -133,10 +134,10 @@ public class CharacterController : ObjectController
         if (info == null)
             return;
 
+        _inputDir = info.inputDir;
+
         if(_movement)
-        {
-            _movement.Sync(info.position, info.rotation, info.inputDir, info.bIsRunning);
-        }
+            _movement.Sync(info.position, info.rotation, info.bIsRunning);
 
         base.ObjectSync(info);
     }

@@ -83,7 +83,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.1640625
+      - time: 0.10023272
         functionName: OnComboAttackSwing
         data: 1
         objectReferenceParameter: {fileID: 11500000, guid: 8b10b60196e357c49bb5c54f0e83c440,

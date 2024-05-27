@@ -163,7 +163,7 @@ namespace Server
                 { 
                     // 유니티 게임 룸 연결 기다리기
                     if(bProgramConnect)
-                    {
+                    {   
                         // 게임 룸으로 맵 아이디 전송
                         S_EnterMap packet = new S_EnterMap();
                         packet.MapId = mapId;

@@ -13,7 +13,7 @@ public class ObjectComponent : MonoBehaviour, RpcComponentFunction
         _owner = gameObject.GetComponent<ObjectController>();
         if (_owner == null)
         {
-            Debug.Log("Failed to find ObjectController");
+            Debug.LogWarning("Failed to find ObjectController");
             Debug.Assert(false);
         }
     }

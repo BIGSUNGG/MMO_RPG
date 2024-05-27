@@ -12,7 +12,7 @@ using static UnityEngine.UI.GridLayoutGroup;
 
 public class KnightController : PlayerController
 {
-	protected KnightController _knightAnim = null;
+	public KnightController _knightAnim { get; protected set; } = null;
 
 	protected override void Start()
 	{
@@ -78,7 +78,8 @@ public class KnightController : PlayerController
 		{
 			S_RpcObjectFunction rpcFuncPacket = new S_RpcObjectFunction();
 
-			rpcFuncPacket.ObjectId = ObjectId;
+            rpcFuncPacket.ObjectId = ObjectId;
+            rpcFuncPacket.AbsolutelyExcute = true;
 			rpcFuncPacket.RpcFunctionId = RpcObjectFunctionId.MulticastComboStart;
 
 			Managers.Network.SendMulticast(rpcFuncPacket);
@@ -180,8 +181,9 @@ public class KnightController : PlayerController
 			byte[] parameterBuffer = new byte[4];
 			Array.Copy(BitConverter.GetBytes((int)combo), 0, parameterBuffer, 0, sizeof(int));
 
-			rpcFuncPacket.ObjectId = ObjectId;
-			rpcFuncPacket.RpcFunctionId = RpcObjectFunctionId.MulticastComboAttack;
+            rpcFuncPacket.ObjectId = ObjectId;
+            rpcFuncPacket.AbsolutelyExcute = true;
+            rpcFuncPacket.RpcFunctionId = RpcObjectFunctionId.MulticastComboAttack;
 			rpcFuncPacket.ParameterBytes = ByteString.CopyFrom(parameterBuffer);
 
 			Managers.Network.SendMulticast(rpcFuncPacket);
@@ -330,6 +332,9 @@ public class KnightController : PlayerController
             Server_ComboAttackResult(attackName, objectIdList);
     }
 
+    // 서버에 공격 결과 패킷을 보냄
+    // attackName : 공격 이름
+    // objectIdArr : 공격할 오브젝트들의 아이디 배열
 	public virtual void Server_ComboAttackResult(string attackName, List<int> objectIdArr)
 	{
 		// 패킷 보내기
@@ -344,8 +349,7 @@ public class KnightController : PlayerController
 			Array.Copy(Encoding.UTF8.GetBytes(attackName)       , 0, parameterBuffer, 1, nameLength); // attackName 복사
 
 			Array.Copy(BitConverter.GetBytes((byte)objectIdArrCount), 0, parameterBuffer, 1 + nameLength, sizeof(byte)); // object id 개수 복사
-			for (int i = 0; i < objectIdArr.Count; i++)
-                Array.Copy(BitConverter.GetBytes((int)objectIdArr[i]), 0, parameterBuffer, 2 + nameLength + (sizeof(int) * i), sizeof(int)); // object id 복사
+            Array.Copy(Util.IntListToBytes(objectIdArr), 0, parameterBuffer, 2 + nameLength, sizeof(int) * objectIdArrCount); // object id 복사
 
 			rpcFuncPacket.ObjectId = ObjectId;
 			rpcFuncPacket.RpcFunctionId = RpcObjectFunctionId.ServerComboAttackResult;
@@ -355,26 +359,12 @@ public class KnightController : PlayerController
 		}
 		else // 서버에서 호출된 경우
 		{
-			S_RpcObjectFunction rpcFuncPacket = new S_RpcObjectFunction();
-			byte nameLength = (byte)attackName.Length; // attackName의 str 길이
-			byte objectIdArrCount = (byte)objectIdArr.Count; // object Id 개수
-
-            byte[] parameterBuffer = new byte[1 + nameLength + 1 + (objectIdArrCount * 4)];
-            Array.Copy(BitConverter.GetBytes((byte)nameLength), 0, parameterBuffer, 0, sizeof(byte)); // attackName 길이 복사
-			Array.Copy(Encoding.UTF8.GetBytes(attackName), 0, parameterBuffer, 1, nameLength); // attackName 복사
-
-			Array.Copy(BitConverter.GetBytes((byte)objectIdArrCount), 0, parameterBuffer, 1 + nameLength, sizeof(byte)); // object id 개수 복사
-			for (int i = 0; i < objectIdArr.Count; i++)
-				Array.Copy(BitConverter.GetBytes((int)objectIdArr[i]), 0, parameterBuffer, 2 + nameLength + (sizeof(int) * i), sizeof(int)); // object id 복사
-
-			rpcFuncPacket.ObjectId = ObjectId;
-			rpcFuncPacket.RpcFunctionId = RpcObjectFunctionId.ServerComboAttackResult;
-			rpcFuncPacket.ParameterBytes = ByteString.CopyFrom(parameterBuffer);
-		}
+            Server_ComboAttackResult_Implementation(attackName, objectIdArr);
+        }
 	}
 
 
-	// 다른 클라이언트로 부터 콤보 시작 패킷을 받으면 호출
+	// 클라이언트로 부터 공격 결과 패킷을 받으면 호출
 	// packet : 받은 매개 변수의 바이트 배열 
 	protected virtual void Server_ComboAttackResult_ReceivePacket(byte[] packet)
 	{
@@ -401,25 +391,9 @@ public class KnightController : PlayerController
 		try
         {
             byte nameLength = packet[0]; // attackName의 str 길이
-            string attackName = BitConverter.ToString(packet, 1, nameLength); ;
+            string attackName = BitConverter.ToString(packet, 1, nameLength);
             byte objectIdArrCount = packet[1 + nameLength]; // object Id 개수
             List<int> objectIdArr = Util.BytesToIntList(packet, 2 + nameLength, objectIdArrCount);
-
-            switch (attackName)
-            {
-                case "1":
-                    break;
-                case "2":
-                    break;
-                case "3-1":
-                    break;
-                case "3-2":
-                    break;
-                case "4":
-                    break;
-                default:
-                    return false;
-            }
 
             return true;
 		}
@@ -430,8 +404,9 @@ public class KnightController : PlayerController
 		}
 	}
 
-	// 콤보 시작 시 호출
-	protected virtual void Server_ComboAttackResult_Implementation(string attackName, List<int> objectIdArr)
+    // attackName : 공격 이름
+    // objectIdArr : 공격할 오브젝트들의 아이디 배열
+    protected virtual void Server_ComboAttackResult_Implementation(string attackName, List<int> objectIdArr)
 	{
         List<ObjectController> objects = new List<ObjectController>();
         foreach(int id in objectIdArr)
@@ -440,7 +415,11 @@ public class KnightController : PlayerController
             if (go == null)
                 continue;
 
-            gameObject.GiveDamage(go, 30.0f);
+            ObjectController oc = go.GetComponent<ObjectController>();
+            if (oc == null)
+                continue;
+
+            gameObject.GiveDamage(oc, 30.0f);
         }
 	}
 	#endregion
@@ -463,8 +442,9 @@ public class KnightController : PlayerController
 		{
 			S_RpcObjectFunction rpcFuncPacket = new S_RpcObjectFunction();
 
-			rpcFuncPacket.ObjectId = ObjectId;
-			rpcFuncPacket.RpcFunctionId = RpcObjectFunctionId.MulticastComboEnd;
+            rpcFuncPacket.ObjectId = ObjectId;
+            rpcFuncPacket.AbsolutelyExcute = true;
+            rpcFuncPacket.RpcFunctionId = RpcObjectFunctionId.MulticastComboEnd;
 
 			Managers.Network.SendMulticast(rpcFuncPacket);
 		}
@@ -555,8 +535,11 @@ public class KnightController : PlayerController
 	}
 
 	public override bool CanDodgeInput()
-	{
-		return base.CanDodgeInput();
+    {
+        if (_health._bDead)
+            return false;
+
+        return base.CanDodgeInput();
 	}
 
 	public override bool CanRotationInput()
