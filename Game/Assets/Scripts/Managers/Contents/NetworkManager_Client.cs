@@ -15,6 +15,10 @@ public partial class NetworkManager
 
     ServerSession _serverSession = new ServerSession();
 
+    public void Init()
+    {
+    }
+
     public void SendServer(IMessage packet)
     {
         string msgName = packet.Descriptor.Name.Replace("_", string.Empty);
@@ -32,7 +36,7 @@ public partial class NetworkManager
         Debug.Log("This function must be called on server");
     }
 
-    public void SendClient(IMessage packet)
+    public void SendClient(ClientSession session, IMessage packet)
     {
          Debug.Log("This function must be called on server");
     }

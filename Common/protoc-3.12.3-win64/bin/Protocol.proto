@@ -80,9 +80,10 @@ enum RpcObjectFunctionId {
 enum RpcComponentFunctionId {
     Multicast_DodgeRollStart = 0;
 
-    Multicast_TakeDamage = 1;
-    Multicast_GiveDamage = 2;
+    Client_GiveDamage = 1;
+    Multicast_TakeDamage = 2;
     Multicast_Death = 3;
+	
 }
 
 // Structs

@@ -30,7 +30,7 @@ public class CharacterMovementComponent : ObjectComponent
         {
             Vector2 _moveDir = _character._inputDir;
             _moveDir.Normalize();
-            if (CanMovementInput()) // 입력이 가능한지
+            if (_character.CanMove() && this.CanMove()) // 캐릭터가 움직일 수 있는지
             {
                 // 입력 방향으로 이동
 	            _velocity = new Vector3(_moveDir.x * _curMoveSpeed, _velocity.y < _curMoveSpeed ? _velocity.y : _curMoveSpeed, _moveDir.y * _curMoveSpeed);
@@ -70,14 +70,12 @@ public class CharacterMovementComponent : ObjectComponent
 		_rigidbody.velocity = new Vector3(_rigidbody.velocity.x, _jumpPower, _rigidbody.velocity.z);
 	}
 
-    bool _bEnableInput = true; // 입력을 받을지
-    // 입력받은 방향으로 움직일 수 있는지
-    public virtual bool CanMovementInput() 
+    public virtual bool CanMove()
     {
-        return _bEnableInput;
+        return true;
     }
 
-	public bool IsFalling()
+    public bool IsFalling()
 	{
 		return _rigidbody.velocity.y < 0;
 	}
@@ -92,8 +90,8 @@ public class CharacterMovementComponent : ObjectComponent
     Quaternion _syncEndRot;
 
 	float _curSyncLerpTime = 0.0f;
-	float _syncPosLerpMultiply = 10;
-	float _syncRotLerpMultiply = 10;
+	float _syncPosLerpMultiply = 4.5f;
+	float _syncRotLerpMultiply = 4.5f;
 
     public virtual void Sync(Vector3 pos, Quaternion rot, bool IsRunnung)
 	{

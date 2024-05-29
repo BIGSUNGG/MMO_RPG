@@ -181,14 +181,14 @@ public class PlayerMovementComponent : CharacterMovementComponent
         _bEnableDodge = true;
         _dodgeDelayTimer = null;
     }
-#endregion
+    #endregion
 
-    public override bool CanMovementInput()
+    public override bool CanMove()
     {
         if (_bIsdodging)
             return false;
 
-        return base.CanMovementInput();
+        return base.CanMove();
     }
 
     #endregion
@@ -210,7 +210,7 @@ public class PlayerMovementComponent : CharacterMovementComponent
         }
         catch (System.Exception ex)
         {
-        	
+            Debug.Log($"{ex}");
         }
 
         base.RpcFunction_ReceivePacket(functionId, packet);

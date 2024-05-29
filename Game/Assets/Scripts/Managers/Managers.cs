@@ -49,7 +49,8 @@ public class Managers : MonoBehaviour
     void Start()
     {
         Init();
-	}
+        _network.Init();
+    }
 
     void Update()
     {

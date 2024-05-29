@@ -419,7 +419,7 @@ public class KnightController : PlayerController
             if (oc == null)
                 continue;
 
-            gameObject.GiveDamage(oc, 30.0f);
+            gameObject.GiveDamage(oc, 30);
         }
 	}
 	#endregion
@@ -523,23 +523,15 @@ public class KnightController : PlayerController
 	#region Controller
 	public override void ControllerUpdate()
 	{
-		base.ControllerUpdate();
-
 		if (IsLocallyControlled() == false)
 			return;
+
+        base.ControllerUpdate();
 
 		if (Input.GetMouseButtonDown(0))
 		{
 			Attack();
 		}
-	}
-
-	public override bool CanDodgeInput()
-    {
-        if (_health._bDead)
-            return false;
-
-        return base.CanDodgeInput();
 	}
 
 	public override bool CanRotationInput()
@@ -550,12 +542,12 @@ public class KnightController : PlayerController
 		return base.CanRotationInput();
 	}
 
-	public override bool CanMovementInput()
+	public override bool CanMove()
 	{
 		if (_isAttacking)
 			return false;
 
-		return base.CanMovementInput();
+		return base.CanMove();
 	}
 	#endregion
 
@@ -587,10 +579,10 @@ public class KnightController : PlayerController
 		}
 		catch (System.Exception ex)
 		{
+            Debug.Log($"{ex}");
+        }
 
-		}
-
-		base.RpcFunction_ReceivePacket(functionId, packet);
+        base.RpcFunction_ReceivePacket(functionId, packet);
 	}
 
 	// 클라이언트에서 받은 패킷이 악성 패킷인지 확인

@@ -31,9 +31,7 @@ public class CharacterAnimParameter : MonoBehaviour
     protected virtual void Update()
     {
         Vector3 moveDir = new Vector3(_character._inputDir.x, 0.0f, _character._inputDir.y);
-        if(_character.IsLocallyControlled() == false)
-            Debug.Log($"{gameObject.name} {moveDir}");
-
+            
         bool bIsMoving = _character._inputDir != Vector2.zero; // 캐릭터가 움직이고 있는지
         bool bIsRunning = bIsMoving && _movement._bIsRunning; // 캐릭터가 움직이고 있는지
         float forwardSpeed = Vector3.Dot(transform.forward, moveDir); // 정면 속도 구하기

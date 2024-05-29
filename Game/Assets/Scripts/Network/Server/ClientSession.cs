@@ -31,6 +31,7 @@ public class ClientSession : ISession
             return;
 
         _playerController = pc;
+        _playerController._clientSession = this;
 
         // 클라이언트에 컨트롤러 빙의 알리기
         S_PossessObject possessPacket = new S_PossessObject();

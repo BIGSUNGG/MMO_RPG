@@ -80,6 +80,7 @@
     <Compile Include="Assets\Scripts\Scenes\GameScene\GameScene_Server.cs" />
     <Compile Include="Assets\Scripts\Animation\Character\CharacterAnimParameter.cs" />
     <Compile Include="Assets\Scripts\Scenes\LoginScene\LoginScene_Server.cs" />
+    <Compile Include="Assets\Scripts\Effect\Effect.cs" />
     <Compile Include="Assets\Scripts\Network\Rpc\RpcComponentFunction.cs" />
     <Compile Include="Assets\Scripts\Animation\Character\Player\Knight\KnightAnimParameter.cs" />
     <Compile Include="Assets\Scripts\Network\Web\WebPacket.cs" />
@@ -130,7 +131,9 @@
     <Compile Include="Assets\Scripts\Network\ServerCore\Session.cs" />
     <Compile Include="Assets\Scripts\UI\UI_EventHandler.cs" />
     <Compile Include="Assets\Scripts\Scenes\LoginScene\LoginScene.cs" />
+    <Compile Include="Assets\Scripts\Effect\FloatingDamage\FloatingDamage.cs" />
     <Compile Include="Assets\Scripts\Managers\Core\SoundManager.cs" />
+    <Compile Include="Assets\Scripts\Network\Client\ClientSession.cs" />
     <Compile Include="Assets\Scripts\UI\Scene\UI_Scene.cs" />
     <Compile Include="Assets\Scripts\Network\ServerCore\RecvBuffer.cs" />
     <Compile Include="Assets\Scripts\Managers\Contents\TimerManager.cs" />

@@ -61,19 +61,16 @@ public class CharacterController : ObjectController
         if (_movement)
         {
             _inputDir = Vector2.zero;
+         
+            if (Input.GetKey(KeyCode.W))
+                _inputDir.y += 1.0f;
+            if (Input.GetKey(KeyCode.S))
+                _inputDir.y -= 1.0f;
 
-            if (CanMovementInput())
-            {
-                if (Input.GetKey(KeyCode.W))
-                    _inputDir.y += 1.0f;
-                if (Input.GetKey(KeyCode.S))
-                    _inputDir.y -= 1.0f;
-
-                if (Input.GetKey(KeyCode.A))
-                    _inputDir.x -= 1.0f;
-                if (Input.GetKey(KeyCode.D))
-                    _inputDir.x += 1.0f;
-            }
+            if (Input.GetKey(KeyCode.A))
+                _inputDir.x -= 1.0f;
+            if (Input.GetKey(KeyCode.D))
+                _inputDir.x += 1.0f;
 
             _movement._bIsRunning = Input.GetKey(KeyCode.LeftShift);
         }
@@ -85,9 +82,17 @@ public class CharacterController : ObjectController
 
     }
 
-    public virtual bool CanAttack()
+    public virtual bool CanInput()
     {
         if (_health._bDead)
+            return false;
+
+        return true;
+    }
+
+    public virtual bool CanAttack()
+    {
+        if (CanInput() == false)
             return false;
 
         return true;
@@ -95,15 +100,15 @@ public class CharacterController : ObjectController
 
     public virtual bool CanRotationInput()
     {
-        if (_health._bDead)
+        if (CanInput() == false)
             return false;
 
         return true;
     }
 
-    public virtual bool CanMovementInput()
+    public virtual bool CanMove()
     {
-        if (_health._bDead)
+        if (CanInput() == false)
             return false;
 
         return true;

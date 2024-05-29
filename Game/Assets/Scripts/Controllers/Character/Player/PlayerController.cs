@@ -10,7 +10,8 @@ using UnityEngine.XR;
 
 public class PlayerController : CharacterController
 {
-    public PlayerAnimParameter      _playerAnim     { get; protected set; } = null;
+    public ClientSession _clientSession = null;
+    public PlayerAnimParameter _playerAnim     { get; protected set; } = null;
     public PlayerMovementComponent  _playerMovement { get; protected set; } = null;
 
     protected override void Start()
@@ -36,10 +37,10 @@ public class PlayerController : CharacterController
     #region Controller
     public override void ControllerUpdate()
     {
-        base.ControllerUpdate();
-
         if (IsLocallyControlled() == false)
             return;
+
+        base.ControllerUpdate();
 
         if(_playerMovement)
         {
@@ -77,15 +78,21 @@ public class PlayerController : CharacterController
 
     public virtual bool CanDodgeInput()
     {
+        if (CanInput() == false)
+            return false;
+            
         return true;
     }
 
     public override bool CanAttack()
     {
+        if (CanInput() == false)
+            return false;
+
         if (_playerMovement._bIsdodging)
             return false;
 
-        return true;
+        return base.CanAttack();
     }
     #endregion
 

@@ -17,6 +17,11 @@ public partial class NetworkManager
 	{
     }
 
+    public void Init()
+    {
+        Managers.Timer.SetTimer(0.0167f, Sync, true);
+    }
+
     public virtual void Update()
     {
         // 서버 패킷 처리
@@ -35,9 +40,12 @@ public partial class NetworkManager
             Action<ISession, IMessage> handler = ClientPacketManager.Instance.GetPacketHandler(packet.Id);
             if (handler != null)
                 handler.Invoke(packet.Session, packet.Message);
-        }
+        }  
+    }
 
-
+    #region Sync
+    protected void Sync()
+    {
         if (_clientSessions.Count > 0)
         {
             S_ReqeustObjectSync requestPacket = new S_ReqeustObjectSync();
@@ -67,6 +75,7 @@ public partial class NetworkManager
             SendMulticast(syncPacket);
         }
     }
+    #endregion
 
     #region ServerSession
     ServerSession _serverSession = new ServerSession();

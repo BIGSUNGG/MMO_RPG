@@ -53,10 +53,17 @@ public partial class ObjectManager
         }
 
         GameObject gameObject = _spawner[(int)type].Invoke();
+        if(gameObject == null)
+        {
+            Debug.LogError("Failed to create game object");
+            return null;
+        }
 
         ObjectController controller = gameObject.GetComponent<ObjectController>();
         if (controller != null)
             controller.Created(id);
+        else
+            Debug.LogWarning("Object controller is not exist");
 
         _objects.Add(id, gameObject);
 
