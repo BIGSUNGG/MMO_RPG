@@ -82,7 +82,6 @@ enum RpcComponentFunctionId {
 
     Client_GiveDamage = 1;
     Multicast_TakeDamage = 2;
-    Multicast_Death = 3;
 	
 }
 

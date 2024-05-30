@@ -108,9 +108,6 @@ public class PlayerController : CharacterController
 
     public override void ObjectSync(ByteString syncInfo)
     {
-        if (IsLocallyControlled())
-            return;
-
         PlayerSyncInfo info = Util.BytesToObject<PlayerSyncInfo>(syncInfo.ToByteArray());
         ObjectSync(info);
     }

@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 using static UnityEngine.UI.GridLayoutGroup;
+using Random = UnityEngine.Random;
 
 public class KnightController : PlayerController
 {
@@ -419,7 +420,7 @@ public class KnightController : PlayerController
             if (oc == null)
                 continue;
 
-            gameObject.GiveDamage(oc, 30);
+            gameObject.GiveDamage(oc, Random.Range(20,40));
         }
 	}
 	#endregion

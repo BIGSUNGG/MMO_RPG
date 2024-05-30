@@ -123,7 +123,14 @@ class ServerPacketHandler
 			if (controller == null)
 				return;
 
-			controller.ObjectSync(info.SyncInfo);
+            try
+            {
+                controller.ObjectSync(info.SyncInfo);
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"{ex}");
+            }
 		}
 	}
 

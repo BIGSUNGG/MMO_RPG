@@ -135,6 +135,7 @@
     <Compile Include="Assets\Scripts\Managers\Core\SoundManager.cs" />
     <Compile Include="Assets\Scripts\Network\Client\ClientSession.cs" />
     <Compile Include="Assets\Scripts\UI\Scene\UI_Scene.cs" />
+    <Compile Include="Assets\Scripts\Effect\HpBar\HpBar.cs" />
     <Compile Include="Assets\Scripts\Network\ServerCore\RecvBuffer.cs" />
     <Compile Include="Assets\Scripts\Managers\Contents\TimerManager.cs" />
   </ItemGroup>

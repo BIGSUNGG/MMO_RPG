@@ -45,7 +45,7 @@ public class HealthComponent : ObjectComponent
             return 0;
 
         HealthComponent health = victim.GetComponentInChildren<HealthComponent>();
-        if (health == null)
+        if (health == null || health._bDead)
             return 0;
 
         Client_GiveDamage(victim.ObjectId, damage);
@@ -247,74 +247,10 @@ public class HealthComponent : ObjectComponent
         if (Util.CheckFuncCalledOnServer() == false) // 서버에서 호출되지않은 경우
             return;
 
-        Multicast_Death(attacker.ObjectId, damage);
+        OnDeath();
     }
 
-    // 서버에서 다른 클라이언트에게 데미지를 받은것을 알리는 패킷을 보냄
-    // attackerId : 공격한 오브젝트의 아이디
-    // damage : 최종적으로 받은 대미지
-    protected virtual void Multicast_Death(int attackerId, int damage)
-    {
-        // 패킷 보내기
-        if (Managers.Network.IsClient) // 클라이언트에서 호출된 경우 
-        {
-            Debug.LogError("Client can't call this function");
-        }
-        else // 서버에서 호출된 경우
-        {
-            S_RpcComponentFunction rpcFuncPacket = new S_RpcComponentFunction();
-            byte[] parameterBuffer = new byte[8];
-            Array.Copy(BitConverter.GetBytes((int)attackerId), 0, parameterBuffer, 0, sizeof(int));
-            Array.Copy(BitConverter.GetBytes((int)damage), 0, parameterBuffer, 4, sizeof(int));
-
-            rpcFuncPacket.ObjectId = _owner.ObjectId;
-            rpcFuncPacket.AbsolutelyExcute = true;
-            rpcFuncPacket.ComponentType = GameComponentType.HealthComponent;
-            rpcFuncPacket.RpcFunctionId = RpcComponentFunctionId.MulticastDeath;
-            rpcFuncPacket.ParameterBytes = ByteString.CopyFrom(parameterBuffer);
-
-            Managers.Network.SendMulticast(rpcFuncPacket);
-        }
-
-        Multicast_Death_Implementation(attackerId, damage);
-    }
-
-    // Rpc 패킷을 받으면 호출
-    // packet : 매개변수의 바이트 배열 
-    protected virtual void Multicast_Death_ReceivePacket(byte[] packet)
-    {
-        try
-        {
-            int attackerId = BitConverter.ToInt32(packet, 0);
-            int damage = BitConverter.ToInt32(packet, 4);
-            Multicast_Death_Implementation(attackerId, damage);
-        }
-        catch (System.Exception ex)
-        {
-            Debug.Log($"{ex}");
-        }
-    }
-
-    // 서버에서 패킷을 받았을 때 악성 패킷을 감지하기 위한 인증
-    // packet : 받은 패킷의 바이트 배열
-    // return : 받은 패킷이 악성 패킷이 아닌지
-    protected virtual bool Multicast_Death_Validate(byte[] packet)
-    {
-        try
-        {
-            return false; // 클라이언트에서 받지 않을 Rpc 함수이기 때문에 무조건 false반환
-        }
-        catch (System.Exception ex)
-        {
-            Debug.Log($"{ex}");
-            return false;
-        }
-    }
-
-    // Multicast_Death 코드
-    // attacker : 대미지를 주는 오브젝트
-    // damage : 받은 대미지
-    protected virtual void Multicast_Death_Implementation(int attackerId, int damage)
+    protected void OnDeath()
     {
         _bDead = true;
         _onDeathEvent.Invoke();
@@ -339,9 +275,6 @@ public class HealthComponent : ObjectComponent
                     break;
                 case RpcComponentFunctionId.MulticastTakeDamage:
                     Multicast_TakeDamage_ReceivePacket(packet);
-                    break;
-                case RpcComponentFunctionId.MulticastDeath:
-                    Multicast_Death_ReceivePacket(packet);
                     break;
                 default:
                     break;
@@ -370,8 +303,6 @@ public class HealthComponent : ObjectComponent
                     return Client_GiveDamage_Validate(packet);
                 case RpcComponentFunctionId.MulticastTakeDamage:
                     return Multicast_TakeDamage_Validate(packet);
-                case RpcComponentFunctionId.MulticastDeath:
-                    return Multicast_Death_Validate(packet);
                 default:
                     break;
 
@@ -385,4 +316,25 @@ public class HealthComponent : ObjectComponent
         return base.RpcFunction_Validate(functionId, packet);
     }
     #endregion
+
+    #region Sync
+    public virtual void Sync(int hp, bool dead)
+    {
+        _curHp = hp;
+        if (_bDead != dead) // _bDead의 값이 변했을때
+        {
+            _bDead = dead;
+            OnRep_bDead();        
+        }
+    }
+
+    protected virtual void OnRep_bDead() // _bDead의 값이 변했을때 호출
+    {
+        if (_bDead)
+        {
+            OnDeath();
+        }
+    }
+    #endregion
+
 }

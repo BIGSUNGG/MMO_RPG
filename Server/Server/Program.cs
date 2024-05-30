@@ -178,7 +178,7 @@ namespace Server
 
         }
 
-        static void StartServer()
+        static void StartServer()   
         {
             // DNS (Domain Name System)
             string host = Dns.GetHostName();
@@ -187,14 +187,14 @@ namespace Server
             IPEndPoint endPoint = new IPEndPoint(ipAddr, Port);
 
             IpAddress = ipAddr.ToString();
-
+            
             _listener.Init(endPoint, () => { return ClientSessionManager.Instance.Generate(); });
             Console.WriteLine("Listening...");
 
             // DbTask
             {
                 Thread t = new Thread(DbTask);
-                t.Name = "DB";
+                t.Name = "DB";  
                 t.Start();
             }
 

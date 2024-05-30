@@ -70,9 +70,6 @@ public class ObjectController : MonoBehaviour, RpcObjectFunction
 
     public virtual void ObjectSync(ByteString syncInfo)
     {
-        if (IsLocallyControlled())
-            return;
-
         ObjectSyncInfo info = Util.BytesToObject<ObjectSyncInfo>(syncInfo.ToByteArray());
         ObjectSync(info);
     }

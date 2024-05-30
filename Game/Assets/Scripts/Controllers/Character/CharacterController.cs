@@ -119,17 +119,19 @@ public class CharacterController : ObjectController
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     protected class CharacterSyncInfo : ObjectSyncInfo
     {
+        // Movement
         public Vector3 position;
         public Quaternion rotation;
         public Vector2 inputDir;
         public bool bIsRunning;
+
+        // Health
+        public int curHp;
+        public bool bDead;
     }
 
     public override void ObjectSync(ByteString syncInfo)
     {
-        if (IsLocallyControlled())
-            return;
-
         CharacterSyncInfo info = Util.BytesToObject<CharacterSyncInfo>(syncInfo.ToByteArray());
         ObjectSync(info);
     }
@@ -139,10 +141,16 @@ public class CharacterController : ObjectController
         if (info == null)
             return;
 
-        _inputDir = info.inputDir;
+        if(!IsLocallyControlled())
+        {
+	        _inputDir = info.inputDir;
 
-        if(_movement)
-            _movement.Sync(info.position, info.rotation, info.bIsRunning);
+            if (_movement)
+                _movement.Sync(info.position, info.rotation, info.bIsRunning);
+        }
+
+        if (Managers.Network.IsClient && _health)
+            _health.Sync(info.curHp, info.bDead);
 
         base.ObjectSync(info);
     }
@@ -163,6 +171,12 @@ public class CharacterController : ObjectController
         info.rotation = transform.rotation;
         info.inputDir  = _inputDir;
         info.bIsRunning = _movement._bIsRunning;
+
+        if(Managers.Network.IsServer)
+        {
+            info.curHp = _health._curHp;
+            info.bDead = _health._bDead;
+        }
 
         base.GetObjectSyncInfo(info);
     }

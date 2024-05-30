@@ -36,7 +36,14 @@ class ClientPacketHandler
             return;
         }
 
-        pc.ObjectSync(info.SyncInfo);
+        try
+        {
+            pc.ObjectSync(info.SyncInfo);
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"{ex}");
+        }
     }
 
     public static void C_RpcObjectFunctionHandler(ISession session, IMessage packet)
