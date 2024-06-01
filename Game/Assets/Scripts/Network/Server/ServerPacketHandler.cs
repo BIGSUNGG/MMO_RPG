@@ -38,7 +38,6 @@ class ServerPacketHandler
     public static void S_EnterPlayerHandler(ISession session, IMessage packet)
     {
         S_EnterPlayer recvPacket = packet as S_EnterPlayer;
-
         ClientSession clientSession = Managers.Network.CreateClienSession(recvPacket.AccountDbId);
 
         // 현재 맵에 있는 모든 오브젝트 클라이언트에게 전송
@@ -60,9 +59,9 @@ class ServerPacketHandler
                     info.ObjectType = oc.ObjectType;
                 }
                 objectSpawnInfosPacket.SpawnInfos.Add(info);
-                Managers.Network.SendMulticast(objectSpawnInfosPacket);
 
             }
+            Managers.Network.SendClient(clientSession, objectSpawnInfosPacket);
         }
 
         // 접속한 플레이어가 빙의할 오브젝트 만들기

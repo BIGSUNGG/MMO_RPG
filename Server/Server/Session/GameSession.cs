@@ -137,7 +137,7 @@ namespace Server
                 for (int i = 0; i < recvBuffSize; i++)
                     sendBuffer[i] = recvBuffer[i];
 
-                Room.Push(() => { Room.SendAll(sendBuffer); });
+                Room.SendAll(sendBuffer);
                 
             }
             else // 클라이언트로 보낼 패킷을 받았을 경우

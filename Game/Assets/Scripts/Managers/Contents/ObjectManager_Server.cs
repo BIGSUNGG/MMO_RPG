@@ -134,7 +134,7 @@ public partial class ObjectManager
     {
         lock (_lock)
         {
-	     GameObject gameObject = _spawner[(int)type].Invoke();
+	        GameObject gameObject = _spawner[(int)type].Invoke();
 	
 	        if (gameObject == null)
 	        {
@@ -238,6 +238,8 @@ public partial class ObjectManager
 	        // 오브젝트 제거 패킷 보내기
 	        S_DespawnObject despawnPacket = new S_DespawnObject();
 	        despawnPacket.ObjectId = id;
+            Managers.Network.SendMulticast(despawnPacket);
+
 	
 	        return true;
         }
