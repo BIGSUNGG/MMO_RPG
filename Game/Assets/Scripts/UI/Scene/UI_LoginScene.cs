@@ -71,7 +71,8 @@ public class UI_LoginScene : UI_Scene
 
 			if (res.LoginOk)
 			{
-				Managers.Network.AccountId = res.AccountId;
+                Managers.Network.AccountName = account;
+                Managers.Network.AccountId = res.AccountId;
 				Managers.Network.Token = res.Token;
 
                 Managers.Network.ConnectToGame(res.ServerList[0]);

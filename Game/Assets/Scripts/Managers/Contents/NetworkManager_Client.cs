@@ -10,6 +10,7 @@ using Google.Protobuf.Protocol;
 
 public partial class NetworkManager
 {
+    public string AccountName { get; set; }
     public int AccountId { get; set; }
     public int Token { get; set; }
 

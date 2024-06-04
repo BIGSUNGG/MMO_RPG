@@ -1785,7 +1785,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &198361029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5017,6 +5017,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: HeroHPBar
       objectReference: {fileID: 0}
+    - target: {fileID: 8902597474961075635, guid: 08c34565448f51d419bf87ecd7921e7d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6989,7 +6994,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1405028808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15419,6 +15424,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SkillBar
+      objectReference: {fileID: 0}
+    - target: {fileID: 4335621855905374707, guid: 9134a9788c29e2c4f9476a5e1355e332,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4335621856241509126, guid: 9134a9788c29e2c4f9476a5e1355e332,
         type: 3}

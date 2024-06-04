@@ -28,6 +28,7 @@ public class HealthComponent : ObjectComponent
 
     #region Health
     public bool _bDead { get; protected set; } = false; // 오브젝트가 죽어있는지
+    public float CurHpRatio { get { return (float)_curHp / (float)_maxHp; } } // 현재 체력 비율
     public int _curHp { get; protected set; } // 현재 체력
     public int _maxHp { get; protected set; } = 100; // 최대 체력
 

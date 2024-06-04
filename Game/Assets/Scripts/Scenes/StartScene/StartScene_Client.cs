@@ -12,6 +12,7 @@ public partial class StartScene
     {
         base.Init();
         SceneManager.LoadScene("Assets/Scenes/Login.unity", LoadSceneMode.Single);
+        Screen.SetResolution(960, 540, false);
 
     }
 
