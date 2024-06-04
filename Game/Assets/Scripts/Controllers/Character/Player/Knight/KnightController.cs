@@ -511,18 +511,11 @@ public class KnightController : PlayerController
 
 		_onComboEndEvent.Invoke();
 	}
-	#endregion
-	void OnDrawGizmos()
-	{
-		// 트레이스 범위 그리기
-		Gizmos.color = Color.green;
-		Gizmos.DrawWireSphere(transform.position + new Vector3(0.0f, _capsule.height / 2, 0.0f), 2.0f);
-	}
+    #endregion
+    #endregion
 
-	#endregion
-
-	#region Controller
-	public override void ControllerUpdate()
+    #region Controller
+    public override void ControllerUpdate()
 	{
 		if (IsLocallyControlled() == false)
 			return;

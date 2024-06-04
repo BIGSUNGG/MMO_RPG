@@ -1,5 +1,4 @@
-﻿#if !UNITY_SERVER
-using Google.Protobuf.Protocol;
+﻿using Google.Protobuf.Protocol;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,4 +34,3 @@ public class UI_Stat : UI_Base
 
     }
 }
-#endif

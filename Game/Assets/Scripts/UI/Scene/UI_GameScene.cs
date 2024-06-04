@@ -10,4 +10,8 @@ public class UI_GameScene : UI_Scene
         base.Init();
     }
 }
+#else
+public class UI_GameScene : UI_Scene
+{
+}
 #endif

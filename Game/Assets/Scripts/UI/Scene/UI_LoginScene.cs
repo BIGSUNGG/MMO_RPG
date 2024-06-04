@@ -80,4 +80,8 @@ public class UI_LoginScene : UI_Scene
 		});
 	}
 }
+#else
+public class UI_LoginScene : UI_Scene
+{
+}
 #endif
