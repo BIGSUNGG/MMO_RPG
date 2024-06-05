@@ -19,6 +19,7 @@ public class CharacterAnimParameter : MonoBehaviour
         _health = GetComponent<HealthComponent>();
         _health._onTakeDamageEvent.AddListener(OnTakeDamageEvent);
         _health._onDeathEvent.AddListener(OnDeathEvent);
+        _health._onRespawnEvent.AddListener(OnRespawnEvent);
     }
 
     // Start is called before the first frame update
@@ -55,5 +56,12 @@ public class CharacterAnimParameter : MonoBehaviour
     {
         _animator.SetTrigger("On Death");
         _animator.ResetTrigger("On Take Damage");
+    }
+
+    protected virtual void OnRespawnEvent() // 캐릭터가 부활했을 때 
+    {
+        _animator.ResetTrigger("On Death");
+        _animator.SetTrigger("On Respawn");
+
     }
 }

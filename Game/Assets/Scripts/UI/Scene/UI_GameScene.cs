@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-#if !UNITY_SERVER
 public class UI_GameScene : UI_Scene
 {
     public GameObject NameObject;
@@ -12,6 +11,7 @@ public class UI_GameScene : UI_Scene
     public GameObject HpObject;
     protected Image _hpImage;
 
+#if !UNITY_SERVER
     public override void Init()
 	{
         base.Init();
@@ -31,9 +31,5 @@ public class UI_GameScene : UI_Scene
         if(_hpImage && co && co._health)
             _hpImage.fillAmount = co._health.CurHpRatio;
     }
-}
-#else
-public class UI_GameScene : UI_Scene
-{
-}
 #endif
+}

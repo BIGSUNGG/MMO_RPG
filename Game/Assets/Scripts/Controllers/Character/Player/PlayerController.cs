@@ -96,6 +96,15 @@ public class PlayerController : CharacterController
     }
     #endregion
 
+    #region Component
+    public override void OnRespawnEvent()
+    {
+        base.OnRespawnEvent();
+
+        transform.position = new UnityEngine.Vector3(0.0f, 3.0f, 0.0f);
+    }
+    #endregion
+
     #region Object
     GameObject _camera = null;
     #endregion

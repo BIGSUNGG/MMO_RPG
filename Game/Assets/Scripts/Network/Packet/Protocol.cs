@@ -75,11 +75,11 @@ namespace Google.Protobuf.Protocol {
             "WUVSX01PVkVNRU5UX0NPTVBPTkVOVBACEhQKEEhFQUxUSF9DT01QT05FTlQQ",
             "AyqAAQoTUnBjT2JqZWN0RnVuY3Rpb25JZBIYChRNdWx0aWNhc3RfQ29tYm9T",
             "dGFydBAAEhkKFU11bHRpY2FzdF9Db21ib0F0dGFjaxABEhYKEk11bHRpY2Fz",
-            "dF9Db21ib0VuZBACEhwKGFNlcnZlcl9Db21ib0F0dGFja1Jlc3VsdBADKmcK",
+            "dF9Db21ib0VuZBACEhwKGFNlcnZlcl9Db21ib0F0dGFja1Jlc3VsdBADKn4K",
             "FlJwY0NvbXBvbmVudEZ1bmN0aW9uSWQSHAoYTXVsdGljYXN0X0RvZGdlUm9s",
             "bFN0YXJ0EAASFQoRQ2xpZW50X0dpdmVEYW1hZ2UQARIYChRNdWx0aWNhc3Rf",
-            "VGFrZURhbWFnZRACQhuqAhhHb29nbGUuUHJvdG9idWYuUHJvdG9jb2xiBnBy",
-            "b3RvMw=="));
+            "VGFrZURhbWFnZRACEhUKEU11bHRpY2FzdF9SZXNwYXduEANCG6oCGEdvb2ds",
+            "ZS5Qcm90b2J1Zi5Qcm90b2NvbGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.MsgId), typeof(global::Google.Protobuf.Protocol.PlayerLoginState), typeof(global::Google.Protobuf.Protocol.LoginResult), typeof(global::Google.Protobuf.Protocol.GameObjectType), typeof(global::Google.Protobuf.Protocol.GameComponentType), typeof(global::Google.Protobuf.Protocol.RpcObjectFunctionId), typeof(global::Google.Protobuf.Protocol.RpcComponentFunctionId), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -200,6 +200,7 @@ namespace Google.Protobuf.Protocol {
     [pbr::OriginalName("Multicast_DodgeRollStart")] MulticastDodgeRollStart = 0,
     [pbr::OriginalName("Client_GiveDamage")] ClientGiveDamage = 1,
     [pbr::OriginalName("Multicast_TakeDamage")] MulticastTakeDamage = 2,
+    [pbr::OriginalName("Multicast_Respawn")] MulticastRespawn = 3,
   }
 
   #endregion

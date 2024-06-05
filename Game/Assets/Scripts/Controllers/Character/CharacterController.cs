@@ -35,6 +35,10 @@ public class CharacterController : ObjectController
         _health = GetComponent<HealthComponent>();
         if (_health == null)
             Debug.LogWarning("HealthComponent is null");
+        else
+        {
+            _health._onRespawnEvent.AddListener(OnRespawnEvent);
+        }
 
         _inventory = GetComponent<InventoryComponent>();
         if (_inventory == null)
@@ -112,6 +116,13 @@ public class CharacterController : ObjectController
             return false;
 
         return true;
+    }
+    #endregion
+
+    #region Component
+    public virtual void OnRespawnEvent()
+    {
+
     }
     #endregion
 

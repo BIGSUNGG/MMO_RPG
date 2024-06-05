@@ -22,17 +22,15 @@ public class TimerHandler
 public class TimerManager
 {
     object _lock = new object();
-    List<TimerHandler> _timers = new List<TimerHandler>();
+    LinkedList<TimerHandler> _timers = new LinkedList<TimerHandler>();
 
     public void Update()
     {
         float deltaTime = Time.deltaTime;
 
-        List<Action> actions = new List<Action>();
+        List<TimerHandler> finishTimers = new List<TimerHandler>();
         lock (_lock)
         {
-            List<TimerHandler> newTimers = new List<TimerHandler>(_timers.Count); // 아직 타이머가 끝나지 않은 타이머들을 가질 리스트
-
             foreach (var timer in _timers)
 	        {
                 if (timer == null)
@@ -41,25 +39,20 @@ public class TimerManager
 	            timer._remainTime -= deltaTime;
 	            if (timer._remainTime <= 0.0f) // 타이머가 끝났다면
 	            {
-                    actions.Add(timer._action); // 액션 추가
-	
-	                if(timer._bLoop == true) // 반복되는 타이머라면
-	                    newTimers.Add(timer); // 타이머에 남기기
-	
+                    finishTimers.Add(timer); // 액션 추가	
 	            }
 	            else // 아직 시간이 남았다면
 	            {
-	                newTimers.Add(timer); // 타이머에 남기기
 	            }
-	        }        
-            
-            _timers = newTimers;
+	        }                   
 
-        }
-
-        foreach (var action in actions)
-        {
-            action.Invoke(); // 액션 실행
+            foreach (var timer in finishTimers)
+            { 
+                if (timer._bLoop == false) // 반복되지않는 타이머라면
+                    _timers.Remove(timer); // 타이머 제거
+    
+                timer._action.Invoke(); // 액션 실행
+            }
         }
     }
 
@@ -69,7 +62,7 @@ public class TimerManager
         lock (_lock)
         {
             TimerHandler result = new TimerHandler(timerTime, action, bLoop);
-            _timers.Add(result);
+            _timers.AddLast(result);
             return result;
         }
     }

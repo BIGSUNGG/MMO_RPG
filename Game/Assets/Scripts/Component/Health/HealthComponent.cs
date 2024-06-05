@@ -34,6 +34,7 @@ public class HealthComponent : ObjectComponent
 
     public UnityEvent _onTakeDamageEvent = new UnityEvent(); // 대미지를 받고 나서 호출되는 이벤트
     public UnityEvent _onDeathEvent = new UnityEvent(); // 대미지를 받고 나서 호출되는 이벤트
+    public UnityEvent _onRespawnEvent = new UnityEvent();
 
     #region Give Damage
     // 서버에서 오브젝트가 대미지를 줄 때 호출
@@ -248,6 +249,7 @@ public class HealthComponent : ObjectComponent
         if (Util.CheckFuncCalledOnServer() == false) // 서버에서 호출되지않은 경우
             return;
 
+        Managers.Timer.SetTimer(3.0f, OnServer_Respawn, false);
         OnDeath();
     }
 
@@ -259,6 +261,77 @@ public class HealthComponent : ObjectComponent
     }
     #endregion
 
+    #endregion
+
+    #region Respawn
+    protected void OnServer_Respawn()
+    {
+        if (Util.CheckFuncCalledOnServer() == false) // 서버에서 호출되지않은 경우
+            return;
+
+        _curHp = _maxHp;
+        _bDead = false;
+        Multicast_Respawn();
+    }
+
+    // 서버에서 다른 클라이언트에게 리스폰을 알리는 패킷을 보냄
+    protected virtual void Multicast_Respawn()
+    {
+        // 패킷 보내기
+        if (Managers.Network.IsClient) // 클라이언트에서 호출된 경우 
+        {
+            Debug.LogError("Client can't call this function");
+        }
+        else // 서버에서 호출된 경우
+        {
+            S_RpcComponentFunction rpcFuncPacket = new S_RpcComponentFunction();
+
+            rpcFuncPacket.ObjectId = _owner.ObjectId;
+            rpcFuncPacket.AbsolutelyExcute = true;
+            rpcFuncPacket.ComponentType = GameComponentType.HealthComponent;
+            rpcFuncPacket.RpcFunctionId = RpcComponentFunctionId.MulticastRespawn;
+
+            Managers.Network.SendMulticast(rpcFuncPacket);
+        }
+
+        Multicast_Respawn_Implementation();
+    }
+
+    // Rpc 패킷을 받으면 호출
+    // packet : 매개변수의 바이트 배열 
+    protected virtual void Multicast_Respawn_ReceivePacket(byte[] packet)
+    {
+        try
+        {
+            Multicast_Respawn_Implementation();
+        }
+        catch (System.Exception ex)
+        {
+            Debug.Log($"{ex}");
+        }
+    }
+
+    // 서버에서 패킷을 받았을 때 악성 패킷을 감지하기 위한 인증
+    // packet : 받은 패킷의 바이트 배열
+    // return : 받은 패킷이 악성 패킷이 아닌지
+    protected virtual bool Multicast_Respawn_Validate(byte[] packet)
+    {
+        try
+        {
+            return false; // 클라이언트에서 받지 않을 Rpc 함수이기 때문에 무조건 false반환
+        }
+        catch (System.Exception ex)
+        {
+            Debug.Log($"{ex}");
+            return false;
+        }
+    }
+
+    // Multicast_Respawn 코드
+    protected virtual void Multicast_Respawn_Implementation()
+    {
+        _onRespawnEvent.Invoke();
+    }
     #endregion
 
     #region RpcFunction
@@ -277,6 +350,9 @@ public class HealthComponent : ObjectComponent
                 case RpcComponentFunctionId.MulticastTakeDamage:
                     Multicast_TakeDamage_ReceivePacket(packet);
                     break;
+                case RpcComponentFunctionId.MulticastRespawn:
+                    Multicast_Respawn_ReceivePacket(packet);
+                    break; ;
                 default:
                     break;
 
@@ -304,6 +380,8 @@ public class HealthComponent : ObjectComponent
                     return Client_GiveDamage_Validate(packet);
                 case RpcComponentFunctionId.MulticastTakeDamage:
                     return Multicast_TakeDamage_Validate(packet);
+                case RpcComponentFunctionId.MulticastRespawn:
+                    return Multicast_Respawn_Validate(packet);
                 default:
                     break;
 

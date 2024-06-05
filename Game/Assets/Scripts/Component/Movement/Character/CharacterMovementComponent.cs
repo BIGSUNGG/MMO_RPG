@@ -33,7 +33,7 @@ public class CharacterMovementComponent : ObjectComponent
             if (_character.CanMove() && this.CanMove()) // 캐릭터가 움직일 수 있는지
             {
                 // 입력 방향으로 이동
-	            _velocity = new Vector3(_moveDir.x * _curMoveSpeed, _velocity.y < _curMoveSpeed ? _velocity.y : _curMoveSpeed, _moveDir.y * _curMoveSpeed);
+	            _velocity = new Vector3(_moveDir.x * _curMoveSpeed, _velocity.y < 2.0f ? _velocity.y : 2.0f, _moveDir.y * _curMoveSpeed);
             }
         }
         else // 클라이언트가 빙의하지않은 오브젝트인 경우
