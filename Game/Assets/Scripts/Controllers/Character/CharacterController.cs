@@ -56,25 +56,25 @@ public class CharacterController : ObjectController
     }
 
     #region Controller
-    public Vector2 _inputDir = Vector2.zero;
+    public Vector2 _moveDir = Vector2.zero;
     public override void ControllerUpdate()
     {
         base.ControllerUpdate();
 
-        _inputDir = Vector2.zero;
+        _moveDir = Vector2.zero;
         if (_movement)
         {
-            _inputDir = Vector2.zero;
+            _moveDir = Vector2.zero;
          
             if (Input.GetKey(KeyCode.W))
-                _inputDir.y += 1.0f;
+                _moveDir.y += 1.0f;
             if (Input.GetKey(KeyCode.S))
-                _inputDir.y -= 1.0f;
+                _moveDir.y -= 1.0f;
 
             if (Input.GetKey(KeyCode.A))
-                _inputDir.x -= 1.0f;
+                _moveDir.x -= 1.0f;
             if (Input.GetKey(KeyCode.D))
-                _inputDir.x += 1.0f;
+                _moveDir.x += 1.0f;
 
             _movement._bIsRunning = Input.GetKey(KeyCode.LeftShift);
         }
@@ -133,7 +133,7 @@ public class CharacterController : ObjectController
         // Movement
         public Vector3 position;
         public Quaternion rotation;
-        public Vector2 inputDir;
+        public Vector2 moveDir;
         public bool bIsRunning;
 
         // Health
@@ -154,7 +154,7 @@ public class CharacterController : ObjectController
 
         if(!IsLocallyControlled())
         {
-	        _inputDir = info.inputDir;
+	        _moveDir = info.moveDir;
 
             if (_movement)
                 _movement.Sync(info.position, info.rotation, info.bIsRunning);
@@ -180,7 +180,7 @@ public class CharacterController : ObjectController
 
         info.position = transform.position;
         info.rotation = transform.rotation;
-        info.inputDir  = _inputDir;
+        info.moveDir  = _moveDir;
         info.bIsRunning = _movement._bIsRunning;
 
         if(Managers.Network.IsServer)

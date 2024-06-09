@@ -94,6 +94,11 @@ public class PlayerController : CharacterController
 
         return base.CanAttack();
     }
+
+    public override bool IsPlayerControlled()
+    {
+        return true;
+    }
     #endregion
 
     #region Component

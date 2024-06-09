@@ -60,10 +60,13 @@
     <Analyzer Include="F:\Unity\2022.3.19f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Controllers\Character\Monster\MonsterController.cs" />
+    <Compile Include="Assets\Scripts\Animation\Character\Player\Knight\KnightPlayerAnimParameter.cs" />
     <Compile Include="Assets\Scripts\Animation\Character\Player\PlayerAnimParameter.cs" />
     <Compile Include="Assets\Scripts\Network\Server\ClientPacketHandler.cs" />
     <Compile Include="Assets\Scripts\Network\Server\ServerSession.cs" />
     <Compile Include="Assets\Scripts\Animation\Character\Player\Knight\KnightAttackState.cs" />
+    <Compile Include="Assets\Scripts\Controllers\Character\Monster\Knight\KnightMonsterController.cs" />
     <Compile Include="Assets\Scripts\Network\Packet\ServerPacketManager.cs" />
     <Compile Include="Assets\Scripts\Managers\Core\DataManager.cs" />
     <Compile Include="Assets\Scripts\Controllers\Character\Player\PlayerController.cs" />
@@ -71,18 +74,19 @@
     <Compile Include="Assets\Scripts\Utils\Extension.cs" />
     <Compile Include="Assets\Scripts\Animation\Character\Player\DodgeRollState.cs" />
     <Compile Include="Assets\Scripts\Utils\PriorityQueue.cs" />
+    <Compile Include="Assets\Scripts\Controllers\Character\Player\Knight\KnightPlayerController.cs" />
     <Compile Include="Assets\Scripts\Scenes\GameScene\GameScene_Client.cs" />
     <Compile Include="Assets\Scripts\Scenes\StartScene\StartScene.cs" />
     <Compile Include="Assets\Scripts\UI\Popup\UI_Popup.cs" />
     <Compile Include="Assets\Scripts\Managers\Core\Poolable.cs" />
     <Compile Include="Assets\Scripts\Managers\Contents\MapManager.cs" />
     <Compile Include="Assets\Scripts\Scenes\GameScene\GameScene.cs" />
+    <Compile Include="Assets\Scripts\Animation\Character\Monster\Knight\KnightMonsterAnimParameter.cs" />
     <Compile Include="Assets\Scripts\Scenes\GameScene\GameScene_Server.cs" />
     <Compile Include="Assets\Scripts\Animation\Character\CharacterAnimParameter.cs" />
     <Compile Include="Assets\Scripts\Scenes\LoginScene\LoginScene_Server.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect.cs" />
     <Compile Include="Assets\Scripts\Network\Rpc\RpcComponentFunction.cs" />
-    <Compile Include="Assets\Scripts\Animation\Character\Player\Knight\KnightAnimParameter.cs" />
     <Compile Include="Assets\Scripts\Network\Web\WebPacket.cs" />
     <Compile Include="Assets\Scripts\UI\Scene\UI_GameScene.cs" />
     <Compile Include="Assets\Scripts\Network\Client\ClientPacketHandler.cs" />
@@ -101,6 +105,7 @@
     <Compile Include="Assets\Scripts\Network\Server\ServerPacketHandler.cs" />
     <Compile Include="Assets\Scripts\Network\Packet\ClientPacketManager.cs" />
     <Compile Include="Assets\Scripts\Component\Inventory\InventoryComponent.cs" />
+    <Compile Include="Assets\Scripts\Animation\Character\Monster\MonsterAnimParameter.cs" />
     <Compile Include="Assets\Scripts\Scenes\LoginScene\LoginScene_Client.cs" />
     <Compile Include="Assets\Scripts\Component\Health\HealthComponent.cs" />
     <Compile Include="Assets\Scripts\UI\UI_Base.cs" />
@@ -120,7 +125,6 @@
     <Compile Include="Assets\Scripts\UI\Scene\UI_LoginScene.cs" />
     <Compile Include="Assets\Scripts\Component\ObjectComponent.cs" />
     <Compile Include="Assets\Scripts\Managers\Contents\ObjectManager_Client.cs" />
-    <Compile Include="Assets\Scripts\Controllers\Character\Player\Knight\KnightController.cs" />
     <Compile Include="Assets\Scripts\Managers\Contents\NetworkManager_Client.cs" />
     <Compile Include="Assets\Scripts\Managers\Contents\ControllerManager.cs" />
     <Compile Include="Assets\Scripts\Network\Server\ClientSession.cs" />

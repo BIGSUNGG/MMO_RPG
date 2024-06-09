@@ -11,15 +11,15 @@ using UnityEngine.UIElements;
 using static UnityEngine.UI.GridLayoutGroup;
 using Random = UnityEngine.Random;
 
-public class KnightController : PlayerController
+public class KnightPlayerController : PlayerController
 {
-	public KnightController _knightAnim { get; protected set; } = null;
+	public KnightPlayerController _knightAnim { get; protected set; } = null;
 
 	protected override void Start()
 	{
 		base.Start();
 
-		_knightAnim = GetComponent<KnightController>();
+		_knightAnim = GetComponent<KnightPlayerController>();
 		if (_knightAnim == null)
 			Debug.LogWarning("KnightController is null");
 

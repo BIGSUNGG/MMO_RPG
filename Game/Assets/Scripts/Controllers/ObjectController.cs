@@ -59,7 +59,11 @@ public class ObjectController : MonoBehaviour, RpcObjectFunction
         return this == Managers.Controller.MyController;
     }
 
-    
+    public virtual bool IsPlayerControlled()
+    {
+        return false;
+    }
+
     #endregion
 
     #region Sync

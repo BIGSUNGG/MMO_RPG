@@ -163,7 +163,7 @@ GameObject:
   - component: {fileID: 2204840156229740312}
   - component: {fileID: 2204840156229740313}
   - component: {fileID: 2041139573676869933}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UI_GameScene
   m_TagString: Untagged
   m_Icon: {fileID: 0}
