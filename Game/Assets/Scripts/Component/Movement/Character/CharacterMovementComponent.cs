@@ -26,17 +26,17 @@ public class CharacterMovementComponent : ObjectComponent
             _rigidbody.useGravity = false;
             _rigidbody.isKinematic = true;
         }
-        else if (_owner.IsLocallyControlled()) // 클라이언트가 빙의한 오브젝트인 경우
+        else if (true || _owner.IsLocallyControlled()) // 클라이언트가 빙의한 오브젝트인 경우
         {
-            Vector2 _moveDir = _character._inputDir;
+            Vector2 _moveDir = _character._moveDir;
             _moveDir.Normalize();
             if (_character.CanMove() && this.CanMove()) // 캐릭터가 움직일 수 있는지
             {
                 // 입력 방향으로 이동
-	            _velocity = new Vector3(_moveDir.x * _curMoveSpeed, _velocity.y < 2.0f ? _velocity.y : 2.0f, _moveDir.y * _curMoveSpeed);
+                _velocity = new Vector3(_moveDir.x * _curMoveSpeed, _velocity.y < 2.0f ? _velocity.y : 2.0f, _moveDir.y * _curMoveSpeed);
             }
         }
-        else // 클라이언트가 빙의하지않은 오브젝트인 경우
+        else if (_owner.IsPlayerControlled()) // 클라이언트가 빙의하지않은 플레이어 오브젝트인 경우
         {
             _rigidbody.useGravity = false;
             _rigidbody.isKinematic = true;
@@ -83,11 +83,11 @@ public class CharacterMovementComponent : ObjectComponent
 	#endregion
 
 	#region Sync
-	Vector3 _syncStartPos;
-	Vector3 _syncEndPos;
+	Vector3 _syncStartPos = Vector3.zero;
+	Vector3 _syncEndPos = Vector3.zero;
 
-	Quaternion _syncStartRot;
-    Quaternion _syncEndRot;
+	Quaternion _syncStartRot = new Quaternion();
+    Quaternion _syncEndRot = new Quaternion();
 
 	float _curSyncLerpTime = 0.0f;
 	float _syncPosLerpMultiply = 4.5f;

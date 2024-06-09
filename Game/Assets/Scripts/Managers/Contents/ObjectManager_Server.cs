@@ -14,22 +14,29 @@ public partial class ObjectManager
     int _curId = 0;
     List<int> _deletedId = new List<int>();
 
+    int GetCreateId()
+    {
+	    int createId;
+        if (_deletedId.Count == 0)
+        {
+            createId = _curId++;
+        }
+        else
+        {
+            int count = _deletedId.Count - 1;
+            createId = _deletedId[count];
+            _deletedId.RemoveAt(count);
+        }
+
+        return createId;
+    }
+
     public GameObject Create(ObjectInfo info)
     {
         lock (_lock)
         {
-	        // 만들 오브젝트 아이디 구하기
-	        int createId;
-	        if (_deletedId.Count == 0)
-	        {
-	            createId = _curId++;
-	        }
-	        else
-	        {
-	            int count = _deletedId.Count - 1;
-	            createId = _deletedId[count];
-	            _deletedId.RemoveAt(count);
-	        }
+            // 만들 오브젝트 아이디 구하기
+            int createId = GetCreateId();
 	
 	        // 오브젝트 만들기
 	        GameObject go = Create(createId, info.ObjectType);
@@ -56,9 +63,9 @@ public partial class ObjectManager
 	       
 	        foreach (var info in infos)
 	        {
-	            // 만들 오브젝트 아이디 구하기
-	            int createId;
-	            if (_deletedId.Count == 0)
+                // 만들 오브젝트 아이디 구하기
+                int createId = GetCreateId();
+                if (_deletedId.Count == 0)
 	            {
 	                createId = _curId++;
 	            }
@@ -98,9 +105,9 @@ public partial class ObjectManager
 	
 	        foreach (var info in infos)
 	        {
-	            // 만들 오브젝트 아이디 구하기
-	            int createId;
-	            if (_deletedId.Count == 0)
+                // 만들 오브젝트 아이디 구하기
+                int createId = GetCreateId();
+                if (_deletedId.Count == 0)
 	            {
 	                createId = _curId++;
 	            }

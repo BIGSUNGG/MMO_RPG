@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KnightAnimParameter : PlayerAnimParameter
+public class KnightPlayerAnimParameter : PlayerAnimParameter
 {
-    KnightController _knight = new KnightController();
+    KnightPlayerController _knight = new KnightPlayerController();
 
     protected override void Start()
     {
         base.Start();
 
-        _knight = GetComponent<KnightController>();
+        _knight = GetComponent<KnightPlayerController>();
         _knight._onComboStartEvent.AddListener(OnComboStartEvent);
-        _knight._onComboEndEvent.AddListener(OnComboEndEvent);
+        _knight._onComboEndEvent.AddListener(OnComboEndEvent);  
 
     }
 

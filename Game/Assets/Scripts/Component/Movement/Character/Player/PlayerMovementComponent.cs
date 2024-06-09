@@ -58,10 +58,10 @@ public class PlayerMovementComponent : CharacterMovementComponent
     // 구르기 시작 시 호출
     public virtual void DodgeRollStart() 
     {
-        if (!_bEnableDodge || _bIsdodging || _ownerPlayer._inputDir == Vector2.zero) // 구르고 있거나 움직일 방향이 없는경우
+        if (!_bEnableDodge || _bIsdodging || _ownerPlayer._moveDir == Vector2.zero) // 구르고 있거나 움직일 방향이 없는경우
             return;
 
-        Vector2 moveDir = _ownerPlayer._inputDir;
+        Vector2 moveDir = _ownerPlayer._moveDir;
         moveDir.Normalize();
         Multicast_DodgeRollStart(moveDir);
     }

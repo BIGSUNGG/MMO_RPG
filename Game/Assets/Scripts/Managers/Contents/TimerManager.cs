@@ -32,27 +32,27 @@ public class TimerManager
         lock (_lock)
         {
             foreach (var timer in _timers)
-	        {
+            {
                 if (timer == null)
                     continue;
 
-	            timer._remainTime -= deltaTime;
-	            if (timer._remainTime <= 0.0f) // 타이머가 끝났다면
-	            {
+                timer._remainTime -= deltaTime;
+                if (timer._remainTime <= 0.0f) // 타이머가 끝났다면
+                {
                     finishTimers.Add(timer); // 액션 추가	
-	            }
-	            else // 아직 시간이 남았다면
-	            {
-	            }
-	        }                   
-
-            foreach (var timer in finishTimers)
-            { 
-                if (timer._bLoop == false) // 반복되지않는 타이머라면
-                    _timers.Remove(timer); // 타이머 제거
-    
-                timer._action.Invoke(); // 액션 실행
+                }
+                else // 아직 시간이 남았다면
+                {
+                }
             }
+        }
+
+        foreach (var timer in finishTimers)
+        {
+            if (timer._bLoop == false) // 반복되지않는 타이머라면
+                RemoveTimer(timer); // 타이머 제거
+
+            timer._action.Invoke(); // 액션 실행
         }
     }
 
