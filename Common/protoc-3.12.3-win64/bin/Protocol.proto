@@ -59,7 +59,9 @@ enum LoginResult {
 }
 
 enum GameObjectType {
-	KNIGHT = 0;
+	UNKNOWN = 0;
+	KNIGHT_PLAYER = 1;
+	KNIGHT_MONSTER = 2;
 }
 
 enum GameComponentType {

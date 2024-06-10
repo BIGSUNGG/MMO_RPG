@@ -17,7 +17,6 @@ public class CharacterController : ObjectController
 
     public CharacterController()
     {
-        ObjectType = GameObjectType.Knight;
     }
 
     protected override void Start()
@@ -102,7 +101,7 @@ public class CharacterController : ObjectController
         return true;
     }
 
-    public virtual bool CanRotationInput()
+    public virtual bool CanRotate()
     {
         if (CanInput() == false)
             return false;

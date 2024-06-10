@@ -55,7 +55,7 @@ public class PlayerController : CharacterController
         }
 
         // 마우스 방향으로 회전
-        if(CanRotationInput())
+        if(CanRotate())
         {
 	        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); 
 	        if (Physics.Raycast(ray, out var hit, Mathf.Infinity, LayerMask.GetMask("Ground")))

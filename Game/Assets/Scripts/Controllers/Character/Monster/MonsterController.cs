@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class MonsterController : CharacterController
@@ -8,18 +7,36 @@ public class MonsterController : CharacterController
     protected override void Start()
     {
         base.Start();   
+
+        if(Managers.Network.IsServer)
+        {
+            Managers.Object.Register(this);
+        }
     }
 
     protected override void Update()
     {
         base.Update();
 
-        AiControllerUpdate();
+        if(Managers.Network.IsServer)
+            AiControllerUpdate();
     }
+
+    #region Controller
+    public override bool IsLocallyControlled()
+    {
+        if (Managers.Network.IsServer)
+            return true;
+
+        return base.IsLocallyControlled();
+    }
+    #endregion
 
     #region Ai
     protected virtual void AiControllerUpdate()
     {
+        if (Util.CheckFuncCalledOnServer() == false)
+            return;
     }
 
     // 근처에 있는 적 찾기
@@ -61,6 +78,9 @@ public class MonsterController : CharacterController
     // to : to 위치로 이동
     protected virtual void MoveTo(Vector3 to)
     {
+        if (CanMove() == false)
+            return;
+
         Vector3 dir = to - transform.position;
         _moveDir.x = dir.x;
         _moveDir.y = dir.z;
@@ -74,6 +94,9 @@ public class MonsterController : CharacterController
 
     protected virtual void LookAt(Vector3 to)
     {
+        if (CanRotate() == false)
+            return;
+
         transform.LookAt(to);
     }
     #endregion

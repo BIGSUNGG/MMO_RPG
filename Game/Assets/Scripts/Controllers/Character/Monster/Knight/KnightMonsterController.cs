@@ -1,3 +1,4 @@
+using Google.Protobuf.Protocol;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,11 @@ using static UnityEngine.GraphicsBuffer;
 
 public class KnightMonsterController : MonsterController
 {
+    public KnightMonsterController()
+    {
+        ObjectType = GameObjectType.KnightMonster;
+    }
+
     protected override void Start()
     {
         base.Start();
@@ -23,6 +29,9 @@ public class KnightMonsterController : MonsterController
 
     protected override void AiControllerUpdate()
     {
+        if (Util.CheckFuncCalledOnServer() == false)
+            return;
+
         base.AiControllerUpdate();
 
         if (_enemy == null) // 현재 추적중인 적이 없으면

@@ -67,7 +67,7 @@ class ServerPacketHandler
         // 접속한 플레이어가 빙의할 오브젝트 만들기
         {
 	        ObjectInfo info = new ObjectInfo();
-	        info.ObjectType = GameObjectType.Knight;
+	        info.ObjectType = GameObjectType.KnightPlayer;
 	        GameObject go = Managers.Object.Create(info);
 
             PlayerController pc = go.GetComponent<PlayerController>();

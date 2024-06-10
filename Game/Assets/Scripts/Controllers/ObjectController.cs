@@ -12,7 +12,6 @@ public class ObjectController : MonoBehaviour, RpcObjectFunction
 {
     public ObjectController()
     {
-        ObjectType = GameObjectType.Knight;
     }
 
     protected virtual void Start()
@@ -26,11 +25,19 @@ public class ObjectController : MonoBehaviour, RpcObjectFunction
     }
 
     #region Object
+    public bool bCreated { get; private set; } = false;
     public int ObjectId { get; private set; }
-    public GameObjectType ObjectType { get; protected set; }
+    public GameObjectType ObjectType { get; protected set; } = GameObjectType.Unknown;
 
-    public virtual void Created(int id)
+    public virtual void Registered(int id)
     {
+        if (bCreated)
+        {
+            Debug.LogWarning("Already created");
+            return;
+        }
+
+        bCreated = true;
         ObjectId = id;
     }
 

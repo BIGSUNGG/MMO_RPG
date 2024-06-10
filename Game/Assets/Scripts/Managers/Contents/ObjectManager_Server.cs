@@ -1,5 +1,6 @@
 ﻿using Google.Protobuf.Collections;
 using Google.Protobuf.Protocol;
+using Microsoft.Win32;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ public partial class ObjectManager
     int _curId = 0;
     List<int> _deletedId = new List<int>();
 
-    int GetCreateId()
+    int GetRegisterId()
     {
 	    int createId;
         if (_deletedId.Count == 0)
@@ -36,13 +37,15 @@ public partial class ObjectManager
         lock (_lock)
         {
             // 만들 오브젝트 아이디 구하기
-            int createId = GetCreateId();
+            int createId = GetRegisterId();
 	
 	        // 오브젝트 만들기
-	        GameObject go = Create(createId, info.ObjectType);
-	
-	        // 만든 오브젝트 모든 클라이언트에 전송
-	        S_SpawnObject spawnPacket = new S_SpawnObject();
+	        GameObject go = CreateAndRegister(createId, info.ObjectType);
+            if (go == null)
+                return null;
+
+            // 만든 오브젝트 모든 클라이언트에 전송
+            S_SpawnObject spawnPacket = new S_SpawnObject();
 	        ObjectInfo objectInfo = new ObjectInfo();
 	        objectInfo.ObjectId = createId;
 	        objectInfo.ObjectType = info.ObjectType;
@@ -64,23 +67,15 @@ public partial class ObjectManager
 	        foreach (var info in infos)
 	        {
                 // 만들 오브젝트 아이디 구하기
-                int createId = GetCreateId();
-                if (_deletedId.Count == 0)
-	            {
-	                createId = _curId++;
-	            }
-	            else
-	            {
-	                int count = _deletedId.Count - 1;
-	                createId = _deletedId[count];
-	                _deletedId.RemoveAt(count);
-	            }
-	
+                int createId = GetRegisterId();
+
 	            // 오브젝트 만들기
-	            GameObject go = Create(createId, info.ObjectType);
-	
-	            // 만든 오브젝트 모든 클라이언트에 전송
-	            ObjectInfo objectInfo = new ObjectInfo();
+	            GameObject go = CreateAndRegister(createId, info.ObjectType);
+                if (go == null)
+                    continue;
+
+                // 만든 오브젝트 모든 클라이언트에 전송
+                ObjectInfo objectInfo = new ObjectInfo();
 	            objectInfo.ObjectId = createId;
 	            objectInfo.ObjectType = info.ObjectType;
 	            spawnPacket.SpawnInfos.Add(objectInfo);
@@ -106,20 +101,12 @@ public partial class ObjectManager
 	        foreach (var info in infos)
 	        {
                 // 만들 오브젝트 아이디 구하기
-                int createId = GetCreateId();
-                if (_deletedId.Count == 0)
-	            {
-	                createId = _curId++;
-	            }
-	            else
-	            {
-	                int count = _deletedId.Count - 1;
-	                createId = _deletedId[count];
-	                _deletedId.RemoveAt(count);
-	            }
+                int createId = GetRegisterId();
 	
 	            // 오브젝트 만들기
-	            GameObject go = Create(createId, info.ObjectType);
+	            GameObject go = CreateAndRegister(createId, info.ObjectType);
+                if (go == null)
+                    continue;
 	
 	            // 만든 오브젝트 모든 클라이언트에 전송
 	            ObjectInfo objectInfo = new ObjectInfo();
@@ -137,7 +124,8 @@ public partial class ObjectManager
         }
     }
 
-    private GameObject Create(int id, GameObjectType type)
+    // 오브젝트 타입에 맞는 오브젝트를 만들고 id에 맞춰 추가
+    private GameObject CreateAndRegister(int id, GameObjectType type)
     {
         lock (_lock)
         {
@@ -147,18 +135,38 @@ public partial class ObjectManager
 	        {
 	            Debug.Log($"Failed to create object");
 	            return null;
-	        }
+	        }	
 	
-	
-	        ObjectController controller = gameObject.GetComponent<ObjectController>();
-	        if (controller != null)
-	            controller.Created(id);
-	
-	        _objects.Add(id, gameObject);
+	        ObjectController oc = gameObject.GetComponent<ObjectController>();
+	        if (oc == null)
+            {
+                Debug.LogError("Object controller is not exist");
+                return null;
+            }
+
+            Register(id, oc);
 	
 	        Debug.Log($"create {type} Object Id : {id}");
 	        return gameObject;
         }
+    }
+
+    public void Register(int id, ObjectController oc)
+    {
+        if (oc == null)
+            return;
+
+        oc.Registered(id);
+        _objects.Add(id, oc.gameObject);
+
+    }
+
+    public int Register(ObjectController oc)
+    {
+        // 만들 오브젝트 아이디 구하기
+        int registerId = GetRegisterId();
+        Register(registerId, oc);
+	    return registerId;
     }
 
     public void Delete(List<int> ids)
@@ -168,22 +176,11 @@ public partial class ObjectManager
 	        S_DespawnObjects despawnPacket = new S_DespawnObjects();
 	
 	        foreach (int id in ids)
-	        {      
-	            // 아이디에 맞는 오브젝트가 있는지
-	            if (_objects.ContainsKey(id) == false)
-	                return;
-	
-	            // 아이디에 맞는 오브젝트 찾기
-	            GameObject go = FindById(id);
-	            if (go == null)
-	                return;
-	
-	            // 오브젝트 제거
-	            _objects.Remove(id);
-	            _deletedId.Add(id);
-	            Managers.Resource.Destroy(go);
-	
-	            despawnPacket.ObjectIds.Add(id);
+	        {
+                if (DeleteAndUnRegister(id) == false)
+                    continue;
+
+                despawnPacket.ObjectIds.Add(id);
 	        }
 	
 	        // 오브젝트 제거 패킷 보내기
@@ -200,22 +197,10 @@ public partial class ObjectManager
 	
 	        foreach (int id in ids)
 	        {
-	
-	            // 아이디에 맞는 오브젝트가 있는지
-	            if (_objects.ContainsKey(id) == false)
-	                return;
-	
-	            // 아이디에 맞는 오브젝트 찾기
-	            GameObject go = FindById(id);
-	            if (go == null)
-	                return;
-	
-	            // 오브젝트 제거
-	            _objects.Remove(id);
-	            _deletedId.Add(id);
-	            Managers.Resource.Destroy(go);
-	
-	            despawnPacket.ObjectIds.Add(id);
+                if (DeleteAndUnRegister(id) == false)
+                    continue;
+
+                despawnPacket.ObjectIds.Add(id);
 	        }
 	
 	        // 오브젝트 제거 패킷 보내기
@@ -228,28 +213,49 @@ public partial class ObjectManager
     {
         lock (_lock)
         {
-	        // 아이디에 맞는 오브젝트가 있는지
-	        if (_objects.ContainsKey(id) == false)
-	            return false;
-	
-	        // 아이디에 맞는 오브젝트 찾기
-	        GameObject go = FindById(id);
-	        if (go == null)
-	            return false;
-	
-	        // 오브젝트 제거
-	        _objects.Remove(id);
-	        _deletedId.Add(id);
-	        Managers.Resource.Destroy(go);
-	
-	        // 오브젝트 제거 패킷 보내기
-	        S_DespawnObject despawnPacket = new S_DespawnObject();
+            if (DeleteAndUnRegister(id) == false)
+                return false;
+
+            // 오브젝트 제거 패킷 보내기
+            S_DespawnObject despawnPacket = new S_DespawnObject();
 	        despawnPacket.ObjectId = id;
             Managers.Network.SendMulticast(despawnPacket);
-
 	
 	        return true;
         }
+    }
+
+    public bool DeleteAndUnRegister(int id)
+    {
+        // 아이디에 맞는 오브젝트가 있는지
+        if (_objects.ContainsKey(id) == false)
+            return false;
+
+        // 아이디에 맞는 오브젝트 찾기
+        GameObject go = FindById(id);
+        if (go == null)
+            return false;
+
+        ObjectController oc = go.GetComponent<ObjectController>();
+        if (oc == null)
+            return false;
+
+        // 오브젝트 제거
+        UnRegister(oc);
+
+        return true;
+    }
+
+    public int UnRegister(ObjectController oc)
+    {
+        int deleteId = oc.ObjectId;
+
+        // 오브젝트 제거
+        _objects.Remove(deleteId);
+        _deletedId.Add(deleteId);
+        Managers.Resource.Destroy(oc.gameObject);
+
+        return deleteId;
     }
 }
 #endif

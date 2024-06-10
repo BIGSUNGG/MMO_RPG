@@ -15,7 +15,12 @@ public class KnightPlayerController : PlayerController
 {
 	public KnightPlayerController _knightAnim { get; protected set; } = null;
 
-	protected override void Start()
+    public KnightPlayerController()
+    {
+        ObjectType = GameObjectType.KnightPlayer;
+    }
+
+    protected override void Start()
 	{
 		base.Start();
 
@@ -528,12 +533,12 @@ public class KnightPlayerController : PlayerController
 		}
 	}
 
-	public override bool CanRotationInput()
+	public override bool CanRotate()
 	{
 		if (_isAttacking)
 			return false;
 
-		return base.CanRotationInput();
+		return base.CanRotate();
 	}
 
 	public override bool CanMove()

@@ -11,7 +11,8 @@ public partial class ObjectManager
     public ObjectManager()
     {
         _spawner = new List<Func<GameObject>>(new Func<GameObject>[10]);
-        _spawner[(int)GameObjectType.Knight] = () => { return Managers.Resource.Instantiate("Object/Knight");  }; 
+        _spawner[(int)GameObjectType.KnightPlayer] = () => { return Managers.Resource.Instantiate("Object/Knight");  }; 
+        _spawner[(int)GameObjectType.KnightMonster] = () => { return Managers.Resource.Instantiate("Object/Monster");  };
     }
     public Dictionary<int, GameObject> _objects { get; private set; } = new Dictionary<int, GameObject>();
     List<Func<GameObject>> _spawner;

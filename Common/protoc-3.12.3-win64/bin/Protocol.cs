@@ -69,17 +69,18 @@ namespace Google.Protobuf.Protocol {
             "X0NPTVBPTkVOVF9GVU5DVElPThAUEhwKGENfUlBDX0NPTVBPTkVOVF9GVU5D",
             "VElPThAVKjQKEFBsYXllckxvZ2luU3RhdGUSEQoNTk9UX0xPR0dFRF9JThAA",
             "Eg0KCUxPR0dFRF9JThABKjAKC0xvZ2luUmVzdWx0EhEKDUxPR0lOX1NVQ0NF",
-            "U1MQABIOCgpMT0dJTl9GQUlMEAEqHAoOR2FtZU9iamVjdFR5cGUSCgoGS05J",
-            "R0hUEAAqgAEKEUdhbWVDb21wb25lbnRUeXBlEhQKEE9CSkVDVF9DT01QT05F",
-            "TlQQABIgChxDSEFSQUNURVJfTU9WRU1FTlRfQ09NUE9ORU5UEAESHQoZUExB",
-            "WUVSX01PVkVNRU5UX0NPTVBPTkVOVBACEhQKEEhFQUxUSF9DT01QT05FTlQQ",
-            "AyqAAQoTUnBjT2JqZWN0RnVuY3Rpb25JZBIYChRNdWx0aWNhc3RfQ29tYm9T",
-            "dGFydBAAEhkKFU11bHRpY2FzdF9Db21ib0F0dGFjaxABEhYKEk11bHRpY2Fz",
-            "dF9Db21ib0VuZBACEhwKGFNlcnZlcl9Db21ib0F0dGFja1Jlc3VsdBADKn4K",
-            "FlJwY0NvbXBvbmVudEZ1bmN0aW9uSWQSHAoYTXVsdGljYXN0X0RvZGdlUm9s",
-            "bFN0YXJ0EAASFQoRQ2xpZW50X0dpdmVEYW1hZ2UQARIYChRNdWx0aWNhc3Rf",
-            "VGFrZURhbWFnZRACEhUKEU11bHRpY2FzdF9SZXNwYXduEANCG6oCGEdvb2ds",
-            "ZS5Qcm90b2J1Zi5Qcm90b2NvbGIGcHJvdG8z"));
+            "U1MQABIOCgpMT0dJTl9GQUlMEAEqRAoOR2FtZU9iamVjdFR5cGUSCwoHVU5L",
+            "Tk9XThAAEhEKDUtOSUdIVF9QTEFZRVIQARISCg5LTklHSFRfTU9OU1RFUhAC",
+            "KoABChFHYW1lQ29tcG9uZW50VHlwZRIUChBPQkpFQ1RfQ09NUE9ORU5UEAAS",
+            "IAocQ0hBUkFDVEVSX01PVkVNRU5UX0NPTVBPTkVOVBABEh0KGVBMQVlFUl9N",
+            "T1ZFTUVOVF9DT01QT05FTlQQAhIUChBIRUFMVEhfQ09NUE9ORU5UEAMqgAEK",
+            "E1JwY09iamVjdEZ1bmN0aW9uSWQSGAoUTXVsdGljYXN0X0NvbWJvU3RhcnQQ",
+            "ABIZChVNdWx0aWNhc3RfQ29tYm9BdHRhY2sQARIWChJNdWx0aWNhc3RfQ29t",
+            "Ym9FbmQQAhIcChhTZXJ2ZXJfQ29tYm9BdHRhY2tSZXN1bHQQAyp+ChZScGND",
+            "b21wb25lbnRGdW5jdGlvbklkEhwKGE11bHRpY2FzdF9Eb2RnZVJvbGxTdGFy",
+            "dBAAEhUKEUNsaWVudF9HaXZlRGFtYWdlEAESGAoUTXVsdGljYXN0X1Rha2VE",
+            "YW1hZ2UQAhIVChFNdWx0aWNhc3RfUmVzcGF3bhADQhuqAhhHb29nbGUuUHJv",
+            "dG9idWYuUHJvdG9jb2xiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.MsgId), typeof(global::Google.Protobuf.Protocol.PlayerLoginState), typeof(global::Google.Protobuf.Protocol.LoginResult), typeof(global::Google.Protobuf.Protocol.GameObjectType), typeof(global::Google.Protobuf.Protocol.GameComponentType), typeof(global::Google.Protobuf.Protocol.RpcObjectFunctionId), typeof(global::Google.Protobuf.Protocol.RpcComponentFunctionId), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -179,7 +180,9 @@ namespace Google.Protobuf.Protocol {
   }
 
   public enum GameObjectType {
-    [pbr::OriginalName("KNIGHT")] Knight = 0,
+    [pbr::OriginalName("UNKNOWN")] Unknown = 0,
+    [pbr::OriginalName("KNIGHT_PLAYER")] KnightPlayer = 1,
+    [pbr::OriginalName("KNIGHT_MONSTER")] KnightMonster = 2,
   }
 
   public enum GameComponentType {
@@ -246,7 +249,7 @@ namespace Google.Protobuf.Protocol {
 
     /// <summary>Field number for the "ObjectType" field.</summary>
     public const int ObjectTypeFieldNumber = 1;
-    private global::Google.Protobuf.Protocol.GameObjectType objectType_ = global::Google.Protobuf.Protocol.GameObjectType.Knight;
+    private global::Google.Protobuf.Protocol.GameObjectType objectType_ = global::Google.Protobuf.Protocol.GameObjectType.Unknown;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Protobuf.Protocol.GameObjectType ObjectType {
       get { return objectType_; }
@@ -287,7 +290,7 @@ namespace Google.Protobuf.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (ObjectType != global::Google.Protobuf.Protocol.GameObjectType.Knight) hash ^= ObjectType.GetHashCode();
+      if (ObjectType != global::Google.Protobuf.Protocol.GameObjectType.Unknown) hash ^= ObjectType.GetHashCode();
       if (ObjectId != 0) hash ^= ObjectId.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -302,7 +305,7 @@ namespace Google.Protobuf.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (ObjectType != global::Google.Protobuf.Protocol.GameObjectType.Knight) {
+      if (ObjectType != global::Google.Protobuf.Protocol.GameObjectType.Unknown) {
         output.WriteRawTag(8);
         output.WriteEnum((int) ObjectType);
       }
@@ -318,7 +321,7 @@ namespace Google.Protobuf.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (ObjectType != global::Google.Protobuf.Protocol.GameObjectType.Knight) {
+      if (ObjectType != global::Google.Protobuf.Protocol.GameObjectType.Unknown) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) ObjectType);
       }
       if (ObjectId != 0) {
@@ -335,7 +338,7 @@ namespace Google.Protobuf.Protocol {
       if (other == null) {
         return;
       }
-      if (other.ObjectType != global::Google.Protobuf.Protocol.GameObjectType.Knight) {
+      if (other.ObjectType != global::Google.Protobuf.Protocol.GameObjectType.Unknown) {
         ObjectType = other.ObjectType;
       }
       if (other.ObjectId != 0) {

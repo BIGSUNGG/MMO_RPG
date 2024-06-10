@@ -21,12 +21,7 @@ public class CharacterMovementComponent : ObjectComponent
 
         _curMoveSpeed = _bIsRunning ? _runMaxSpeed : _walkMaxSpeed;
 
-        if (Managers.Network.IsServer) // 서버인 경우
-        {
-            _rigidbody.useGravity = false;
-            _rigidbody.isKinematic = true;
-        }
-        else if (true || _owner.IsLocallyControlled()) // 클라이언트가 빙의한 오브젝트인 경우
+        if (_owner.IsLocallyControlled()) // 클라이언트가 빙의한 오브젝트거나 서버의 Ai컨트롤러일 경우
         {
             Vector2 _moveDir = _character._moveDir;
             _moveDir.Normalize();
@@ -36,7 +31,7 @@ public class CharacterMovementComponent : ObjectComponent
                 _velocity = new Vector3(_moveDir.x * _curMoveSpeed, _velocity.y < 2.0f ? _velocity.y : 2.0f, _moveDir.y * _curMoveSpeed);
             }
         }
-        else if (_owner.IsPlayerControlled()) // 클라이언트가 빙의하지않은 플레이어 오브젝트인 경우
+        else if (Managers.Network.IsClient) // 클라이언트가 빙의하지않은 오브젝트인 경우
         {
             _rigidbody.useGravity = false;
             _rigidbody.isKinematic = true;
@@ -47,6 +42,11 @@ public class CharacterMovementComponent : ObjectComponent
 
             transform.position = Vector3.Lerp(_syncStartPos, _syncEndPos, lerpPosVal);
             transform.rotation = Quaternion.Lerp(_syncStartRot, _syncEndRot, lerpRotVal);
+        }
+        else // 서버인 경우
+        {
+            _rigidbody.useGravity = false;
+            _rigidbody.isKinematic = true;
         }
     }
 

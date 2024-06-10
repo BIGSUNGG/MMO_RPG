@@ -39,7 +39,7 @@ namespace Server
 			while (true)
 			{
 				GameLogic.Instance.Update();
-				Thread.Sleep(0);
+				Thread.Sleep(1);
 			}
 		}
 
