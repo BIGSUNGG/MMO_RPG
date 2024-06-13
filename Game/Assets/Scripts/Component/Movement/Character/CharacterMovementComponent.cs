@@ -23,6 +23,9 @@ public class CharacterMovementComponent : ObjectComponent
 
         if (_owner.IsLocallyControlled()) // 클라이언트가 빙의한 오브젝트거나 서버의 Ai컨트롤러일 경우
         {
+            _rigidbody.useGravity = true;
+            _rigidbody.isKinematic = false;
+
             Vector2 _moveDir = _character._moveDir;
             _moveDir.Normalize();
             if (_character.CanMove() && this.CanMove()) // 캐릭터가 움직일 수 있는지
@@ -90,8 +93,8 @@ public class CharacterMovementComponent : ObjectComponent
     Quaternion _syncEndRot = new Quaternion();
 
 	float _curSyncLerpTime = 0.0f;
-	float _syncPosLerpMultiply = 4.5f;
-	float _syncRotLerpMultiply = 4.5f;
+	float _syncPosLerpMultiply = 5.75f;
+	float _syncRotLerpMultiply = 5.75f;
 
     public virtual void Sync(Vector3 pos, Quaternion rot, bool IsRunnung)
 	{

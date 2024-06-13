@@ -52,7 +52,7 @@ public partial class ObjectManager
             return null;
         }
 
-        GameObject gameObject = _spawner[(int)type].Invoke();
+        GameObject gameObject = _factory[(int)type].Invoke();
         if(gameObject == null)
         {
             Debug.LogError("Failed to create game object");

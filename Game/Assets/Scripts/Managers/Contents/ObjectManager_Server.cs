@@ -129,7 +129,7 @@ public partial class ObjectManager
     {
         lock (_lock)
         {
-	        GameObject gameObject = _spawner[(int)type].Invoke();
+	        GameObject gameObject = _factory[(int)type].Invoke();
 	
 	        if (gameObject == null)
 	        {

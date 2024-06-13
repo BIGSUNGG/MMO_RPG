@@ -13,6 +13,9 @@ public class CharacterAnimParameter : MonoBehaviour
     protected virtual void Awake()
     {
         _character = GetComponent<CharacterController>();
+        _character._onComboStartEvent.AddListener(OnComboStartEvent);
+        _character._onComboEndEvent.AddListener(OnComboEndEvent);
+
         _animator = GetComponent<Animator>();
         _movement = GetComponent<CharacterMovementComponent>();
 
@@ -20,6 +23,7 @@ public class CharacterAnimParameter : MonoBehaviour
         _health._onTakeDamageEvent.AddListener(OnTakeDamageEvent);
         _health._onDeathEvent.AddListener(OnDeathEvent);
         _health._onRespawnEvent.AddListener(OnRespawnEvent);
+
     }
 
     // Start is called before the first frame update
@@ -44,7 +48,7 @@ public class CharacterAnimParameter : MonoBehaviour
         _animator.SetFloat("Forward Speed", forwardSpeed);
         _animator.SetFloat("Horizon Speed", horizonSpeed);
 
-
+        _animator.SetInteger("Current Combo", _character._curCombo);
     }
 
     protected virtual void OnTakeDamageEvent() // 캐릭터가 대미지를 받았을 때 
@@ -63,5 +67,17 @@ public class CharacterAnimParameter : MonoBehaviour
         _animator.ResetTrigger("On Death");
         _animator.SetTrigger("On Respawn");
 
+    }
+
+    protected virtual void OnComboStartEvent()
+    {
+        _animator.SetTrigger("On Combo Start");
+        _animator.ResetTrigger("On Combo End");
+    }
+
+    protected virtual void OnComboEndEvent()
+    {
+        _animator.SetTrigger("On Combo End");
+        _animator.ResetTrigger("On Combo Start");
     }
 }

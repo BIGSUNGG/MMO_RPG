@@ -26,6 +26,7 @@ public class PlayerController : CharacterController
         if (_playerMovement == null)
             Debug.LogWarning("PlayerMovementComponent is null");
 
+		_playerMovement._onDodgeStartEvent.AddListener(Multicast_ComboEnd);
     }
 
     protected override void Update()
@@ -98,6 +99,23 @@ public class PlayerController : CharacterController
     public override bool IsPlayerControlled()
     {
         return true;
+    }
+    #endregion
+
+    #region Attack
+    protected override void Multicast_ComboAttack_Implementation(int combo)
+    {
+        base.Multicast_ComboAttack_Implementation(combo);
+
+        if(IsLocallyControlled())
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out var hit, Mathf.Infinity, LayerMask.GetMask("Ground")))
+            {
+                Vector3 dir = hit.point - transform.position;
+                transform.eulerAngles = new Vector3(0.0f, Util.GetAngleY(dir), 0.0f);
+            }
+        }
     }
     #endregion
 

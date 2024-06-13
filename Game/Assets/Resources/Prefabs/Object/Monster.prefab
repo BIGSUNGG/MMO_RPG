@@ -54,6 +54,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveDir: {x: 0, y: 0}
+  _maxCombo: 1
+  _comboDelay:
+  - 3
+  _onComboStartEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  _onComboEndEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &3249752228730452511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,7 +158,7 @@ Animator:
   m_GameObject: {fileID: 2365248840771035362}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: fd7d68a65822e4a44a9ef78850e64cfc, type: 3}
-  m_Controller: {fileID: 9100000, guid: 1061f89b8beee1540af922514d6210f6, type: 2}
+  m_Controller: {fileID: 9100000, guid: 5147b90d87ef2f74684956d7306a5bba, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

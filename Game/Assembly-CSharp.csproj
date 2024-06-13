@@ -65,7 +65,6 @@
     <Compile Include="Assets\Scripts\Animation\Character\Player\PlayerAnimParameter.cs" />
     <Compile Include="Assets\Scripts\Network\Server\ClientPacketHandler.cs" />
     <Compile Include="Assets\Scripts\Network\Server\ServerSession.cs" />
-    <Compile Include="Assets\Scripts\Animation\Character\Player\Knight\KnightAttackState.cs" />
     <Compile Include="Assets\Scripts\Controllers\Character\Monster\Knight\KnightMonsterController.cs" />
     <Compile Include="Assets\Scripts\Network\Packet\ServerPacketManager.cs" />
     <Compile Include="Assets\Scripts\Managers\Core\DataManager.cs" />
@@ -130,6 +129,7 @@
     <Compile Include="Assets\Scripts\Managers\Contents\ControllerManager.cs" />
     <Compile Include="Assets\Scripts\Network\Server\ClientSession.cs" />
     <Compile Include="Assets\Scripts\Controllers\Character\CharacterController.cs" />
+    <Compile Include="Assets\Scripts\Animation\Character\AttackState.cs" />
     <Compile Include="Assets\Scripts\Component\Movement\Character\CharacterMovementComponent.cs" />
     <Compile Include="Assets\Scripts\Managers\Contents\ObjectManager_Server.cs" />
     <Compile Include="Assets\Scripts\Network\ServerCore\Session.cs" />

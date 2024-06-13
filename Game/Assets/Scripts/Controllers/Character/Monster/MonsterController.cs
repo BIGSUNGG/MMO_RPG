@@ -58,8 +58,8 @@ public class MonsterController : CharacterController
         foreach (var hitCollider in hitColliders)
         {
             PlayerController pc = hitCollider.gameObject.GetComponentInParent<PlayerController>();
-            if (pc && pc == this)
-                continue;
+            if (pc && pc == this && pc._health._bDead)
+                continue;            
 
             findPlayer = pc;
         }
@@ -98,6 +98,7 @@ public class MonsterController : CharacterController
             return;
 
         transform.LookAt(to);
+        transform.eulerAngles = new Vector3(0.0f, transform.eulerAngles.y, 0.0f);
     }
     #endregion
 }
