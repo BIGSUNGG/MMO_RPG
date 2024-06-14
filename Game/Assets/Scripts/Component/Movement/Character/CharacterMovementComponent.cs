@@ -39,9 +39,13 @@ public class CharacterMovementComponent : ObjectComponent
             _rigidbody.useGravity = false;
             _rigidbody.isKinematic = true;
 
-            _curSyncLerpTime += Time.deltaTime;
-            float lerpPosVal = _curSyncLerpTime * _syncPosLerpMultiply;
-            float lerpRotVal = _curSyncLerpTime * _syncRotLerpMultiply;
+            _curPosSyncLerpTime += Time.deltaTime;
+            _curRotSyncLerpTime += Time.deltaTime;
+            float lerpPosVal = _curPosSyncLerpTime * _syncPosLerpMultiply;
+            float lerpRotVal = _curRotSyncLerpTime * _syncRotLerpMultiply;
+
+            if (lerpPosVal >= 1) 
+                _character._moveDir = Vector3.zero;
 
             transform.position = Vector3.Lerp(_syncStartPos, _syncEndPos, lerpPosVal);
             transform.rotation = Quaternion.Lerp(_syncStartRot, _syncEndRot, lerpRotVal);
@@ -92,11 +96,12 @@ public class CharacterMovementComponent : ObjectComponent
 	Quaternion _syncStartRot = new Quaternion();
     Quaternion _syncEndRot = new Quaternion();
 
-	float _curSyncLerpTime = 0.0f;
-	float _syncPosLerpMultiply = 5.75f;
+    float _curPosSyncLerpTime = 0.0f;
+	float _curRotSyncLerpTime = 0.0f;
+    float _syncPosLerpMultiply = 5.75f;
 	float _syncRotLerpMultiply = 5.75f;
 
-    public virtual void Sync(Vector3 pos, Quaternion rot, bool IsRunnung)
+    public virtual void Sync(Vector3 pos, Quaternion rot, Vector3 moveDir, bool IsRunnung)
 	{
 		if (Managers.Network.IsServer)
 		{
@@ -104,13 +109,23 @@ public class CharacterMovementComponent : ObjectComponent
 			transform.rotation = rot;
 
             _bIsRunning = IsRunnung;
+            _character._moveDir = moveDir;
         }
         else
 		{
-			_curSyncLerpTime = 0.0f;
+            if(pos != _syncEndPos)
+            {
+                _curPosSyncLerpTime = 0.0f;
+                _syncStartPos = transform.position;
+                if(moveDir != Vector3.zero)
+                    _character._moveDir = moveDir;
+            }
 
-            _syncStartPos = transform.position;
-            _syncStartRot = transform.rotation;
+            if(rot != _syncEndRot)
+            {
+                _curRotSyncLerpTime = 0.0f;
+                _syncStartRot = transform.rotation;
+            }
 
             _syncEndPos = pos;
 			_syncEndRot = rot;

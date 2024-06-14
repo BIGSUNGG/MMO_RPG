@@ -75,6 +75,9 @@ public class KnightPlayerController : PlayerController
         if (IsLocallyControlled() == false)
             return;
 
+        if (_isAttacking == false)
+            return;
+
         switch (attackName)
         {
             case "1":
@@ -115,6 +118,27 @@ public class KnightPlayerController : PlayerController
 
         if (objectIdList.Count > 0)
             Server_ComboAttackResult(attackName, objectIdList);
+    }
+
+    // attackName : 공격 이름
+    // objectIdArr : 공격할 오브젝트들의 아이디 배열
+    protected override void Server_ComboAttackResult_Implementation(string attackName, List<int> objectIdArr)
+    {
+        base.Server_ComboAttackResult_Implementation(attackName, objectIdArr);
+
+        List<ObjectController> objects = new List<ObjectController>();
+        foreach (int id in objectIdArr)
+        {
+            GameObject go = Managers.Object.FindById(id);
+            if (go == null)
+                continue;
+
+            ObjectController oc = go.GetComponent<ObjectController>();
+            if (oc == null)
+                continue;
+
+            gameObject.GiveDamage(oc, Random.Range(20, 40));
+        }
     }
     #endregion
 }

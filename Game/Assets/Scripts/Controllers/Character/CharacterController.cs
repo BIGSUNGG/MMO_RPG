@@ -39,6 +39,7 @@ public class CharacterController : ObjectController
             Debug.LogWarning("HealthComponent is null");
         else
         {
+            _health._onTakeDamageEvent.AddListener(OnTakeDamageEvent);
             _health._onDeathEvent.AddListener(OnDeathEvent);
             _health._onRespawnEvent.AddListener(OnRespawnEvent);
         }
@@ -123,12 +124,18 @@ public class CharacterController : ObjectController
     #endregion
 
     #region Component
-    public virtual void OnDeathEvent()
+    protected virtual void OnTakeDamageEvent()
+    {
+        Debug.Log("TakeDamage");
+        Multicast_ComboEnd();
+    }
+
+    protected virtual void OnDeathEvent()
     {
         _movement._velocity = Vector3.zero;
     }
 
-    public virtual void OnRespawnEvent()
+    protected virtual void OnRespawnEvent()
     {
 
     }
@@ -167,6 +174,9 @@ public class CharacterController : ObjectController
     // 다른 클라이언트에 콤보 시작 패킷을 보냄
     protected virtual void Multicast_ComboStart()
     {
+        if (_isAttacking)
+            return;
+
         // 패킷 보내기
         if (Managers.Network.IsClient) // 클라이언트에서 호출된 경우 
         {
@@ -221,6 +231,9 @@ public class CharacterController : ObjectController
     {
         try
         {
+            if (_isAttacking)
+                return false;
+
             return true;
         }
         catch (System.Exception ex)
@@ -326,6 +339,9 @@ public class CharacterController : ObjectController
     {
         try
         {
+            if (_isAttacking == false)
+                return false;
+
             int combo = BitConverter.ToInt32(packet, 0);
 
             if (_isAttacking == false)
@@ -388,6 +404,9 @@ public class CharacterController : ObjectController
     // objectIdArr : 공격할 오브젝트들의 아이디 배열
     public virtual void Server_ComboAttackResult(string attackName, List<int> objectIdArr)
     {
+        if (_isAttacking == false)
+            return;
+
         // 패킷 보내기
         if (Managers.Network.IsClient) // 클라이언트에서 호출된 경우 
         {
@@ -421,6 +440,9 @@ public class CharacterController : ObjectController
     {
         try
         {
+            if (_isAttacking == false)
+                return;
+
             byte nameLength = packet[0]; // attackName의 str 길이
             string attackName = BitConverter.ToString(packet, 1, nameLength); ;
             byte objectIdArrCount = packet[1 + nameLength]; // object Id 개수
@@ -441,6 +463,9 @@ public class CharacterController : ObjectController
     {
         try
         {
+            if (_isAttacking == false)
+                return false;
+
             byte nameLength = packet[0]; // attackName의 str 길이
             string attackName = BitConverter.ToString(packet, 1, nameLength);
             byte objectIdArrCount = packet[1 + nameLength]; // object Id 개수
@@ -459,19 +484,7 @@ public class CharacterController : ObjectController
     // objectIdArr : 공격할 오브젝트들의 아이디 배열
     protected virtual void Server_ComboAttackResult_Implementation(string attackName, List<int> objectIdArr)
     {
-        List<ObjectController> objects = new List<ObjectController>();
-        foreach (int id in objectIdArr)
-        {
-            GameObject go = Managers.Object.FindById(id);
-            if (go == null)
-                continue;
 
-            ObjectController oc = go.GetComponent<ObjectController>();
-            if (oc == null)
-                continue;
-
-            gameObject.GiveDamage(oc, Random.Range(20, 40));
-        }
     }
     #endregion
 
@@ -479,6 +492,9 @@ public class CharacterController : ObjectController
     // 다른 클라이언트에 콤보 종료 패킷을 보냄
     public virtual void Multicast_ComboEnd()
     {
+        if (_isAttacking == false)
+            return;
+
         // 패킷 보내기
         if (Managers.Network.IsClient) // 클라이언트에서 호출된 경우 
         {
@@ -533,6 +549,9 @@ public class CharacterController : ObjectController
     {
         try
         {
+            if (_isAttacking == false)
+                return false;
+
             return true;
         }
         catch (System.Exception ex)
@@ -659,10 +678,8 @@ public class CharacterController : ObjectController
 
         if(!IsLocallyControlled())
         {
-	        _moveDir = info.moveDir;
-
             if (_movement)
-                _movement.Sync(info.position, info.rotation, info.bIsRunning);
+                _movement.Sync(info.position, info.rotation, info.moveDir, info.bIsRunning);
         }
 
         if (Managers.Network.IsClient && _health)

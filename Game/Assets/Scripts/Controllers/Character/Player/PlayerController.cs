@@ -58,12 +58,23 @@ public class PlayerController : CharacterController
         // 마우스 방향으로 회전
         if(CanRotate())
         {
-	        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); 
-	        if (Physics.Raycast(ray, out var hit, Mathf.Infinity, LayerMask.GetMask("Ground")))
-	        {
-	            Vector3 dir = hit.point - transform.position;
-	            transform.eulerAngles = new Vector3(0.0f, Util.GetAngleY(dir), 0.0f);
-	        }
+            LookMousePos();
+        }
+    }
+
+    protected virtual void LookMousePos()
+    {
+        if (IsLocallyControlled() == false)
+        {
+            Debug.LogError("This function must called on locally controller");
+            return;
+        }
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out var hit, Mathf.Infinity, LayerMask.GetMask("Ground")))
+        {
+            Vector3 dir = hit.point - transform.position;
+            transform.eulerAngles = new Vector3(0.0f, Util.GetAngleY(dir), 0.0f);
         }
     }
 
@@ -109,18 +120,13 @@ public class PlayerController : CharacterController
 
         if(IsLocallyControlled())
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out var hit, Mathf.Infinity, LayerMask.GetMask("Ground")))
-            {
-                Vector3 dir = hit.point - transform.position;
-                transform.eulerAngles = new Vector3(0.0f, Util.GetAngleY(dir), 0.0f);
-            }
+            LookMousePos();
         }
     }
     #endregion
 
     #region Component
-    public override void OnRespawnEvent()
+    protected override void OnRespawnEvent()
     {
         base.OnRespawnEvent();
 
