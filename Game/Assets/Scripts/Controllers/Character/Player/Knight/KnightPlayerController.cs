@@ -68,14 +68,11 @@ public class KnightPlayerController : PlayerController
     #endregion
 
     #region Attack
-    public override void OnComboAttackSwing(string attackName) // 무기를 휘두르는 타이밍에 호출
+    public override void OnServer_ComboAttackSwing(string attackName) // 무기를 휘두르는 타이밍에 호출
     {
-        base.OnComboAttackSwing(attackName);
+        base.OnServer_ComboAttackSwing(attackName);
 
-        if (IsLocallyControlled() == false)
-            return;
-
-        if (_isAttacking == false)
+        if (Util.CheckFuncCalledOnServer() == false)
             return;
 
         switch (attackName)
@@ -105,39 +102,13 @@ public class KnightPlayerController : PlayerController
         }
 
         Collider[] hitColliders = Physics.OverlapSphere(transform.position + new Vector3(0.0f, _capsule.height / 2, 0.0f), 2.0f, layerMask);
-        List<int> objectIdList = new List<int>();
-
         foreach (var hitCollider in hitColliders)
         {
             ObjectController oc = hitCollider.gameObject.GetComponentInParent<ObjectController>();
-            if (oc && oc == this)
+            if (oc == null || oc == this)
                 continue;
 
-            objectIdList.Add(oc.ObjectId);
-        }
-
-        if (objectIdList.Count > 0)
-            Server_ComboAttackResult(attackName, objectIdList);
-    }
-
-    // attackName : 공격 이름
-    // objectIdArr : 공격할 오브젝트들의 아이디 배열
-    protected override void Server_ComboAttackResult_Implementation(string attackName, List<int> objectIdArr)
-    {
-        base.Server_ComboAttackResult_Implementation(attackName, objectIdArr);
-
-        List<ObjectController> objects = new List<ObjectController>();
-        foreach (int id in objectIdArr)
-        {
-            GameObject go = Managers.Object.FindById(id);
-            if (go == null)
-                continue;
-
-            ObjectController oc = go.GetComponent<ObjectController>();
-            if (oc == null)
-                continue;
-
-            gameObject.GiveDamage(oc, Random.Range(20, 40));
+            gameObject.GiveDamage(oc, Random.Range(15, 30));
         }
     }
     #endregion

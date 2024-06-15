@@ -73,14 +73,13 @@ namespace Google.Protobuf.Protocol {
             "Tk9XThAAEhEKDUtOSUdIVF9QTEFZRVIQARISCg5LTklHSFRfTU9OU1RFUhAC",
             "KoABChFHYW1lQ29tcG9uZW50VHlwZRIUChBPQkpFQ1RfQ09NUE9ORU5UEAAS",
             "IAocQ0hBUkFDVEVSX01PVkVNRU5UX0NPTVBPTkVOVBABEh0KGVBMQVlFUl9N",
-            "T1ZFTUVOVF9DT01QT05FTlQQAhIUChBIRUFMVEhfQ09NUE9ORU5UEAMqgAEK",
-            "E1JwY09iamVjdEZ1bmN0aW9uSWQSGAoUTXVsdGljYXN0X0NvbWJvU3RhcnQQ",
-            "ABIZChVNdWx0aWNhc3RfQ29tYm9BdHRhY2sQARIWChJNdWx0aWNhc3RfQ29t",
-            "Ym9FbmQQAhIcChhTZXJ2ZXJfQ29tYm9BdHRhY2tSZXN1bHQQAyp+ChZScGND",
-            "b21wb25lbnRGdW5jdGlvbklkEhwKGE11bHRpY2FzdF9Eb2RnZVJvbGxTdGFy",
-            "dBAAEhUKEUNsaWVudF9HaXZlRGFtYWdlEAESGAoUTXVsdGljYXN0X1Rha2VE",
-            "YW1hZ2UQAhIVChFNdWx0aWNhc3RfUmVzcGF3bhADQhuqAhhHb29nbGUuUHJv",
-            "dG9idWYuUHJvdG9jb2xiBnByb3RvMw=="));
+            "T1ZFTUVOVF9DT01QT05FTlQQAhIUChBIRUFMVEhfQ09NUE9ORU5UEAMqYgoT",
+            "UnBjT2JqZWN0RnVuY3Rpb25JZBIYChRNdWx0aWNhc3RfQ29tYm9TdGFydBAA",
+            "EhkKFU11bHRpY2FzdF9Db21ib0F0dGFjaxABEhYKEk11bHRpY2FzdF9Db21i",
+            "b0VuZBACKn4KFlJwY0NvbXBvbmVudEZ1bmN0aW9uSWQSHAoYTXVsdGljYXN0",
+            "X0RvZGdlUm9sbFN0YXJ0EAASFQoRQ2xpZW50X0dpdmVEYW1hZ2UQARIYChRN",
+            "dWx0aWNhc3RfVGFrZURhbWFnZRACEhUKEU11bHRpY2FzdF9SZXNwYXduEANC",
+            "G6oCGEdvb2dsZS5Qcm90b2J1Zi5Qcm90b2NvbGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.MsgId), typeof(global::Google.Protobuf.Protocol.PlayerLoginState), typeof(global::Google.Protobuf.Protocol.LoginResult), typeof(global::Google.Protobuf.Protocol.GameObjectType), typeof(global::Google.Protobuf.Protocol.GameComponentType), typeof(global::Google.Protobuf.Protocol.RpcObjectFunctionId), typeof(global::Google.Protobuf.Protocol.RpcComponentFunctionId), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -196,7 +195,6 @@ namespace Google.Protobuf.Protocol {
     [pbr::OriginalName("Multicast_ComboStart")] MulticastComboStart = 0,
     [pbr::OriginalName("Multicast_ComboAttack")] MulticastComboAttack = 1,
     [pbr::OriginalName("Multicast_ComboEnd")] MulticastComboEnd = 2,
-    [pbr::OriginalName("Server_ComboAttackResult")] ServerComboAttackResult = 3,
   }
 
   public enum RpcComponentFunctionId {

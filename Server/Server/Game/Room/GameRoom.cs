@@ -1,11 +1,8 @@
 ﻿using Google.Protobuf;
 using Google.Protobuf.Protocol;
-using ServerCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 
 namespace Server.Game
 {
@@ -28,7 +25,7 @@ namespace Server.Game
 
         public void EnterRoom(ClientSession session)
         {
-            lock(_lock)
+            lock (_lock)
             {
                 Console.WriteLine("EnterRoom");
 
@@ -48,7 +45,7 @@ namespace Server.Game
                 SendAll(enterPlayerPacket);
 
             }
-        }   
+        }
 
         public ClientSession FindSession(int id)
         {
@@ -57,7 +54,7 @@ namespace Server.Game
                 ClientSession result;
                 _sessions.TryGetValue(id, out result);
 
-                if(result == null)
+                if (result == null)
                     Console.WriteLine($"Find Session Failed{id}");
 
                 return result;
@@ -66,17 +63,17 @@ namespace Server.Game
 
         public bool LeaveRoom(ClientSession session)
         {
-            lock(_lock)
+            lock (_lock)
             {
                 Console.WriteLine("LeaveRoom");
 
-                if(_sessions.Remove(session.GameAccountDbId))
+                if (_sessions.Remove(session.GameAccountDbId))
                 {
                     Console.WriteLine("LeaveRoom Succeed");
 
                     // 클라이언트에게 맵 퇴장 알리기
                     S_LeaveMap leaveMapPacket = new S_LeaveMap();
-	                session.Send(leaveMapPacket);
+                    session.Send(leaveMapPacket);
 
                     // GameRoom과 모든 클라이언트에게 플레이어의 맵 퇴장 알리기
                     S_LeavePlayer leavePlayerPacket = new S_LeavePlayer();
@@ -93,10 +90,10 @@ namespace Server.Game
 
         public void DoActionAll(Func<ArraySegment<byte>> action)
         {
-            lock(_lock)
+            lock (_lock)
             {
-	            foreach(var tuple in _sessions)
-	            {
+                foreach (var tuple in _sessions)
+                {
                     tuple.Value.Send(action.Invoke());
                 }
             }
@@ -110,7 +107,7 @@ namespace Server.Game
             ushort size = (ushort)packet.CalculateSize();
             byte[] sendBuffer = new byte[size + 4];
             Array.Copy(BitConverter.GetBytes((ushort)(size + 4)), 0, sendBuffer, 0, sizeof(ushort));
-            Array.Copy(BitConverter.GetBytes((ushort)msgId), 0, sendBuffer, 2, sizeof(ushort));
+            Array.Copy(BitConverter.GetBytes((ushort)msgId), 0, sendBuffer, 2, sizeof(ushort)); 
             Array.Copy(packet.ToByteArray(), 0, sendBuffer, 4, size);
 
             SendAll(sendBuffer);

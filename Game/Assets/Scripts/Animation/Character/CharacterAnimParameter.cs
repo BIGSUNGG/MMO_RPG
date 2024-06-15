@@ -53,11 +53,13 @@ public class CharacterAnimParameter : MonoBehaviour
 
     protected virtual void OnTakeDamageEvent() // 캐릭터가 대미지를 받았을 때 
     {
+        _animator.applyRootMotion = false;
         _animator.SetTrigger("On Take Damage");
     }
 
     protected virtual void OnDeathEvent() // 캐릭터가 사망했을 때 
     {
+        _animator.applyRootMotion = false;
         _animator.SetTrigger("On Death");
         _animator.ResetTrigger("On Take Damage");
     }

@@ -126,8 +126,11 @@ public class CharacterController : ObjectController
     #region Component
     protected virtual void OnTakeDamageEvent()
     {
-        Debug.Log("TakeDamage");
-        Multicast_ComboEnd();
+        if(Managers.Network.IsServer)
+        {
+            Debug.Log("TakeDamage");
+            Multicast_ComboEnd();
+        }
     }
 
     protected virtual void OnDeathEvent()
@@ -174,9 +177,6 @@ public class CharacterController : ObjectController
     // 다른 클라이언트에 콤보 시작 패킷을 보냄
     protected virtual void Multicast_ComboStart()
     {
-        if (_isAttacking)
-            return;
-
         // 패킷 보내기
         if (Managers.Network.IsClient) // 클라이언트에서 호출된 경우 
         {
@@ -231,9 +231,6 @@ public class CharacterController : ObjectController
     {
         try
         {
-            if (_isAttacking)
-                return false;
-
             return true;
         }
         catch (System.Exception ex)
@@ -259,6 +256,9 @@ public class CharacterController : ObjectController
     #region ComboAttack
     public virtual void OnComboDelayTimerEnd()
     {
+        if (_isAttacking == false)
+            return;
+
         if (_bDoNextCombo)
         {
             if (_curCombo < _maxCombo)
@@ -339,9 +339,6 @@ public class CharacterController : ObjectController
     {
         try
         {
-            if (_isAttacking == false)
-                return false;
-
             int combo = BitConverter.ToInt32(packet, 0);
 
             if (_isAttacking == false)
@@ -368,9 +365,6 @@ public class CharacterController : ObjectController
     // 콤보 시작 시 호출
     protected virtual void Multicast_ComboAttack_Implementation(int combo)
     {
-        if (_isAttacking == false)
-            return;
-
         if (combo > _maxCombo || combo == 0)
         {
             if (IsLocallyControlled())
@@ -396,93 +390,13 @@ public class CharacterController : ObjectController
     #region ComboAttackSwing
     public virtual void OnComboAttackSwing(string attackName) // 무기를 휘두르는 타이밍에 호출
     {
- 
+        if(Managers.Network.IsServer && _isAttacking)
+            OnServer_ComboAttackSwing(attackName);
     }
 
     // 서버에 공격 결과 패킷을 보냄
     // attackName : 공격 이름
-    // objectIdArr : 공격할 오브젝트들의 아이디 배열
-    public virtual void Server_ComboAttackResult(string attackName, List<int> objectIdArr)
-    {
-        if (_isAttacking == false)
-            return;
-
-        // 패킷 보내기
-        if (Managers.Network.IsClient) // 클라이언트에서 호출된 경우 
-        {
-            C_RpcObjectFunction rpcFuncPacket = new C_RpcObjectFunction();
-            byte nameLength = (byte)attackName.Length; // attackName의 str 길이
-            byte objectIdArrCount = (byte)objectIdArr.Count; // object Id 개수
-
-            byte[] parameterBuffer = new byte[1 + nameLength + 1 + (objectIdArrCount * 4)];
-            Array.Copy(BitConverter.GetBytes((byte)nameLength), 0, parameterBuffer, 0, sizeof(byte)); // attackName 길이 복사
-            Array.Copy(Encoding.UTF8.GetBytes(attackName), 0, parameterBuffer, 1, nameLength); // attackName 복사
-
-            Array.Copy(BitConverter.GetBytes((byte)objectIdArrCount), 0, parameterBuffer, 1 + nameLength, sizeof(byte)); // object id 개수 복사
-            Array.Copy(Util.IntListToBytes(objectIdArr), 0, parameterBuffer, 2 + nameLength, sizeof(int) * objectIdArrCount); // object id 복사
-
-            rpcFuncPacket.ObjectId = ObjectId;
-            rpcFuncPacket.RpcFunctionId = RpcObjectFunctionId.ServerComboAttackResult;
-            rpcFuncPacket.ParameterBytes = ByteString.CopyFrom(parameterBuffer);
-
-            Managers.Network.SendServer(rpcFuncPacket);
-        }
-        else // 서버에서 호출된 경우
-        {
-            Server_ComboAttackResult_Implementation(attackName, objectIdArr);
-        }
-    }
-
-
-    // 클라이언트로 부터 공격 결과 패킷을 받으면 호출
-    // packet : 받은 매개 변수의 바이트 배열 
-    protected virtual void Server_ComboAttackResult_ReceivePacket(byte[] packet)
-    {
-        try
-        {
-            if (_isAttacking == false)
-                return;
-
-            byte nameLength = packet[0]; // attackName의 str 길이
-            string attackName = BitConverter.ToString(packet, 1, nameLength); ;
-            byte objectIdArrCount = packet[1 + nameLength]; // object Id 개수
-            List<int> objectIdArr = Util.BytesToIntList(packet, 2 + nameLength, objectIdArrCount);
-
-            Server_ComboAttackResult_Implementation(attackName, objectIdArr);
-        }
-        catch (System.Exception ex)
-        {
-            Debug.Log($"{ex}");
-        }
-    }
-
-    // 서버에서 패킷을 받았을 때 악성 패킷을 감지하기 위한 인증
-    // packet : 받은 패킷의 바이트 배열
-    // return : 받은 패킷이 악성 패킷이 아닌지
-    protected virtual bool Server_ComboAttackResult_Validate(byte[] packet)
-    {
-        try
-        {
-            if (_isAttacking == false)
-                return false;
-
-            byte nameLength = packet[0]; // attackName의 str 길이
-            string attackName = BitConverter.ToString(packet, 1, nameLength);
-            byte objectIdArrCount = packet[1 + nameLength]; // object Id 개수
-            List<int> objectIdArr = Util.BytesToIntList(packet, 2 + nameLength, objectIdArrCount);
-
-            return true;
-        }
-        catch (System.Exception ex)
-        {
-            Debug.Log($"{ex}");
-            return false;
-        }
-    }
-
-    // attackName : 공격 이름
-    // objectIdArr : 공격할 오브젝트들의 아이디 배열
-    protected virtual void Server_ComboAttackResult_Implementation(string attackName, List<int> objectIdArr)
+    public virtual void OnServer_ComboAttackSwing(string attackName)
     {
 
     }
@@ -492,9 +406,6 @@ public class CharacterController : ObjectController
     // 다른 클라이언트에 콤보 종료 패킷을 보냄
     public virtual void Multicast_ComboEnd()
     {
-        if (_isAttacking == false)
-            return;
-
         // 패킷 보내기
         if (Managers.Network.IsClient) // 클라이언트에서 호출된 경우 
         {
@@ -549,9 +460,6 @@ public class CharacterController : ObjectController
     {
         try
         {
-            if (_isAttacking == false)
-                return false;
-
             return true;
         }
         catch (System.Exception ex)
@@ -605,9 +513,6 @@ public class CharacterController : ObjectController
                 case RpcObjectFunctionId.MulticastComboEnd:
                     Multicast_ComboEnd_ReceivePacket(packet);
                     break;
-                case RpcObjectFunctionId.ServerComboAttackResult:
-                    Server_ComboAttackResult_ReceivePacket(packet);
-                    break;
             }
         }
         catch (System.Exception ex)
@@ -634,8 +539,6 @@ public class CharacterController : ObjectController
                     return Multicast_ComboAttack_Validate(packet);
                 case RpcObjectFunctionId.MulticastComboEnd:
                     return Multicast_ComboEnd_Validate(packet);
-                case RpcObjectFunctionId.ServerComboAttackResult:
-                    return Server_ComboAttackResult_Validate(packet);
                 default:
                     break;
             }
