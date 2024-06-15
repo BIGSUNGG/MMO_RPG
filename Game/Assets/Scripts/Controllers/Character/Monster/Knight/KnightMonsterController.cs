@@ -35,7 +35,7 @@ public class KnightMonsterController : MonsterController
     protected float _enemySearchDistance = 3.0f;
     
     protected float _aiAttackDelay;
-    protected float _aiCurAttackDelay = 5.0f;
+    protected float _aiCurAttackDelay = 3.25f;
 
     protected override void AiControllerUpdate()
     {

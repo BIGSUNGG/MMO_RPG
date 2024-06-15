@@ -31,7 +31,9 @@ public class HealthComponent : ObjectComponent
     public float CurHpRatio { get { return (float)_curHp / (float)_maxHp; } } // 현재 체력 비율
     public int _curHp { get; protected set; } // 현재 체력
     public int _maxHp { get; protected set; } = 100; // 최대 체력
+    protected bool _bCancelTakeDamage = false; // 데미지를 무효화할지 여부
 
+    public UnityEvent _onServerBeforeTakeDamageEvent = new UnityEvent(); // 서버에서 대미지를 받기전에 호출되는 이벤트
     public UnityEvent _onTakeDamageEvent = new UnityEvent(); // 대미지를 받고 나서 호출되는 이벤트
     public UnityEvent _onDeathEvent = new UnityEvent(); // 대미지를 받고 나서 호출되는 이벤트
     public UnityEvent _onRespawnEvent = new UnityEvent();
@@ -145,6 +147,11 @@ public class HealthComponent : ObjectComponent
     #endregion
 
     #region TakeDamage
+    public void OnServer_CancelTakeDamage() // 데미지를 무효화할 때 호출
+    {
+        _bCancelTakeDamage = true;
+    }
+
     // 서버에서 오브젝트가 대미지를 받을 때 호출
     // damage : 받은 대미지
     // damageCauser : 대미지를 주는 오브젝트
@@ -156,6 +163,12 @@ public class HealthComponent : ObjectComponent
 
         if (_bDead) // 이미 죽어있다면
             return 0;
+
+        _bCancelTakeDamage = false;
+        _onServerBeforeTakeDamageEvent.Invoke();
+        if (_bCancelTakeDamage)
+            return 0;
+
         int damageResult = damage;
 
         _curHp -= damageResult;

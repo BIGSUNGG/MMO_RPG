@@ -21,13 +21,17 @@ public class PlayerMovementComponent : CharacterMovementComponent
             Debug.Log("Failed to find PlayerController");
             Debug.Assert(false);
         }
+        else
+        {
+            _ownerPlayer._health._onServerBeforeTakeDamageEvent.AddListener(OnServerBeforeTakeDamageEvent);
+        }
     }
 
     protected override void Update()
 	{
         base.Update();
 
-        if(Managers.Network.IsClient && _bIsdodging) // 구르고 있으면
+        if(_ownerPlayer.IsLocallyControlled() && _bIsdodging) // 구르고 있으면
         {
             // 구르는 방향으로 이동
             Vector2 dodgeRollVel = _dodgeDir * _dodgeSpeed;
@@ -39,7 +43,6 @@ public class PlayerMovementComponent : CharacterMovementComponent
     }
 
     #region Movement
-
     // Dodge
     bool _bEnableDodge = true;
     public bool _bIsdodging { get; protected set; } = false;           // 구르고 있는지
@@ -191,6 +194,20 @@ public class PlayerMovementComponent : CharacterMovementComponent
         return base.CanMove();
     }
 
+    #endregion
+
+    #region Health
+    protected  void OnServerBeforeTakeDamageEvent()
+    {
+        if (Util.CheckFuncCalledOnServer() == false)
+            return;
+
+        if (_bIsdodging) // 구르고 있다면
+        {
+            _ownerPlayer._health.OnServer_CancelTakeDamage(); // 데미지 취소
+            Debug.Log("Dodge attack");
+        }
+    }
     #endregion
 
     #region RpcFunction
