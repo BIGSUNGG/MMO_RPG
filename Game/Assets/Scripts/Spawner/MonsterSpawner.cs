@@ -14,6 +14,13 @@ public class MonsterSpawner : MonoBehaviour
             _spawnedObject = GameObject.Instantiate(_spawnObject);
             _spawnedObject.transform.position = this.transform.position;
             _spawnedObject.transform.rotation = this.transform.rotation;
+
+            CharacterController cc = _spawnedObject.GetComponent<CharacterController>();
+            if(cc)
+            {
+                cc._spawnPosition = this.transform.position;
+                Debug.Log($"{this.transform.position}");
+            }
         }
     }
 

@@ -80,11 +80,9 @@ public class KnightMonsterController : MonsterController
 
                 // 적에게 다가가기
                 MoveTo(_enemy.gameObject);
-                Debug.Log($"A {distance}");
             }
             else // 가깝다면
             {
-                Debug.Log($"B {distance}");
                 // 멈추기
                 _moveDir = Vector3.zero;
 
@@ -133,8 +131,6 @@ public class KnightMonsterController : MonsterController
 
             gameObject.GiveDamage(oc, Random.Range(5, 10));
         }
-
-        Debug.Log($"{_isAttacking}");
     }
     #endregion
 }

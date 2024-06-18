@@ -39,16 +39,14 @@ public class CharacterMovementComponent : ObjectComponent
             _rigidbody.useGravity = false;
             _rigidbody.isKinematic = true;
 
-            _curPosSyncLerpTime += Time.deltaTime;
-            _curRotSyncLerpTime += Time.deltaTime;
-            float lerpPosVal = _curPosSyncLerpTime * _syncPosLerpMultiply;
-            float lerpRotVal = _curRotSyncLerpTime * _syncRotLerpMultiply;
+            _curPosSyncLerpTime += Time.deltaTime * _syncPosLerpMultiply;
+            _curRotSyncLerpTime += Time.deltaTime * _syncRotLerpMultiply;
 
-            if (lerpPosVal >= 1) 
+            if (_curPosSyncLerpTime >= 1)
                 _character._moveDir = Vector3.zero;
 
-            transform.position = Vector3.Lerp(_syncStartPos, _syncEndPos, lerpPosVal);
-            transform.rotation = Quaternion.Lerp(_syncStartRot, _syncEndRot, lerpRotVal);
+            transform.position = Vector3.Lerp(_syncStartPos, _syncEndPos, _curPosSyncLerpTime);
+            transform.rotation = Quaternion.Lerp(_syncStartRot, _syncEndRot, _curRotSyncLerpTime);
         }
         else // 서버인 경우
         {
@@ -87,11 +85,11 @@ public class CharacterMovementComponent : ObjectComponent
 		return _rigidbody.velocity.y < 0;
 	}
 
-	#endregion
+    #endregion
 
-	#region Sync
-	Vector3 _syncStartPos = Vector3.zero;
-	Vector3 _syncEndPos = Vector3.zero;
+    #region Sync
+    public Vector3 _syncStartPos = Vector3.zero;
+	public Vector3 _syncEndPos = Vector3.zero;
 
 	Quaternion _syncStartRot = new Quaternion();
     Quaternion _syncEndRot = new Quaternion();
@@ -99,11 +97,11 @@ public class CharacterMovementComponent : ObjectComponent
     float _curPosSyncLerpTime = 0.0f;
 	float _curRotSyncLerpTime = 0.0f;
     float _syncPosLerpMultiply = 5.75f;
-	float _syncRotLerpMultiply = 5.75f;
+	float _syncRotLerpMultiply = 5.75f; 
 
     public virtual void Sync(Vector3 pos, Quaternion rot, Vector3 moveDir, bool IsRunnung)
 	{
-		if (Managers.Network.IsServer)
+        if (Managers.Network.IsServer)
 		{
 			transform.position = pos;
 			transform.rotation = rot;
@@ -112,8 +110,8 @@ public class CharacterMovementComponent : ObjectComponent
             _character._moveDir = moveDir;
         }
         else
-		{
-            if(pos != _syncEndPos)
+        {
+            if (pos != _syncEndPos)
             {
                 _curPosSyncLerpTime = 0.0f;
                 _syncStartPos = transform.position;

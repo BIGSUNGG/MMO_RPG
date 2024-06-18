@@ -73,13 +73,14 @@ namespace Google.Protobuf.Protocol {
             "Tk9XThAAEhEKDUtOSUdIVF9QTEFZRVIQARISCg5LTklHSFRfTU9OU1RFUhAC",
             "KoABChFHYW1lQ29tcG9uZW50VHlwZRIUChBPQkpFQ1RfQ09NUE9ORU5UEAAS",
             "IAocQ0hBUkFDVEVSX01PVkVNRU5UX0NPTVBPTkVOVBABEh0KGVBMQVlFUl9N",
-            "T1ZFTUVOVF9DT01QT05FTlQQAhIUChBIRUFMVEhfQ09NUE9ORU5UEAMqYgoT",
-            "UnBjT2JqZWN0RnVuY3Rpb25JZBIYChRNdWx0aWNhc3RfQ29tYm9TdGFydBAA",
-            "EhkKFU11bHRpY2FzdF9Db21ib0F0dGFjaxABEhYKEk11bHRpY2FzdF9Db21i",
-            "b0VuZBACKn4KFlJwY0NvbXBvbmVudEZ1bmN0aW9uSWQSHAoYTXVsdGljYXN0",
-            "X0RvZGdlUm9sbFN0YXJ0EAASFQoRQ2xpZW50X0dpdmVEYW1hZ2UQARIYChRN",
-            "dWx0aWNhc3RfVGFrZURhbWFnZRACEhUKEU11bHRpY2FzdF9SZXNwYXduEANC",
-            "G6oCGEdvb2dsZS5Qcm90b2J1Zi5Qcm90b2NvbGIGcHJvdG8z"));
+            "T1ZFTUVOVF9DT01QT05FTlQQAhIUChBIRUFMVEhfQ09NUE9ORU5UEAMqfQoT",
+            "UnBjT2JqZWN0RnVuY3Rpb25JZBIZChVNdWx0aWNhc3RfU2V0UG9zaXRpb24Q",
+            "ABIYChRNdWx0aWNhc3RfQ29tYm9TdGFydBABEhkKFU11bHRpY2FzdF9Db21i",
+            "b0F0dGFjaxACEhYKEk11bHRpY2FzdF9Db21ib0VuZBADKn4KFlJwY0NvbXBv",
+            "bmVudEZ1bmN0aW9uSWQSHAoYTXVsdGljYXN0X0RvZGdlUm9sbFN0YXJ0EAAS",
+            "FQoRQ2xpZW50X0dpdmVEYW1hZ2UQARIYChRNdWx0aWNhc3RfVGFrZURhbWFn",
+            "ZRACEhUKEU11bHRpY2FzdF9SZXNwYXduEANCG6oCGEdvb2dsZS5Qcm90b2J1",
+            "Zi5Qcm90b2NvbGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.MsgId), typeof(global::Google.Protobuf.Protocol.PlayerLoginState), typeof(global::Google.Protobuf.Protocol.LoginResult), typeof(global::Google.Protobuf.Protocol.GameObjectType), typeof(global::Google.Protobuf.Protocol.GameComponentType), typeof(global::Google.Protobuf.Protocol.RpcObjectFunctionId), typeof(global::Google.Protobuf.Protocol.RpcComponentFunctionId), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -192,9 +193,10 @@ namespace Google.Protobuf.Protocol {
   }
 
   public enum RpcObjectFunctionId {
-    [pbr::OriginalName("Multicast_ComboStart")] MulticastComboStart = 0,
-    [pbr::OriginalName("Multicast_ComboAttack")] MulticastComboAttack = 1,
-    [pbr::OriginalName("Multicast_ComboEnd")] MulticastComboEnd = 2,
+    [pbr::OriginalName("Multicast_SetPosition")] MulticastSetPosition = 0,
+    [pbr::OriginalName("Multicast_ComboStart")] MulticastComboStart = 1,
+    [pbr::OriginalName("Multicast_ComboAttack")] MulticastComboAttack = 2,
+    [pbr::OriginalName("Multicast_ComboEnd")] MulticastComboEnd = 3,
   }
 
   public enum RpcComponentFunctionId {
@@ -2819,7 +2821,7 @@ namespace Google.Protobuf.Protocol {
 
     /// <summary>Field number for the "rpcFunctionId" field.</summary>
     public const int RpcFunctionIdFieldNumber = 3;
-    private global::Google.Protobuf.Protocol.RpcObjectFunctionId rpcFunctionId_ = global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastComboStart;
+    private global::Google.Protobuf.Protocol.RpcObjectFunctionId rpcFunctionId_ = global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastSetPosition;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Protobuf.Protocol.RpcObjectFunctionId RpcFunctionId {
       get { return rpcFunctionId_; }
@@ -2864,7 +2866,7 @@ namespace Google.Protobuf.Protocol {
       int hash = 1;
       if (ObjectId != 0) hash ^= ObjectId.GetHashCode();
       if (AbsolutelyExcute != false) hash ^= AbsolutelyExcute.GetHashCode();
-      if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastComboStart) hash ^= RpcFunctionId.GetHashCode();
+      if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastSetPosition) hash ^= RpcFunctionId.GetHashCode();
       if (ParameterBytes.Length != 0) hash ^= ParameterBytes.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -2887,7 +2889,7 @@ namespace Google.Protobuf.Protocol {
         output.WriteRawTag(16);
         output.WriteBool(AbsolutelyExcute);
       }
-      if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastComboStart) {
+      if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastSetPosition) {
         output.WriteRawTag(24);
         output.WriteEnum((int) RpcFunctionId);
       }
@@ -2909,7 +2911,7 @@ namespace Google.Protobuf.Protocol {
       if (AbsolutelyExcute != false) {
         size += 1 + 1;
       }
-      if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastComboStart) {
+      if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastSetPosition) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) RpcFunctionId);
       }
       if (ParameterBytes.Length != 0) {
@@ -2932,7 +2934,7 @@ namespace Google.Protobuf.Protocol {
       if (other.AbsolutelyExcute != false) {
         AbsolutelyExcute = other.AbsolutelyExcute;
       }
-      if (other.RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastComboStart) {
+      if (other.RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastSetPosition) {
         RpcFunctionId = other.RpcFunctionId;
       }
       if (other.ParameterBytes.Length != 0) {
@@ -3023,7 +3025,7 @@ namespace Google.Protobuf.Protocol {
 
     /// <summary>Field number for the "rpcFunctionId" field.</summary>
     public const int RpcFunctionIdFieldNumber = 2;
-    private global::Google.Protobuf.Protocol.RpcObjectFunctionId rpcFunctionId_ = global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastComboStart;
+    private global::Google.Protobuf.Protocol.RpcObjectFunctionId rpcFunctionId_ = global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastSetPosition;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Protobuf.Protocol.RpcObjectFunctionId RpcFunctionId {
       get { return rpcFunctionId_; }
@@ -3066,7 +3068,7 @@ namespace Google.Protobuf.Protocol {
     public override int GetHashCode() {
       int hash = 1;
       if (ObjectId != 0) hash ^= ObjectId.GetHashCode();
-      if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastComboStart) hash ^= RpcFunctionId.GetHashCode();
+      if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastSetPosition) hash ^= RpcFunctionId.GetHashCode();
       if (ParameterBytes.Length != 0) hash ^= ParameterBytes.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -3085,7 +3087,7 @@ namespace Google.Protobuf.Protocol {
         output.WriteRawTag(8);
         output.WriteInt32(ObjectId);
       }
-      if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastComboStart) {
+      if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastSetPosition) {
         output.WriteRawTag(16);
         output.WriteEnum((int) RpcFunctionId);
       }
@@ -3104,7 +3106,7 @@ namespace Google.Protobuf.Protocol {
       if (ObjectId != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(ObjectId);
       }
-      if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastComboStart) {
+      if (RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastSetPosition) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) RpcFunctionId);
       }
       if (ParameterBytes.Length != 0) {
@@ -3124,7 +3126,7 @@ namespace Google.Protobuf.Protocol {
       if (other.ObjectId != 0) {
         ObjectId = other.ObjectId;
       }
-      if (other.RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastComboStart) {
+      if (other.RpcFunctionId != global::Google.Protobuf.Protocol.RpcObjectFunctionId.MulticastSetPosition) {
         RpcFunctionId = other.RpcFunctionId;
       }
       if (other.ParameterBytes.Length != 0) {

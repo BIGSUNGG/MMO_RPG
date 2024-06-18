@@ -343,6 +343,7 @@ public class HealthComponent : ObjectComponent
     // Multicast_Respawn ÄÚµå
     protected virtual void Multicast_Respawn_Implementation()
     {
+        Debug.Log("H");
         _onRespawnEvent.Invoke();
     }
     #endregion

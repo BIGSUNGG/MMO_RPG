@@ -72,9 +72,11 @@ enum GameComponentType {
 }
 
 enum RpcObjectFunctionId {
-    Multicast_ComboStart = 0;
-    Multicast_ComboAttack = 1;
-    Multicast_ComboEnd = 2;
+    Multicast_SetPosition = 0;
+
+    Multicast_ComboStart = 1;
+    Multicast_ComboAttack = 2;
+    Multicast_ComboEnd = 3;
 	
 }
 

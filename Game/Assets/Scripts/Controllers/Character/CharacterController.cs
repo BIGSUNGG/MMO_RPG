@@ -60,6 +60,7 @@ public class CharacterController : ObjectController
     }
 
     #region Controller
+    public Vector3 _spawnPosition = Vector3.zero;
     public Vector2 _moveDir = Vector2.zero;
     public override void ControllerUpdate()
     {
@@ -88,6 +89,13 @@ public class CharacterController : ObjectController
     {
         base.OnPossess();
 
+    }
+
+    protected override void Multicast_SetPosition_Implementation(Vector3 position)
+    {
+        base.Multicast_SetPosition_Implementation(position);
+
+        _movement._syncStartPos = _spawnPosition;
     }
 
     public virtual bool CanInput()
@@ -140,7 +148,10 @@ public class CharacterController : ObjectController
 
     protected virtual void OnRespawnEvent()
     {
-
+        if (Managers.Network.IsServer)
+        {
+            Multicast_SetPosition(_spawnPosition);
+        }
     }
     #endregion
 

@@ -126,12 +126,6 @@ public class PlayerController : CharacterController
     #endregion
 
     #region Component
-    protected override void OnRespawnEvent()
-    {
-        base.OnRespawnEvent();
-
-        transform.position = new UnityEngine.Vector3(0.0f, 3.0f, 0.0f);
-    }
     #endregion
 
     #region Object

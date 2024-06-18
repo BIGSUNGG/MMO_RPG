@@ -31,14 +31,18 @@ public class PlayerMovementComponent : CharacterMovementComponent
 	{
         base.Update();
 
-        if(_ownerPlayer.IsLocallyControlled() && _bIsdodging) // 구르고 있으면
+        if(_bIsdodging)
         {
-            // 구르는 방향으로 이동
-            Vector2 dodgeRollVel = _dodgeDir * _dodgeSpeed;
-            _velocity = new Vector3(dodgeRollVel.x, _velocity.y, dodgeRollVel.y);
+	        if(_ownerPlayer.IsLocallyControlled()) // 구르고 있으면
+	        {
+	            // 구르는 방향으로 이동
+	            Vector2 dodgeRollVel = _dodgeDir * _dodgeSpeed;
+	            _velocity = new Vector3(dodgeRollVel.x, _velocity.y, dodgeRollVel.y);
+	
+	            // 구르는 방향으로 회전
+	        }
 
-            // 구르는 방향으로 회전
-            transform.eulerAngles = new Vector3(0.0f, Util.GetAngle(_dodgeDir), 0.0f);
+	        transform.eulerAngles = new Vector3(0.0f, Util.GetAngle(_dodgeDir), 0.0f);
         }
     }
 
