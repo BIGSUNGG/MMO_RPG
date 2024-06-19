@@ -18,5 +18,10 @@ public class ClientSession : ISession
     {
         throw new NotImplementedException();
     }
+
+    public void MoveMap(int moveMapId)
+    {
+        throw new NotImplementedException();
+    }
 }
 #endif

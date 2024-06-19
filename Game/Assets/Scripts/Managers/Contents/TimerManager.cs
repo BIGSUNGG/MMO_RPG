@@ -80,5 +80,13 @@ public class TimerManager
         }
     }
 
+    public void Clear()
+    {
+        lock (_lock)
+        {
+            _timers.Clear();
+        }
+    }
+
     #endregion
 }

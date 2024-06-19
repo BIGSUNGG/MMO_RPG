@@ -1,9 +1,15 @@
+using Google.Protobuf.Protocol;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MonsterController : CharacterController
 {
+    public MonsterController()
+    {
+        _characterType = CharacterType.Monster;
+    }
+
     protected override void Start()
     {
         base.Start();   
@@ -58,7 +64,7 @@ public class MonsterController : CharacterController
         foreach (var hitCollider in hitColliders)
         {
             PlayerController pc = hitCollider.gameObject.GetComponentInParent<PlayerController>();
-            if (pc && pc == this && pc._health._bDead)
+            if (pc == null || pc._health._bDead)
                 continue;            
 
             findPlayer = pc;

@@ -40,7 +40,7 @@ namespace Server
 			S_Ping pingPacket = new S_Ping();
 			Send(pingPacket);
 
-			GameLogic.Instance.PushAfter(5000, Ping);
+			GameInstanceManager.Instance.PushAfter(5000, Ping);
 		}
 
 		public void HandlePong()

@@ -23,5 +23,5 @@ namespace Server.DB
 		[ForeignKey("Account")]
 		public int AccountDbId { get; set; }
 		public GameAccountDb Account { get; set; }
-	}
+    }
 }

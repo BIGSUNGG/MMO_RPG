@@ -6,9 +6,9 @@ using System.Diagnostics;
 
 namespace Server.Game
 {
-    public partial class GameRoom : JobSerializer
+    public partial class GameInstance : JobSerializer
     {
-        public GameSession RoomSession { get; set; }
+        public GameSession Session { get; set; }
         public Process Program { get; set; }
         public int MapId { get; set; }
 
@@ -21,28 +21,30 @@ namespace Server.Game
         }
 
         #region Sessions
-        Dictionary<int, ClientSession> _sessions = new Dictionary<int, ClientSession>(); // Key : GameAccountDbId, Value : DbId에 맞는 ClientSession
+        Dictionary<int, ClientSession> _sessions = new Dictionary<int, ClientSession>(); // Key : SessionId, Value : DbId에 맞는 ClientSession
 
-        public void EnterRoom(ClientSession session)
+        public void EnterMap(ClientSession session)
         {
             lock (_lock)
             {
-                Console.WriteLine("EnterRoom");
+                Console.WriteLine("EnterMap");
 
-                // 현재 방에 있는 세션 추가하기
-                _sessions.Add(session.GameAccountDbId, session);
+                // 현재 맵에 있는 세션 추가하기
+                _sessions.Add(session.SessionId, session);
 
                 // 클라이언트에게 맵 입장 알리기
                 S_EnterMap enterMapPacket = new S_EnterMap();
                 enterMapPacket.MapId = this.MapId;
                 session.Send(enterMapPacket);
 
-                // 모든 클라이언트와 GameRoom에 플레이어 입장 알리기
+                // 모든 클라이언트와 GameMap에 플레이어 입장 알리기
                 S_EnterPlayer enterPlayerPacket = new S_EnterPlayer();
-                enterPlayerPacket.AccountDbId = session.GameAccountDbId;
+                enterPlayerPacket.SessionId = session.SessionId;
 
-                RoomSession.Send(enterPlayerPacket);
                 SendAll(enterPlayerPacket);
+
+                enterPlayerPacket.Info = session.GetPlayerInfo();
+                Session.Send(enterPlayerPacket);
 
             }
         }
@@ -61,25 +63,25 @@ namespace Server.Game
             }
         }
 
-        public bool LeaveRoom(ClientSession session)
+        public bool LeaveMap(ClientSession session)
         {
             lock (_lock)
             {
-                Console.WriteLine("LeaveRoom");
+                Console.WriteLine("LeaveMap");
 
-                if (_sessions.Remove(session.GameAccountDbId))
+                if (_sessions.Remove(session.SessionId))
                 {
-                    Console.WriteLine("LeaveRoom Succeed");
+                    Console.WriteLine("LeaveMap Succeed");
 
                     // 클라이언트에게 맵 퇴장 알리기
                     S_LeaveMap leaveMapPacket = new S_LeaveMap();
                     session.Send(leaveMapPacket);
 
-                    // GameRoom과 모든 클라이언트에게 플레이어의 맵 퇴장 알리기
+                    // GameMap과 모든 클라이언트에게 플레이어의 맵 퇴장 알리기
                     S_LeavePlayer leavePlayerPacket = new S_LeavePlayer();
-                    leavePlayerPacket.AccountDbId = session.GameAccountDbId;
+                    leavePlayerPacket.SessionId = session.SessionId;
 
-                    RoomSession.Send(leavePlayerPacket);
+                    Session.Send(leavePlayerPacket);
                     SendAll(leavePlayerPacket);
 
                     return true;
@@ -99,7 +101,7 @@ namespace Server.Game
             }
         }
 
-        // 이 Room에 있는 모든 클라이언트에게 패킷 전송
+        // 이 Map에 있는 모든 클라이언트에게 패킷 전송
         public void SendAll(IMessage packet)
         {
             string msgName = packet.Descriptor.Name.Replace("_", string.Empty);

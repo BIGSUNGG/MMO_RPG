@@ -36,7 +36,7 @@ namespace Server
                 session.SessionId = sessionId;
                 _sessions.Add(sessionId, session);
 
-				Console.WriteLine($"Connected ({_sessions.Count}) Room");
+				Console.WriteLine($"Connected ({_sessions.Count}) Map");
 
 				return session;
 			}

@@ -1,4 +1,5 @@
 using Google.Protobuf;
+using Google.Protobuf.Protocol;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -14,6 +15,11 @@ public class PlayerController : CharacterController
     public PlayerAnimParameter _playerAnim     { get; protected set; } = null;
     public PlayerMovementComponent  _playerMovement { get; protected set; } = null;
 
+    public PlayerController()
+    {
+        _characterType = CharacterType.Player;
+    }
+
     protected override void Start()
     {
         base.Start();
@@ -26,7 +32,11 @@ public class PlayerController : CharacterController
         if (_playerMovement == null)
             Debug.LogWarning("PlayerMovementComponent is null");
 
-		_playerMovement._onDodgeStartEvent.AddListener(Multicast_ComboEnd);
+        _playerMovement._onDodgeStartEvent.AddListener(() =>
+            {
+                if (IsLocallyControlled())
+                    Multicast_ComboEnd();
+            });
     }
 
     protected override void Update()

@@ -10,12 +10,13 @@ using UnityEngine;
 #if UNITY_SERVER
 public class ClientSession : ISession
 {
-    public ClientSession(int accountId)
+    public ClientSession(int sessionId)
     {
-        AccountDbId = accountId;
+        SessionId = sessionId;
     }
 
-    public int AccountDbId { get; private set; }
+    public int SessionId { get; private set; }
+    public bool bIsValid { get; private set; } = false;
 
     public void Send(IMessage packet)
     {
@@ -27,6 +28,8 @@ public class ClientSession : ISession
 
     public void Possess(PlayerController pc)
     {
+        bIsValid = true;
+
         if (pc == null)
             return;
 
@@ -39,6 +42,25 @@ public class ClientSession : ISession
         Managers.Network.SendClient(this, possessPacket);
     }
 
+    #endregion
+
+    #region Map
+    public void MoveMap(int moveMapId)
+    {
+        if (bIsValid == false)
+            return;
+
+        bIsValid = false;
+
+        G_MoveMap sendPacket = new G_MoveMap();
+        sendPacket.MoveMapId = moveMapId;
+        sendPacket.Info = new global::Google.Protobuf.Protocol.PlayerInfo();
+        sendPacket.Info.SessionId = SessionId;
+        sendPacket.Info.Hp = _playerController._health._curHp;
+
+        Managers.Network.SendServer(sendPacket);
+        Debug.Log($"Move {SessionId} Player to {moveMapId} map");
+    }
     #endregion
 }
 #endif

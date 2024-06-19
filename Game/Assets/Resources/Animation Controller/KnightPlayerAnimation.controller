@@ -1217,7 +1217,8 @@ AnimatorStateMachine:
   - first: {fileID: 5305391024181401508}
     second:
     - {fileID: 3065555066060415790}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: 8544943141471968208}
   m_AnyStatePosition: {x: 290, y: -40, z: 0}
   m_EntryPosition: {x: 50, y: 120, z: 0}
   m_ExitPosition: {x: 780, y: -40, z: 0}
@@ -1299,6 +1300,18 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: Forward Speed
+--- !u!114 &8544943141471968208
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b350c30e8d8b1b408b9d4f502346e8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1102 &8857679636712347531
 AnimatorState:
   serializedVersion: 6

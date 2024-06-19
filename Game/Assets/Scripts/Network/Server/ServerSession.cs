@@ -58,10 +58,10 @@ public class ServerSession : PacketSession
         {        
             ClientSession session = Managers.Network.FindClientSession(sessionId);
 
-            if (session != null)
+            if (session != null && session.bIsValid)
                 ClientPacketManager.Instance.OnRecvPacket(session, new ArraySegment<byte>(buffer.Array, buffer.Offset + 4, buffer.Count - 4));
-            else
-                Debug.Log("Recv null session's id");
+            else if(session == null) // 디버깅 코드
+                Debug.Log("Recv wrong session id");
         }
     }
 

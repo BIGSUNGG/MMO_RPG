@@ -39,9 +39,8 @@ public class PlayerMovementComponent : CharacterMovementComponent
 	            Vector2 dodgeRollVel = _dodgeDir * _dodgeSpeed;
 	            _velocity = new Vector3(dodgeRollVel.x, _velocity.y, dodgeRollVel.y);
 	
-	            // 구르는 방향으로 회전
 	        }
-
+            // 구르는 방향으로 회전
 	        transform.eulerAngles = new Vector3(0.0f, Util.GetAngle(_dodgeDir), 0.0f);
         }
     }
@@ -49,7 +48,7 @@ public class PlayerMovementComponent : CharacterMovementComponent
     #region Movement
     // Dodge
     bool _bEnableDodge = true;
-    public bool _bIsdodging { get; protected set; } = false;           // 구르고 있는지
+    public bool _bIsdodging { get; protected set; } = false; // 구르고 있는지
     Vector2 _dodgeDir = Vector2.zero;   // 구르는 방향
     float _dodgeSpeed = 12.5f;          // 구르는 속도
     const float _dodgeTime = 0.5f;      // 구르는 시간

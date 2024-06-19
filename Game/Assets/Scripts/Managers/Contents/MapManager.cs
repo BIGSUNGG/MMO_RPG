@@ -9,7 +9,8 @@ public class MapManager
 {
     public MapManager()
     {
-        _mapPaths.Add(0, "Scenes/Game.unity");
+        _mapPaths.Add(0, "Scenes/Map 1.unity");
+        _mapPaths.Add(1, "Scenes/Map 2.unity");
     }
 
     Dictionary<int, string> _mapPaths = new Dictionary<int, string>(); // Key : 맵 아이디, Value : 맵 경로
@@ -29,6 +30,7 @@ public class MapManager
 
     public void DestroyMap()
 	{
-
+        Managers.Controller.Unpossess();
+        Managers.Object.Clear();
 	}
 }

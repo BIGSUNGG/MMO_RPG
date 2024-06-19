@@ -21,15 +21,6 @@ using static System.Collections.Specialized.BitVector32;
 
 namespace Server
 {
-	// 1. GameRoom 방식의 간단한 동기화 <- OK
-	// 2. 더 넓은 영역 관리
-	// 3. 심리스 MMO
-
-	// 1. Recv (N개)     서빙
-	// 2. GameLogic (1)  요리사
-	// 3. Send (1개)     서빙
-	// 4. DB (1)         결제/장부
-
 	class Program
 	{
 		static Listener _listener = new Listener();
@@ -38,7 +29,7 @@ namespace Server
 		{
 			while (true)
 			{
-				GameLogic.Instance.Update();
+				GameInstanceManager.Instance.Update();
 				Thread.Sleep(1);
 			}
 		}
@@ -114,7 +105,7 @@ namespace Server
 			t.Start();
         }
 
-        static void CreateGameRooms()
+        static void CreateGameInstances()
         {
             string host = Dns.GetHostName();
             IPHostEntry ipHost = Dns.GetHostEntry(host);
@@ -124,24 +115,24 @@ namespace Server
             Listener listener = new Listener();
             listener.Init(endPoint, () => { return null; });
 
-            int processCount = 1;
-            // 유니티 게임 룸 실행파일 경로 구하기
-            string processPath = Directory.GetCurrentDirectory().Substring(0, Directory.GetCurrentDirectory().Length - 38) + "\\Game\\Build\\Server\\Game.exe";
+            int processCount = 2;
+            // 유니티 게임 인스턴스 실행파일 경로 구하기
+            string processPath = Path + "\\Game\\Build\\Server\\Game.exe";
 
             for (int i = 0; i < processCount; i++)
             {
                 int mapId = i;
-                bool bProgramConnect = false; // 유니티 게임 룸이 연결됬을때 true로 설정
+                bool bProgramConnect = false; // 유니티 게임 인스턴스가 연결됬을때 true로 설정
 
                 Process process = new Process();
-                GameRoom room = GameLogic.Instance.Add(mapId, process); // 새로운 게임 룸 만들기
+                GameInstance instance = GameInstanceManager.Instance.Add(mapId, process); // 새로운 게임 인스턴스 만들기
 
                 listener.SetSessionFactory(() =>
                 {
-                    // 세션과 게임 룸 설정
+                    // 세션과 게임 인스턴스 설정
                     GameSession session = GameSessionManager.Instance.Generate();
-                    session.Room = room;
-                    room.RoomSession = session;
+                    session.Map = instance;
+                    instance.Session = session;
 
                     // 프로그램 연결 알리기
                     bProgramConnect = true;
@@ -161,15 +152,15 @@ namespace Server
 
                 while(true)
                 { 
-                    // 유니티 게임 룸 연결 기다리기
+                    // 유니티 게임 인스턴스 연결 기다리기
                     if(bProgramConnect)
                     {   
-                        // 게임 룸으로 맵 아이디 전송
+                        // 게임 인스턴스로 맵 아이디 전송
                         S_EnterMap packet = new S_EnterMap();
                         packet.MapId = mapId;
 
-                        room.RoomSession.Send(packet);
-                        room.RoomSession.FlushSend();
+                        instance.Session.Send(packet);
+                        instance.Session.FlushSend();
                         Console.WriteLine("Unity server connect");
                         break;
                     }
@@ -220,7 +211,7 @@ namespace Server
 		public static int Port { get; } = 7777;
 		public static string IpAddress { get; set; }
         public static bool bTestUnityServer = false;
-        public static int TestUnityServerId = 0;
+        public static int TestUnityServerId = 1;
 
         static void Main(string[] args)
 		{
@@ -229,7 +220,7 @@ namespace Server
                 Path += Environment.CurrentDirectory[i];
 
 			StartServerInfoTask();
-            CreateGameRooms();
+            CreateGameInstances();
             StartServer();
         }
     }

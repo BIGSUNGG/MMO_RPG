@@ -82,6 +82,7 @@
     <Compile Include="Assets\Scripts\Scenes\GameScene\GameScene.cs" />
     <Compile Include="Assets\Scripts\Animation\Character\Monster\Knight\KnightMonsterAnimParameter.cs" />
     <Compile Include="Assets\Scripts\Scenes\GameScene\GameScene_Server.cs" />
+    <Compile Include="Assets\Scripts\Animation\Character\IdleState.cs" />
     <Compile Include="Assets\Scripts\Animation\Character\CharacterAnimParameter.cs" />
     <Compile Include="Assets\Scripts\Scenes\LoginScene\LoginScene_Server.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="Assets\Scripts\Network\Client\ServerSession.cs" />
     <Compile Include="Assets\Scripts\Managers\Core\SceneManagerEx.cs" />
     <Compile Include="Assets\Scripts\Scenes\StartScene\StartScene_Client.cs" />
+    <Compile Include="Assets\Scripts\Controllers\Spawner\CharacterSpawnerController.cs" />
     <Compile Include="Assets\Scripts\Utils\Define.cs" />
     <Compile Include="Assets\Scripts\Network\Server\ServerPacketHandler.cs" />
     <Compile Include="Assets\Scripts\Network\Packet\ClientPacketManager.cs" />
@@ -123,10 +125,10 @@
     <Compile Include="Assets\Scripts\Network\Rpc\RpcObjectFunction.cs" />
     <Compile Include="Assets\Scripts\UI\Scene\UI_LoginScene.cs" />
     <Compile Include="Assets\Scripts\Component\ObjectComponent.cs" />
-    <Compile Include="Assets\Scripts\Spawner\MonsterSpawner.cs" />
     <Compile Include="Assets\Scripts\Managers\Contents\ObjectManager_Client.cs" />
     <Compile Include="Assets\Scripts\Managers\Contents\NetworkManager_Client.cs" />
     <Compile Include="Assets\Scripts\Managers\Contents\ControllerManager.cs" />
+    <Compile Include="Assets\Scripts\Controllers\MapMover\MapMover.cs" />
     <Compile Include="Assets\Scripts\Network\Server\ClientSession.cs" />
     <Compile Include="Assets\Scripts\Controllers\Character\CharacterController.cs" />
     <Compile Include="Assets\Scripts\Animation\Character\AttackState.cs" />

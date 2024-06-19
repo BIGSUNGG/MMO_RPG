@@ -104,11 +104,11 @@ public class KnightPlayerController : PlayerController
         Collider[] hitColliders = Physics.OverlapSphere(transform.position + new Vector3(0.0f, _capsule.height / 2, 0.0f), 2.0f, layerMask);
         foreach (var hitCollider in hitColliders)
         {
-            ObjectController oc = hitCollider.gameObject.GetComponentInParent<ObjectController>();
-            if (oc == null || oc == this)
+            CharacterController cc = hitCollider.gameObject.GetComponentInParent<CharacterController>();
+            if (cc == null || cc == this || cc._characterType == this._characterType)
                 continue;
 
-            gameObject.GiveDamage(oc, Random.Range(15, 30));
+            gameObject.GiveDamage(cc, Random.Range(15, 30));
         }
     }
     #endregion

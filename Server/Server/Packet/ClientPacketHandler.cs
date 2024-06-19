@@ -33,8 +33,8 @@ partial class ClientPacketHandler
         C_ObjectSync recvPacket = packet as C_ObjectSync;
         ClientSession clientSession = session as ClientSession;
 
-        GameRoom room = clientSession.MyRoom;
-        room.Push(() => { room.RoomSession.Send(clientSession, packet); });
+        GameInstance map = clientSession.MyMap;
+        map.Push(() => { map.Session.Send(clientSession, packet); });
     }
 
     public static void C_RpcObjectFunctionHandler(ISession session, IMessage packet)
@@ -42,8 +42,8 @@ partial class ClientPacketHandler
         S_RpcObjectFunction recvPacket = packet as S_RpcObjectFunction;
         ClientSession clientSession = session as ClientSession;
 
-        GameRoom room = clientSession.MyRoom;
-        room.Push(() => { room.RoomSession.Send(clientSession, packet); });
+        GameInstance map = clientSession.MyMap;
+        map.Push(() => { map.Session.Send(clientSession, packet); });
     }
 
     public static void C_RpcComponentFunctionHandler(ISession session, IMessage packet)
@@ -51,7 +51,7 @@ partial class ClientPacketHandler
         S_RpcComponentFunction recvPacket = packet as S_RpcComponentFunction;
         ClientSession clientSession = session as ClientSession;
 
-        GameRoom room = clientSession.MyRoom;
-        room.Push(() => { room.RoomSession.Send(clientSession, packet); });
+        GameInstance map = clientSession.MyMap;
+        map.Push(() => { map.Session.Send(clientSession, packet); });
     }
 }

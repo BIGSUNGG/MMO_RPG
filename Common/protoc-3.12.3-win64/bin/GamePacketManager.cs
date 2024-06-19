@@ -22,7 +22,9 @@ class GamePacketManager
 	public Action<ISession, IMessage, ushort> CustomHandler { get; set; }
 
 	public void Register()
-	{
+	{		
+		_onRecv.Add((ushort)MsgId.GMoveMap, MakePacket<G_MoveMap>);
+		_handler.Add((ushort)MsgId.GMoveMap, GamePacketHandler.G_MoveMapHandler);
 	}
 
 	public void OnRecvPacket(ISession session, ArraySegment<byte> buffer)

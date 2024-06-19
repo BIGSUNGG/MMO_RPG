@@ -53,7 +53,7 @@ class ServerPacketHandler
 	{
 		S_EnterPlayer recvPacket = packet as S_EnterPlayer;
 
-		Debug.Log($"Played Id : {recvPacket.AccountDbId} Enter");
+		Debug.Log($"Played Id : {recvPacket.SessionId} Enter");
 	}
 
 	public static void S_LeaveMapHandler(ISession session, IMessage packet)

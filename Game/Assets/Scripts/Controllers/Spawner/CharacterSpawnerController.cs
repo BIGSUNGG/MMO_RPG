@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterSpawner : MonoBehaviour
+public class CharacterSpawnerController : ObjectController
 {
     public GameObject _spawnObject;
     protected GameObject _spawnedObject;
 
-    protected virtual void Start()
+    protected override void Start()
     {
+        base.Start();
+
         if(Managers.Network.IsServer)
         {
             _spawnedObject = GameObject.Instantiate(_spawnObject);
@@ -24,8 +26,9 @@ public class MonsterSpawner : MonoBehaviour
         }
     }
 
-    protected virtual void Update()
+    protected override void Update()
     {
-        
+        base.Update();
+
     }
 }

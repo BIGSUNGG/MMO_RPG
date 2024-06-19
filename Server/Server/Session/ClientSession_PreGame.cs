@@ -83,14 +83,22 @@ namespace Server
             sendPacket.LoginResult = LoginResult.LoginSuccess;
             Send(sendPacket);
 
+            // 계정 정보에 맞게 세션 정보 업데이트
+            GameAccountDb loginAccount = null;
+            using (GameDbContext db = new GameDbContext())
+            {
+                loginAccount = db.Accounts
+                    .Where(a => a.GameAccountDbId == gameAccountDbId).FirstOrDefault();
+            }
+
             // 핑 패킷 보내기
-            GameLogic.Instance.PushAfter(5000, Ping);
+            GameInstanceManager.Instance.PushAfter(5000, Ping);
 
             // 계정 추가하기
             GameAccountManager.Instance.Add(GameAccountDbId, this);
 
-            // 유저를 GameRoom에 추가
-            GameLogic.Instance.Push(() => { EnterRoom(GameLogic.Instance.Find(0)); });
+            // 유저를 GameMap에 추가
+            GameInstanceManager.Instance.Push(() => { EnterMap(GameInstanceManager.Instance.Find(0)); });
         }
 
         private void LoginFail()
@@ -103,7 +111,7 @@ namespace Server
             Send(sendPacket);
 
             // 연결 끊기
-            GameLogic.Instance.PushAfter(5000, Disconnect);
+            GameInstanceManager.Instance.PushAfter(5000, Disconnect);
         }
 
         private void LogoutAccount()
@@ -118,10 +126,10 @@ namespace Server
                 GameAccountManager.Instance.Remove(GameAccountDbId);                
             }
 
-            if (MyRoom != null)
-                MyRoom.LeaveRoom(this);
+            if (MyMap != null)
+                MyMap.LeaveMap(this);
 
-            GameLogic.Instance.Push(LeaveRoom);
+            GameInstanceManager.Instance.Push(LeaveMap);
         }
 
         private GameAccountDb CreateAccount(int accountDbId)
@@ -170,31 +178,61 @@ namespace Server
 		}
         #endregion
 
-        #region Room
-        public GameRoom MyRoom { get; private set; }
+        #region Map
+        public GameInstance MyMap { get; private set; }
 
-        // room : 입장할 GameRoom
-        public void EnterRoom(GameRoom room)
+        // map : 입장할 GameMap
+        public void EnterMap(int mapId)
         {
-            if (room == null) // 입장맵이 없는 경우
+            EnterMap(GameInstanceManager.Instance.Find(mapId));
+        }
+
+        public void EnterMap(GameInstance map)
+        {
+            if (map == null) // 입장맵이 없는 경우
                 return;          
 
-            // 현재 입장해있는 GameRoom에서 나오기
-            LeaveRoom();
+            // 현재 입장해있는 GameMap에서 나오기
+            LeaveMap();
 
-            // GameRoom 입장하자
-            MyRoom = room;
-            MyRoom.EnterRoom(this);
+            // GameMap 입장하기
+            MyMap = map;
+            MyMap.EnterMap(this);
         }
 
-        // 현재 입장해있는 GameRoom에서 나오기
-        public void LeaveRoom()
+        // 현재 입장해있는 GameMap에서 나오기
+        public void LeaveMap()
         {
-            if (MyRoom == null) // 현재 입장해있는 맵이 없는경우
+            if (MyMap == null) // 현재 입장해있는 맵이 없는경우
                 return;
 
-            MyRoom.LeaveRoom(this);
+            MyMap.LeaveMap(this);
         }
+        #endregion
+
+        #region Player
+        public int Hp = 100;
+
+        public PlayerInfo GetPlayerInfo()
+        {
+            PlayerInfo result = new PlayerInfo();
+            result.SessionId  = this.SessionId;
+            result.Hp         = this.Hp;
+
+            return result;
+        }
+
+        public void SetPlayerInfo(PlayerInfo info)
+        {
+            if (info.SessionId != this.SessionId)
+            {
+                Console.WriteLine("This player info is not this session's");
+                return;
+            }
+
+            Hp = info.Hp;
+        }
+
         #endregion
     }
 }

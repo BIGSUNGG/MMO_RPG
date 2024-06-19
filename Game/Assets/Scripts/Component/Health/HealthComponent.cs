@@ -17,8 +17,6 @@ public class HealthComponent : ObjectComponent
     protected override void Start()
     {
         base.Start();
-
-        _curHp = _maxHp;
     }
 
     protected override void Update()
@@ -29,7 +27,7 @@ public class HealthComponent : ObjectComponent
     #region Health
     public bool _bDead { get; protected set; } = false; // 오브젝트가 죽어있는지
     public float CurHpRatio { get { return (float)_curHp / (float)_maxHp; } } // 현재 체력 비율
-    public int _curHp { get; protected set; } // 현재 체력
+    public int _curHp = 100; // 현재 체력
     public int _maxHp { get; protected set; } = 100; // 최대 체력
     protected bool _bCancelTakeDamage = false; // 데미지를 무효화할지 여부
 
@@ -343,7 +341,6 @@ public class HealthComponent : ObjectComponent
     // Multicast_Respawn 코드
     protected virtual void Multicast_Respawn_Implementation()
     {
-        Debug.Log("H");
         _onRespawnEvent.Invoke();
     }
     #endregion

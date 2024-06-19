@@ -22,28 +22,31 @@ enum MsgId {
 	// Leave
 	S_LEAVE_MAP = 7;
 	S_LEAVE_PLAYER = 8;
+
+	// Move
+	G_MOVE_MAP = 9;
 	
 	// Spawn
-	S_SPAWN_OBJECT = 9;
-	S_SPAWN_OBJECTS = 10;
-	S_DESPAWN_OBJECT = 11;
-	S_DESPAWN_OBJECTS = 12;
+	S_SPAWN_OBJECT = 10;
+	S_SPAWN_OBJECTS = 11;
+	S_DESPAWN_OBJECT = 12;
+	S_DESPAWN_OBJECTS = 13;
 	
 	// Possess
-	S_POSSESS_OBJECT = 13;
-	S_UNPOSSESS_OBJECT = 14;
+	S_POSSESS_OBJECT = 14;
+	S_UNPOSSESS_OBJECT = 15;
 
 	// Sync
-	S_OBJECT_SYNC = 15;
-	C_OBJECT_SYNC = 16;
-	S_REQEUST_OBJECT_SYNC = 17;
+	S_OBJECT_SYNC = 16;
+	C_OBJECT_SYNC = 17;
+	S_REQEUST_OBJECT_SYNC = 18;
 
 	// Content
-	S_RPC_OBJECT_FUNCTION = 18;
-	C_RPC_OBJECT_FUNCTION = 19;
+	S_RPC_OBJECT_FUNCTION = 19;
+	C_RPC_OBJECT_FUNCTION = 20;
 	
-	S_RPC_COMPONENT_FUNCTION = 20;
-	C_RPC_COMPONENT_FUNCTION = 21;
+	S_RPC_COMPONENT_FUNCTION = 21;
+	C_RPC_COMPONENT_FUNCTION = 22;
 
 }
 
@@ -88,7 +91,18 @@ enum RpcComponentFunctionId {
 	Multicast_Respawn = 3;
 }
 
+enum CharacterType {
+	Npc = 0;
+	Monster = 1;
+	Player = 2;
+}
+
 // Structs
+message PlayerInfo{
+	int32 SessionId = 1;
+	int32 Hp = 2;
+}
+
 message ObjectInfo {	
 	GameObjectType ObjectType= 1;
 	int32 ObjectId = 2;
@@ -131,7 +145,8 @@ message S_EnterMap {
 
 // S_ENTER_PLAYER
 message S_EnterPlayer{
-	int32 accountDbId = 1;
+	int32 SessionId = 1;
+	PlayerInfo info = 2;
 }
 
 // S_LEAVE_MAP
@@ -140,7 +155,13 @@ message S_LeaveMap{
 
 // S_LEAVE_PLAYER
 message S_LeavePlayer{
-	int32 accountDbId = 1;
+	int32 SessionId = 1;
+}
+
+// G_MoveMap
+message G_MoveMap{
+	int32 MoveMapId = 1;
+	PlayerInfo Info = 2;
 }
 
 // S_SPAWN_OBJECT

@@ -3,11 +3,13 @@ using Google.Protobuf.Protocol;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Events;
 using static UnityEngine.GraphicsBuffer;
 using Random = UnityEngine.Random;
+using Vector3 = UnityEngine.Vector3;
 
 public class KnightMonsterController : MonsterController
 {
@@ -19,8 +21,6 @@ public class KnightMonsterController : MonsterController
     protected override void Start()
     {
         base.Start();
-
-        _aiAttackDelay = _aiCurAttackDelay;
     }
 
     protected override void Update()
@@ -30,12 +30,12 @@ public class KnightMonsterController : MonsterController
 
     #region Ai
     protected PlayerController _enemy = null;
-    protected float _enemyAttackDistance = 1.0f;
+    protected float _enemyAttackDistance = 4.0f;
     protected float _enemyMaxDistance = 6.0f;
-    protected float _enemySearchDistance = 3.0f;
+    protected float _enemySearchDistance = 4.5f;
     
-    protected float _aiAttackDelay;
-    protected float _aiCurAttackDelay = 3.25f;
+    protected float _aiAttackDelay = 3.25f;
+    protected float _aiCurAttackDelay = 0.0f;
 
     protected override void AiControllerUpdate()
     {
@@ -56,6 +56,14 @@ public class KnightMonsterController : MonsterController
         {
             // 주변에 있는 적 찾기
             _enemy = FindEnemy(_enemySearchDistance);
+            if(_enemy == null && Vector3.Distance(this.transform.position, _spawnPosition) > 4.5f) // 주변에 적이 없고 스폰 위치에서 떨어져있다면
+            {
+                MoveTo(_spawnPosition); // 스폰 위치로 돌아가기
+            }
+            else
+            {
+                _moveDir = Vector3.zero;
+            }
         }
         else // 추적중인 적이 있다면
         {
@@ -125,11 +133,11 @@ public class KnightMonsterController : MonsterController
         Collider[] hitColliders = Physics.OverlapSphere(transform.position + new Vector3(0.0f, _capsule.height / 2, 0.0f), 2.0f, layerMask);
         foreach (var hitCollider in hitColliders)
         {
-            ObjectController oc = hitCollider.gameObject.GetComponentInParent<ObjectController>();
-            if (oc == null || oc == this)
+            CharacterController cc = hitCollider.gameObject.GetComponentInParent<CharacterController>();
+            if (cc == null || cc == this || cc._characterType == this._characterType)
                 continue;
 
-            gameObject.GiveDamage(oc, Random.Range(5, 10));
+            gameObject.GiveDamage(cc, Random.Range(5, 10));
         }
     }
     #endregion

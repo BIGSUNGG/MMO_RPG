@@ -132,7 +132,7 @@ public partial class NetworkManager
 		MsgId msgId = (MsgId)Enum.Parse(typeof(MsgId), msgName);
 		ushort size = (ushort)packet.CalculateSize();
 		byte[] sendBuffer = new byte[size + 8];
-		Array.Copy(BitConverter.GetBytes((int)(session.AccountDbId)), 0, sendBuffer, 0, sizeof(int));
+		Array.Copy(BitConverter.GetBytes((int)(session.SessionId)), 0, sendBuffer, 0, sizeof(int));
         Array.Copy(BitConverter.GetBytes((ushort)(size + 8)), 0, sendBuffer, 4, sizeof(ushort));
         Array.Copy(BitConverter.GetBytes((ushort)msgId), 0, sendBuffer, 6, sizeof(ushort));
         Array.Copy(packet.ToByteArray(), 0, sendBuffer, 8, size);
@@ -143,7 +143,7 @@ public partial class NetworkManager
 #if false // Log Packet Info
         Debug.Log(
             "Send " +
-            "Id : " + session.AccountDbId +
+            "Id : " + session.SessionId +
             ", Size : " + (size + 8) +
             ", MsgId : " + msgId + $"{((int)msgId)}"
             );
@@ -182,9 +182,9 @@ public partial class NetworkManager
     #endregion
 
     #region ClientSession
-    Dictionary<int, ClientSession> _clientSessions = new Dictionary<int, ClientSession>(); // Key : ClientSession의 계정 아이디, Value : 세션 아이디에 맞는 ClientSession
+    Dictionary<int, ClientSession> _clientSessions = new Dictionary<int, ClientSession>(); // Key : ClientSession의 세션 아이디, Value : 세션 아이디에 맞는 ClientSession
 
-    // accountId : 만들 세션의 계정 아이디
+    // accountId : 만들 세션의 세션 아이디
     // return : 만든 세션 반환 (실패했을경우 null 반환)
     public ClientSession CreateClienSession(int accountDbId)
     {
@@ -199,7 +199,7 @@ public partial class NetworkManager
         return session;
     }
 
-    // accountId : 제거할 세션의 계정 아이디
+    // accountId : 제거할 세션의 세션 아이디
     // return : 세션 제거에 성공했는지
     public bool DeleteClientSession(int accountId)
     {
@@ -211,7 +211,7 @@ public partial class NetworkManager
         return false;
     }
 
-    // accountId : 찾을 세션의 계정 아이디
+    // accountId : 찾을 세션의 세션 아이디
     // return : 찾은 세션반환 (실패했을경우 null 반환)
     public ClientSession FindClientSession(int accountId)
     {

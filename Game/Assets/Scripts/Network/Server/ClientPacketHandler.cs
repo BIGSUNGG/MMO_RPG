@@ -32,7 +32,6 @@ class ClientPacketHandler
         }
         else if(pc.ObjectId != recvPacket.SyncInfo.ObjectInfo.ObjectId)
         {
-            Debug.Log("Player controller id is not sync info's id");
             return;
         }
 

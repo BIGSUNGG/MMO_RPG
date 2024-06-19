@@ -21,7 +21,7 @@ namespace Server
             return BitConverter.ToUInt16(buffer.Array, buffer.Offset + 4);
         }
 
-        public GameRoom Room { get; set; }
+        public GameInstance Map { get; set; }
 
 		object _lock = new object();
 		public int SessionId { get; set; }
@@ -53,7 +53,7 @@ namespace Server
                 {
 			        Console.WriteLine
 				    	(
-	                        "Send To Room : " + 
+	                        "Send To Map : " + 
 	                        "Id : " + Id +
 	                        ", Packet Size : " + (ushort)(size) +
 	                        ", All Size : " + (ushort)(size + 8) +
@@ -66,7 +66,7 @@ namespace Server
 
 		public void Send(ClientSession session, IMessage packet)
 		{
-			Send(session.GameAccountDbId, packet);
+			Send(session.SessionId, packet);
 		}
 
 		// Send server packet 
@@ -111,7 +111,7 @@ namespace Server
 
 #if false // Log Packet Info
             Console.WriteLine(
-                "Receive From Room: " + 
+                "Receive From Map: " + 
                 "Id : " +  id +
                 ", Size : " + size +
                 ", MsgId : " + msg 
@@ -137,13 +137,13 @@ namespace Server
                 for (int i = 0; i < recvBuffSize; i++)
                     sendBuffer[i] = recvBuffer[i];
 
-                Room.SendAll(sendBuffer);
+                Map.SendAll(sendBuffer);
                 
             }
             else // 클라이언트로 보낼 패킷을 받았을 경우
             {
                 //패킷을 받을 클라이언트 찾기
-                ClientSession session = Room.FindSession(sessionId);
+                ClientSession session = Map.FindSession(sessionId);
 
                 if (session != null) // 세션을 찾았는지
                 {
@@ -153,7 +153,7 @@ namespace Server
                     for (int i = 0; i < recvBuffSize; i++)
                         sendBuffer[i] = recvBuffer[i];
 
-                    Room.Push(() => { session.Send(sendBuffer); });                  
+                    Map.Push(() => { session.Send(sendBuffer); });                  
                 }
                 else
                 {

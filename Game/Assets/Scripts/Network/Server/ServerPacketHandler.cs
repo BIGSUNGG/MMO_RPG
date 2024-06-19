@@ -38,7 +38,7 @@ class ServerPacketHandler
     public static void S_EnterPlayerHandler(ISession session, IMessage packet)
     {
         S_EnterPlayer recvPacket = packet as S_EnterPlayer;
-        ClientSession clientSession = Managers.Network.CreateClienSession(recvPacket.AccountDbId);
+        ClientSession clientSession = Managers.Network.CreateClienSession(recvPacket.SessionId);
 
         // 현재 맵에 있는 모든 오브젝트 클라이언트에게 전송
         {
@@ -74,6 +74,9 @@ class ServerPacketHandler
             if (pc == null)
                 return;
 
+            HealthComponent health = go.GetComponent<HealthComponent>();
+            health._curHp = recvPacket.Info.Hp;
+
             // 만든 오브젝트에 플레이어 빙의시키기
             clientSession.Possess(pc);
         }
@@ -91,14 +94,14 @@ class ServerPacketHandler
         S_LeavePlayer recvPacket = packet as S_LeavePlayer;
 
         // 룸에서 나간 플레이어의 클라이언트 세션 찾기
-        ClientSession clientSession = Managers.Network.FindClientSession(recvPacket.AccountDbId);
+        ClientSession clientSession = Managers.Network.FindClientSession(recvPacket.SessionId);
         if(clientSession == null)
             return;
       
         // 나간 클라이언트 세션의 오브젝트 제거
         Managers.Object.Delete(clientSession._playerController.ObjectId);
         // 룸에 있는 클라이언트 세션에서 나간 세션 제거
-        Managers.Network.DeleteClientSession(recvPacket.AccountDbId);
+        Managers.Network.DeleteClientSession(recvPacket.SessionId);
     }
 
 
