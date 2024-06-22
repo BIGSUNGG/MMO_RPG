@@ -9,6 +9,43 @@ using UnityEngine;
 #if !UNITY_SERVER
 public partial class ObjectManager
 {
+    #region Find
+    // 클라이언트에서 오브젝트를 찾을때 호출 (오브젝트가 없다면 클라이언트가 서버에게 오브젝트를 요청함)
+    // id : 찾을 오브젝트 아이디
+    // findAction : 오브젝트를 찾는다면 오브젝트에게 할 행동 (오브젝트가 없다면 해당 id에 오브젝트를 생성할 때 호출)
+    // return : 찾은 오브젝트
+    public GameObject FindOrRequest(int id, Action<GameObject> findAction = null)
+    {
+        if (Util.CheckFuncCalledOnClient() == false)
+            return null;
+
+        GameObject result = FindById(id);
+        if (result != null)
+        {
+            if (findAction != null)
+            {
+                findAction.Invoke(result);
+            }
+        }
+        else
+        {
+            if (findAction != null)
+            {
+                _onCreateEvent.Add(id, findAction);
+            }
+
+            // 서버에게 오브젝트 정보 요청하기
+            C_RequestObjectInfo requestPacket = new C_RequestObjectInfo();
+            requestPacket.RequestObjectId = id;
+
+            Managers.Network.SendServer(requestPacket);
+        }
+
+        return result;
+    }
+    #endregion
+
+    #region Create
     public GameObject Create(ObjectInfo info)
     {
         // 오브젝트 만들기
@@ -44,9 +81,10 @@ public partial class ObjectManager
         return result;
     }
 
+    // ObjectType에 맞는 오브젝트를 만들고 등록
     private GameObject CreateAndRegister(int id, GameObjectType type)
     {
-        if(_objects.ContainsKey(id))
+        if (_objects.TryGetValue(id, out var go) && go != null)
         {
             Debug.Log($"Try create object but object Id {id} is already exist");
             return null;
@@ -72,13 +110,21 @@ public partial class ObjectManager
         return gameObject;
     }
 
+    // 오브젝트 리스트에 오브젝트 등록
     public void Register(int id, ObjectController oc)
     {
         if (oc == null)
             return;
 
         oc.Registered(id);
-        _objects.Add(id, oc.gameObject);
+        _objects[id] = oc.gameObject;
+        
+        _onCreateEvent.TryGetValue(id, out var action);
+        if(action != null)
+        {
+            action.Invoke(oc.gameObject);
+            _onCreateEvent.Remove(id);
+        }
     }
 
     public int Register(ObjectController oc)
@@ -86,7 +132,9 @@ public partial class ObjectManager
         Debug.LogError("This function must called on server");
         return 0;
     }
+    #endregion
 
+    #region Delete
     public void Delete(List<int> ids)
     {
         foreach (int id in ids)
@@ -108,6 +156,7 @@ public partial class ObjectManager
         return DeleteAndUnRegister(id);
     }
 
+    // 오브젝트 제거 및 등록 해제
     public bool DeleteAndUnRegister(int id)
     {
         // 아이디에 맞는 오브젝트가 있는지
@@ -129,6 +178,7 @@ public partial class ObjectManager
         return true;
     }
 
+    // 오브젝트 리스트에서 오브젝트 제거
     public int UnRegister(ObjectController oc)
     {
         int deleteId = oc.ObjectId;
@@ -139,5 +189,6 @@ public partial class ObjectManager
 
         return deleteId;
     }
+    #endregion
 }
 #endif

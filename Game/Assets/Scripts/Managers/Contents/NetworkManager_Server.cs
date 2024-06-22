@@ -48,7 +48,7 @@ public partial class NetworkManager
     {
         if (_clientSessions.Count > 0)
         {
-            S_ReqeustObjectSync requestPacket = new S_ReqeustObjectSync();
+            S_RequestObjectSync requestPacket = new S_RequestObjectSync();
             SendMulticast(requestPacket);
 
             // 오브젝트 정보 클라이언트와 싱크맞추기

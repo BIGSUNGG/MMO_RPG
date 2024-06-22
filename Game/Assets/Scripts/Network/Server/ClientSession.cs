@@ -16,7 +16,6 @@ public class ClientSession : ISession
     }
 
     public int SessionId { get; private set; }
-    public bool bIsValid { get; private set; } = false;
 
     public void Send(IMessage packet)
     {
@@ -28,8 +27,6 @@ public class ClientSession : ISession
 
     public void Possess(PlayerController pc)
     {
-        bIsValid = true;
-
         if (pc == null)
             return;
 
@@ -45,12 +42,14 @@ public class ClientSession : ISession
     #endregion
 
     #region Map
+    public bool IsInMap { get; private set; } = true;
+
     public void MoveMap(int moveMapId)
     {
-        if (bIsValid == false)
+        if(IsInMap == false)
             return;
 
-        bIsValid = false;
+        IsInMap = false;
 
         G_MoveMap sendPacket = new G_MoveMap();
         sendPacket.MoveMapId = moveMapId;
@@ -59,6 +58,7 @@ public class ClientSession : ISession
         sendPacket.Info.Hp = _playerController._health._curHp;
 
         Managers.Network.SendServer(sendPacket);
+
         Debug.Log($"Move {SessionId} Player to {moveMapId} map");
     }
     #endregion

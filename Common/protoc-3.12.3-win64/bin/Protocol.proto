@@ -31,22 +31,23 @@ enum MsgId {
 	S_SPAWN_OBJECTS = 11;
 	S_DESPAWN_OBJECT = 12;
 	S_DESPAWN_OBJECTS = 13;
-	
+	C_REQUEST_OBJECT_INFO = 14;
+
 	// Possess
-	S_POSSESS_OBJECT = 14;
-	S_UNPOSSESS_OBJECT = 15;
+	S_POSSESS_OBJECT = 15;
+	S_UNPOSSESS_OBJECT = 16;
 
 	// Sync
-	S_OBJECT_SYNC = 16;
-	C_OBJECT_SYNC = 17;
-	S_REQEUST_OBJECT_SYNC = 18;
+	S_OBJECT_SYNC = 17;
+	S_REQUEST_OBJECT_SYNC = 18;
+	C_RESPONSE_OBJECT_SYNC = 19;
 
-	// Content
-	S_RPC_OBJECT_FUNCTION = 19;
-	C_RPC_OBJECT_FUNCTION = 20;
+	// Rpc
+	S_RPC_OBJECT_FUNCTION = 20;
+	C_RPC_OBJECT_FUNCTION = 21;
 	
-	S_RPC_COMPONENT_FUNCTION = 21;
-	C_RPC_COMPONENT_FUNCTION = 22;
+	S_RPC_COMPONENT_FUNCTION = 22;
+	C_RPC_COMPONENT_FUNCTION = 23;
 
 }
 
@@ -184,6 +185,11 @@ message S_DespawnObjects{
 	repeated int32 objectIds = 1;
 }
 
+// C_REQUEST_OBJECT_INFO
+message C_RequestObjectInfo{
+	int32 requestObjectId = 1;
+}
+
 // S_POSSESS_OBJECT
 message S_PossessObject{
 	int32 objectId = 1;
@@ -198,13 +204,13 @@ message S_ObjectSync{
 	repeated ObjectSyncInfo SyncInfos = 1;	
 }
 
-// C_OBJECT_SYNC
-message C_ObjectSync{
+// C_RESPONSE_OBJECT_SYNC
+message C_ResponseObjectSync{
 	ObjectSyncInfo SyncInfo = 1;
 }
 
-// S_REQEUST_OBJECT_SYNC
-message S_ReqeustObjectSync{
+// S_REQUEST_OBJECT_SYNC
+message S_RequestObjectSync{
 }
 
 // S_RPC_OBJECT_FUNCTION

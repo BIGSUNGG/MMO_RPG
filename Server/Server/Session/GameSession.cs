@@ -126,10 +126,10 @@ namespace Server
             recvBuffer[1] = recvBuffSizeByte[1];
 
             if (sessionId == 0) // 게임 패킷을 받았을경우
-            {
+            {                
                 GamePacketManager.Instance.OnRecvPacket(this, recvBuffer);
             }
-            else if(sessionId == -1) // 모든 클라이언트로 보낼 패킷을 받았을 경우
+            else if (sessionId == -1) // 모든 클라이언트로 보낼 패킷을 받았을 경우
             {
                 //Console.WriteLine("Send All");
 
@@ -138,7 +138,6 @@ namespace Server
                     sendBuffer[i] = recvBuffer[i];
 
                 Map.SendAll(sendBuffer);
-                
             }
             else // 클라이언트로 보낼 패킷을 받았을 경우
             {
@@ -153,14 +152,9 @@ namespace Server
                     for (int i = 0; i < recvBuffSize; i++)
                         sendBuffer[i] = recvBuffer[i];
 
-                    Map.Push(() => { session.Send(sendBuffer); });                  
-                }
-                else
-                {
-                    Console.WriteLine("Recv null session's id");
+                    session.Send(sendBuffer);
                 }
             }
-
         }
 
 		public override void OnDisconnected(EndPoint endPoint)

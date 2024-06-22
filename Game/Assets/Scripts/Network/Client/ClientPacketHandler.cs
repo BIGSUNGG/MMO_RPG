@@ -12,7 +12,9 @@ class ClientPacketHandler
 
     public static void C_PongHandler(ISession session, IMessage packet) { C_Pong recvPacket = packet as C_Pong; }
 
-    public static void C_ObjectSyncHandler(ISession session, IMessage packet) { C_ObjectSync recvPacket = packet as C_ObjectSync; }
+    public static void C_RequestObjectInfoHandler(ISession session, IMessage packet) { C_RequestObjectInfo recvPacket = packet as C_RequestObjectInfo; }
+
+    public static void C_ResponseObjectSyncHandler(ISession session, IMessage packet) { C_ResponseObjectSync recvPacket = packet as C_ResponseObjectSync; }
 
     public static void C_RpcObjectFunctionHandler(ISession session, IMessage packet) { C_RpcObjectFunction recvPacket = packet as C_RpcObjectFunction; }
    

@@ -28,9 +28,19 @@ partial class ClientPacketHandler
         clientSession.HandlePong();
     }
 
-    public static void C_ObjectSyncHandler(ISession session, IMessage packet)
+    public static void C_RequestObjectInfoHandler(ISession session, IMessage packet)
     {
-        C_ObjectSync recvPacket = packet as C_ObjectSync;
+        C_RequestObjectInfo recvPacket = packet as C_RequestObjectInfo;
+        ClientSession clientSession = session as ClientSession;
+
+        GameInstance map = clientSession.MyMap;
+        map.Push(() => { map.Session.Send(clientSession, packet); });
+    }
+
+
+    public static void C_ResponseObjectSyncHandler(ISession session, IMessage packet)
+    {
+        C_ResponseObjectSync recvPacket = packet as C_ResponseObjectSync;
         ClientSession clientSession = session as ClientSession;
 
         GameInstance map = clientSession.MyMap;

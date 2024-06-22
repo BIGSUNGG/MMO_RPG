@@ -44,8 +44,10 @@ namespace Server.Game
                 SendAll(enterPlayerPacket);
 
                 enterPlayerPacket.Info = session.GetPlayerInfo();
-                Session.Send(enterPlayerPacket);
-
+                PushAfter(1000, () => 
+                { 
+                    Session.Send(enterPlayerPacket); 
+                });               
             }
         }
 
@@ -67,11 +69,9 @@ namespace Server.Game
         {
             lock (_lock)
             {
-                Console.WriteLine("LeaveMap");
-
                 if (_sessions.Remove(session.SessionId))
                 {
-                    Console.WriteLine("LeaveMap Succeed");
+                    Console.WriteLine("LeaveMap");
 
                     // 클라이언트에게 맵 퇴장 알리기
                     S_LeaveMap leaveMapPacket = new S_LeaveMap();

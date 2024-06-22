@@ -60,6 +60,7 @@ class ServerPacketHandler
 	{
 		S_LeaveMap recvPacket = packet as S_LeaveMap;
 
+        Managers.Map.DestroyMap();
 	}
 
 	public static void S_LeavePlayerHandler(ISession session, IMessage packet)
@@ -99,8 +100,10 @@ class ServerPacketHandler
 	{
 		S_PossessObject recvPacket = packet as S_PossessObject;
 
-		GameObject obj = Managers.Object.FindById(recvPacket.ObjectId);
-		Managers.Controller.Possess(obj);
+		GameObject obj = Managers.Object.FindOrRequest(recvPacket.ObjectId, (findObj) =>
+        {
+            Managers.Controller.Possess(findObj);
+        });
 	}
 
 	public static void S_UnpossessObjectHandler(ISession session, IMessage packet)
@@ -115,7 +118,7 @@ class ServerPacketHandler
 
 		foreach (var info in recvPacket.SyncInfos)
 		{
-			GameObject go = Managers.Object.FindById(info.ObjectInfo.ObjectId);
+			GameObject go = Managers.Object.FindOrRequest(info.ObjectInfo.ObjectId);
 			if (go == null)
 				return;
 
@@ -134,15 +137,15 @@ class ServerPacketHandler
 		}
 	}
 
-	public static void S_ReqeustObjectSyncHandler(ISession session, IMessage packet)
+	public static void S_RequestObjectSyncHandler(ISession session, IMessage packet)
 	{
-		S_ReqeustObjectSync recvPacket = packet as S_ReqeustObjectSync;
+        S_RequestObjectSync recvPacket = packet as S_RequestObjectSync;
 
         PlayerController pc = Managers.Controller.MyController;
         if (pc == null)
             return;
 
-		C_ObjectSync syncPacket = new C_ObjectSync();
+        C_ResponseObjectSync syncPacket = new C_ResponseObjectSync();
 		syncPacket.SyncInfo = new ObjectSyncInfo();
 		syncPacket.SyncInfo.ObjectInfo = new ObjectInfo();
 
@@ -160,7 +163,7 @@ class ServerPacketHandler
             return;
 
         // 오브젝트 아이디에 맞는 오브젝트 찾기
-        GameObject go = Managers.Object.FindById(recvPacket.ObjectId);
+        GameObject go = Managers.Object.FindOrRequest(recvPacket.ObjectId);
         if (go == null)
             return;
 
@@ -182,7 +185,7 @@ class ServerPacketHandler
             return;
 
         // 오브젝트 아이디에 맞는 오브젝트 찾기
-        GameObject go = Managers.Object.FindById(recvPacket.ObjectId);
+        GameObject go = Managers.Object.FindOrRequest(recvPacket.ObjectId);
         if (go == null)
             return;
 

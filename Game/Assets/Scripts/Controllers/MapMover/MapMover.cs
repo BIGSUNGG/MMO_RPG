@@ -17,7 +17,7 @@ public class MapMover : ObjectController
         base.Start();
 
         if(Managers.Network.IsServer)
-            collisionTimer = Managers.Timer.SetTimer(0.1f, CheckCollision, true);
+            collisionTimer = Managers.Timer.SetTimer(0.25f, CheckCollision, true);
     }
 
     protected override void Update()

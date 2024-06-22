@@ -12,16 +12,35 @@ class ClientPacketHandler
 
     public static void C_PongHandler(ISession session, IMessage packet) { C_Pong recvPacket = packet as C_Pong; }
 
-    public static void C_ObjectSyncHandler(ISession session, IMessage packet) 
+    public static void C_RequestObjectInfoHandler(ISession session, IMessage packet)
     {
+        C_RequestObjectInfo recvPacket = packet as C_RequestObjectInfo;
         ClientSession clientSession = session as ClientSession;
-        if (clientSession == null)
-        {
-            Debug.Log("Client session is null");
-            return;
-        }
 
-        C_ObjectSync recvPacket = packet as C_ObjectSync;
+        // 요청받은 오브젝트 찾기
+        GameObject obj = Managers.Object.FindById(recvPacket.RequestObjectId);
+        if (obj == null)
+            return;
+
+        ObjectController oc = obj.GetComponent<ObjectController>();
+        if (oc == null)
+            return;
+
+        // 요청받은 오브젝트 스폰 정보 넘기기
+        S_SpawnObject sendPacket = new S_SpawnObject();
+        sendPacket.SpawnInfo = new ObjectInfo();
+        {
+            sendPacket.SpawnInfo.ObjectId   = oc.ObjectId;
+            sendPacket.SpawnInfo.ObjectType = oc.ObjectType;
+        }
+        Managers.Network.SendClient(clientSession, sendPacket);
+    }
+
+    public static void C_ResponseObjectSyncHandler(ISession session, IMessage packet) 
+    {
+        C_ResponseObjectSync recvPacket = packet as C_ResponseObjectSync;
+        ClientSession clientSession = session as ClientSession;
+
         ObjectSyncInfo info = recvPacket.SyncInfo;
 
         PlayerController pc = clientSession._playerController;

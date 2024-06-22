@@ -191,7 +191,7 @@ namespace Server
         {
             if (map == null) // 입장맵이 없는 경우
                 return;          
-
+            
             // 현재 입장해있는 GameMap에서 나오기
             LeaveMap();
 

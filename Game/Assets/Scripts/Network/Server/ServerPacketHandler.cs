@@ -151,9 +151,9 @@ class ServerPacketHandler
 
     }
 
-    public static void S_ReqeustObjectSyncHandler(ISession session, IMessage packet)
+    public static void S_RequestObjectSyncHandler(ISession session, IMessage packet)
     {
-        S_ReqeustObjectSync recvPacket = packet as S_ReqeustObjectSync;
+        S_RequestObjectSync recvPacket = packet as S_RequestObjectSync;
 
     }
 

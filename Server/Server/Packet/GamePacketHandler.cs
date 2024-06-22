@@ -29,6 +29,7 @@ partial class GamePacketHandler
         clientSession.SetPlayerInfo(recvPacket.Info);
 
         clientSession.LeaveMap();
-        clientSession.EnterMap(moveMap);
+        clientSession.EnterMap(moveMap); 
+        
     }
 }

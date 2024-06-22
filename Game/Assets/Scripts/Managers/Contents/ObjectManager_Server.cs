@@ -13,23 +13,9 @@ public partial class ObjectManager
     object _lock = new object();
 
     int _curId = 0;
-    List<int> _deletedId = new List<int>();
-
     int GetRegisterId()
     {
-	    int createId;
-        if (_deletedId.Count == 0)
-        {
-            createId = _curId++;
-        }
-        else
-        {
-            int count = _deletedId.Count - 1;
-            createId = _deletedId[count];
-            _deletedId.RemoveAt(count);
-        }
-
-        return createId;
+        return _curId++;
     }
 
     public GameObject Create(ObjectInfo info)
@@ -129,11 +115,16 @@ public partial class ObjectManager
     {
         lock (_lock)
         {
-	        GameObject gameObject = _factory[(int)type].Invoke();
-	
+            if(_objects.ContainsKey(id))
+            {
+                Debug.LogWarning($"Try create object but object Id {id} is already exist");
+                return null;
+            }
+
+	        GameObject gameObject = _factory[(int)type].Invoke();	
 	        if (gameObject == null)
 	        {
-	            Debug.Log($"Failed to create object");
+	            Debug.LogError($"Failed to create object");
 	            return null;
 	        }	
 	
@@ -151,6 +142,14 @@ public partial class ObjectManager
         }
     }
 
+    public int Register(ObjectController oc)
+    {
+        // 만들 오브젝트 아이디 구하기
+        int registerId = GetRegisterId();
+        Register(registerId, oc);
+	    return registerId;
+    }
+
     public void Register(int id, ObjectController oc)
     {
         if (oc == null)
@@ -158,15 +157,6 @@ public partial class ObjectManager
 
         oc.Registered(id);
         _objects.Add(id, oc.gameObject);
-
-    }
-
-    public int Register(ObjectController oc)
-    {
-        // 만들 오브젝트 아이디 구하기
-        int registerId = GetRegisterId();
-        Register(registerId, oc);
-	    return registerId;
     }
 
     public void Delete(List<int> ids)
@@ -252,7 +242,6 @@ public partial class ObjectManager
 
         // 오브젝트 제거
         _objects.Remove(deleteId);
-        _deletedId.Add(deleteId);
         Managers.Resource.Destroy(oc.gameObject);
 
         return deleteId;

@@ -53,6 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b10b60196e357c49bb5c54f0e83c440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _spawnPosition: {x: 0, y: 0, z: 0}
   _moveDir: {x: 0, y: 0}
   _maxCombo: 4
   _comboDelay:
@@ -79,6 +80,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bIsRunning: 0
+  _syncStartPos: {x: 0, y: 0, z: 0}
+  _syncEndPos: {x: 0, y: 0, z: 0}
   _onDodgeStartEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -94,6 +97,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4015773a56dfb724b8a9132eea69798d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _curHp: 100
+  _onServerBeforeTakeDamageEvent:
+    m_PersistentCalls:
+      m_Calls: []
   _onTakeDamageEvent:
     m_PersistentCalls:
       m_Calls: []

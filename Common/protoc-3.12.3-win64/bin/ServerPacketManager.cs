@@ -51,8 +51,8 @@ class ServerPacketManager
 		_handler.Add((ushort)MsgId.SUnpossessObject, ServerPacketHandler.S_UnpossessObjectHandler);		
 		_onRecv.Add((ushort)MsgId.SObjectSync, MakePacket<S_ObjectSync>);
 		_handler.Add((ushort)MsgId.SObjectSync, ServerPacketHandler.S_ObjectSyncHandler);		
-		_onRecv.Add((ushort)MsgId.SReqeustObjectSync, MakePacket<S_ReqeustObjectSync>);
-		_handler.Add((ushort)MsgId.SReqeustObjectSync, ServerPacketHandler.S_ReqeustObjectSyncHandler);		
+		_onRecv.Add((ushort)MsgId.SRequestObjectSync, MakePacket<S_RequestObjectSync>);
+		_handler.Add((ushort)MsgId.SRequestObjectSync, ServerPacketHandler.S_RequestObjectSyncHandler);		
 		_onRecv.Add((ushort)MsgId.SRpcObjectFunction, MakePacket<S_RpcObjectFunction>);
 		_handler.Add((ushort)MsgId.SRpcObjectFunction, ServerPacketHandler.S_RpcObjectFunctionHandler);		
 		_onRecv.Add((ushort)MsgId.SRpcComponentFunction, MakePacket<S_RpcComponentFunction>);

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -26,11 +27,17 @@ public class MapManager
 
         Debug.Log($"Enter Map {mapPath}");
         SceneManager.LoadScene($"Assets/{mapPath}", LoadSceneMode.Single);
+
+        Managers.Network.Init();
     }
 
     public void DestroyMap()
 	{
+        Debug.Log($"Destroy Map");
+        SceneManager.LoadScene($"Assets/Scenes/Transition.unity", LoadSceneMode.Single);
+
         Managers.Controller.Unpossess();
         Managers.Object.Clear();
+        Managers.Timer.Clear();
 	}
 }

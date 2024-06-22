@@ -14,8 +14,9 @@ public partial class ObjectManager
         _factory[(int)GameObjectType.KnightPlayer] = () => { return Managers.Resource.Instantiate("Object/Knight");  }; 
         _factory[(int)GameObjectType.KnightMonster] = () => { return Managers.Resource.Instantiate("Object/Monster");  };
     }
-    public Dictionary<int, GameObject> _objects { get; private set; } = new Dictionary<int, GameObject>();
     List<Func<GameObject>> _factory;
+    Dictionary<int, Action<GameObject>> _onCreateEvent = new Dictionary<int, Action<GameObject>>(); // Key : object id, Value : 오브젝트를 찾았았을 때 이벤트
+    public Dictionary<int, GameObject> _objects { get; private set; } = new Dictionary<int, GameObject>();
 
     public GameObject FindById(int id)
 	{
@@ -23,7 +24,7 @@ public partial class ObjectManager
 		_objects.TryGetValue(id, out go);
 
         if (go == null)
-            Debug.Log($"Find GameObject failed Id : {id}");
+            Debug.LogWarning($"Find GameObject failed Id : {id}");
 
 		return go;
 	}
@@ -43,6 +44,8 @@ public partial class ObjectManager
 	{
 		foreach (GameObject obj in _objects.Values)
 			Managers.Resource.Destroy(obj);
-		_objects.Clear();
+
+		_objects = new Dictionary<int, GameObject>();
+        _onCreateEvent = new Dictionary<int, Action<GameObject>>();
 	}
 }
