@@ -20,6 +20,9 @@ namespace Server.DB
 		public int PlayerDbId { get; set; }
 		public string PlayerName { get; set; }
 
+        public int Hp { get; set; }
+        public int MapId { get; set; }
+
 		[ForeignKey("Account")]
 		public int AccountDbId { get; set; }
 		public GameAccountDb Account { get; set; }

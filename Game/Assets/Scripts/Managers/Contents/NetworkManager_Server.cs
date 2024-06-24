@@ -217,13 +217,10 @@ public partial class NetworkManager
     {
         ClientSession result;
         if(_clientSessions.TryGetValue(accountId, out result) == false) // Is failed to find session
-        {
-            Debug.Log("Try find ClientSession but account id " + accountId + "is not exist");
             return null;
-        }
 
         return result;
     }
-    #endregion
+    #endregion 
 }
 #endif

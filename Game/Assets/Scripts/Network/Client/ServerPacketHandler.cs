@@ -198,6 +198,12 @@ class ServerPacketHandler
         var parameteByteArr = recvPacket.ParameterBytes.ToByteArray();
         objectComp.RpcFunction_ReceivePacket(recvPacket.RpcFunctionId, parameteByteArr);
     }
+
+    public static void S_RequestPlayerInfoHandler(ISession session, IMessage packet)
+    {
+        S_RequestPlayerInfo recvPacket = packet as S_RequestPlayerInfo;
+
+    }
 }
 
 #endif

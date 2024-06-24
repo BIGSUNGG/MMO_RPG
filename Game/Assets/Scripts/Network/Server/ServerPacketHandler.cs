@@ -168,5 +168,23 @@ class ServerPacketHandler
 
     }
     
+    public static void S_RequestPlayerInfoHandler(ISession session, IMessage packet)
+    {
+        S_RequestPlayerInfo recvPacket = packet as S_RequestPlayerInfo;
+
+        // 정보 요청받은 클라이언트 세션 찾기
+        ClientSession clientSession = Managers.Network.FindClientSession(recvPacket.SessionId);
+        if (clientSession == null)
+            return;
+
+        // 정보 보내기
+        G_ResponsePlayerInfo sendPacket = new G_ResponsePlayerInfo();
+        sendPacket.GameAccountId = recvPacket.GameAccountId;
+        sendPacket.Info = new PlayerInfo();
+        {
+            sendPacket.Info.Hp = clientSession._playerController._health._curHp;
+        }
+        Managers.Network.SendServer(sendPacket);
+    }
 }
 #endif

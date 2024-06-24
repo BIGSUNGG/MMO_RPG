@@ -32,4 +32,13 @@ partial class GamePacketHandler
         clientSession.EnterMap(moveMap); 
         
     }
+
+    public static void G_ResponsePlayerInfoHandler(ISession session, IMessage packet)
+    {
+        G_ResponsePlayerInfo recvPacket = packet as G_ResponsePlayerInfo;
+        GameSession gameSession = session as GameSession;
+        GameInstance curMap = gameSession.Map;
+
+        DbTransaction.SavePlayer(recvPacket.GameAccountId, curMap.MapId, recvPacket.Info);
+    }
 }

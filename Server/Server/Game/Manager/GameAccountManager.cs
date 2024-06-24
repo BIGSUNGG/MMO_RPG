@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Server
 {
-    // 접속 중인 계정들을 관리하는 클래스
+    // 접속중인 계정들을 관리하는 클래스
     public class GameAccountManager
     {
         public static GameAccountManager Instance { get; } = new GameAccountManager();

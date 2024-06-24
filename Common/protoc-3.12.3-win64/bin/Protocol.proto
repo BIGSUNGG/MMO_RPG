@@ -49,6 +49,9 @@ enum MsgId {
 	S_RPC_COMPONENT_FUNCTION = 22;
 	C_RPC_COMPONENT_FUNCTION = 23;
 
+	// DataBase
+	S_REQUEST_PLAYER_INFO = 24;
+	G_RESPONSE_PLAYER_INFO = 25;
 }
 
 // Enums
@@ -244,4 +247,16 @@ message C_RpcComponentFunction{
 	GameComponentType componentType = 2;
 	RpcComponentFunctionId rpcFunctionId = 3;
 	bytes  parameterBytes = 4;
+}
+
+// S_REQUEST_PLAYER_INFO
+message  S_RequestPlayerInfo{
+	int32 SessionId = 1;
+	int32 GameAccountId = 2;
+}
+
+// G_RESPONSE_PLAYER_INFO
+message G_ResponsePlayerInfo{
+	int32 GameAccountId = 1;
+	PlayerInfo Info = 2;
 }

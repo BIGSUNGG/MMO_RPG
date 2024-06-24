@@ -56,7 +56,9 @@ class ServerPacketManager
 		_onRecv.Add((ushort)MsgId.SRpcObjectFunction, MakePacket<S_RpcObjectFunction>);
 		_handler.Add((ushort)MsgId.SRpcObjectFunction, ServerPacketHandler.S_RpcObjectFunctionHandler);		
 		_onRecv.Add((ushort)MsgId.SRpcComponentFunction, MakePacket<S_RpcComponentFunction>);
-		_handler.Add((ushort)MsgId.SRpcComponentFunction, ServerPacketHandler.S_RpcComponentFunctionHandler);
+		_handler.Add((ushort)MsgId.SRpcComponentFunction, ServerPacketHandler.S_RpcComponentFunctionHandler);		
+		_onRecv.Add((ushort)MsgId.SRequestPlayerInfo, MakePacket<S_RequestPlayerInfo>);
+		_handler.Add((ushort)MsgId.SRequestPlayerInfo, ServerPacketHandler.S_RequestPlayerInfoHandler);
 	}
 
 	public void OnRecvPacket(ISession session, ArraySegment<byte> buffer)
