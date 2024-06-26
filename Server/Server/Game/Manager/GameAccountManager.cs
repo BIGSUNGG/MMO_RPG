@@ -11,6 +11,7 @@ namespace Server
     {
         public static GameAccountManager Instance { get; } = new GameAccountManager();
         Dictionary<int, ClientSession> Accounts = new Dictionary<int, ClientSession>(); // Key : GameAccountDbId, Value : 플레이어의 ClientSession
+        Dictionary<int, bool> SaveAccount = new Dictionary<int, bool>();                // Key : GameAccountDbId, Value : 로그아웃하고나서 계정 정보를 저장했는지
 
         object _lock = new object();
 
@@ -21,6 +22,7 @@ namespace Server
             lock (_lock)
             {
                 Accounts[gameAccountDbId] = addSession;
+                SaveAccount[gameAccountDbId] = false;
             }
         }
 
@@ -42,6 +44,28 @@ namespace Server
             lock (_lock)
             {
                 return Accounts.Remove(gameAccountDbId);
+            }
+        }
+
+        // gameAccountDbId : 확인할 플레이어 계정 아이디
+        // return : 플레이어 정보가 저장됬는지
+        public bool IsSaved(int gameAccountDbId)
+        {
+            lock (_lock)
+            {
+                if (SaveAccount.TryGetValue(gameAccountDbId, out bool val))
+                    return val;
+
+                return true;
+            }
+        }
+
+        // gameAccountDbId : 저장한 플레이어 계정 아이디
+        public void SaveSucceed(int gameAccountDbId)
+        {
+            lock (_lock)
+            {
+                SaveAccount[gameAccountDbId] = true;
             }
         }
     }

@@ -30,6 +30,8 @@ namespace Server.DB
                     findAccount.Player.Hp = info.Hp;
                     if (db.SaveChangesEx())
                         Console.WriteLine("Save Player Succeed");
+
+                    GameAccountManager.Instance.SaveSucceed(gameAccountId);
                 }
             });
         }

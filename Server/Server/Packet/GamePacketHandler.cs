@@ -28,9 +28,11 @@ partial class GamePacketHandler
 
         clientSession.SetPlayerInfo(recvPacket.Info);
 
-        clientSession.LeaveMap();
-        clientSession.EnterMap(moveMap); 
-        
+        GameInstanceManager.Instance.Push(() => 
+        {
+            clientSession.LeaveMap();
+            clientSession.EnterMap(moveMap);
+        });        
     }
 
     public static void G_ResponsePlayerInfoHandler(ISession session, IMessage packet)

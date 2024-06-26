@@ -11,29 +11,29 @@ using System.Text;
 
 namespace Server
 {
-	public partial class ClientSession : PacketSession
-	{
+    public partial class ClientSession : PacketSession
+    {
         #region Account
         public int GameAccountDbId { get; private set; }
         public PlayerLoginState LoginState { get; private set; } = PlayerLoginState.NotLoggedIn;
 
         // 새로운 계정과 플레이어 정보를 만듦
         private GameAccountDb CreateAccount(int accountDbId)
-		{
+        {
             Console.WriteLine("Try create account");
-			GameAccountDb gameAccount = null;
+            GameAccountDb gameAccount = null;
 
             // 만드려는 계정이 이미 있는지
             using (GameDbContext db = new GameDbContext())
-			{
-				gameAccount = db.Accounts
+            {
+                gameAccount = db.Accounts
                     .Include(a => a.Player)
-					.Where(a => a.GameAccountDbId == accountDbId).FirstOrDefault();
+                    .Where(a => a.GameAccountDbId == accountDbId).FirstOrDefault();
 
-				if (gameAccount == null) // 만들어져있는 계정이 없으면
-				{
-					// 계정 만들기
-					gameAccount = new GameAccountDb();
+                if (gameAccount == null) // 만들어져있는 계정이 없으면
+                {
+                    // 계정 만들기
+                    gameAccount = new GameAccountDb();
                     gameAccount.AccountDbId = accountDbId;
 
                     db.Accounts.Add(gameAccount);
@@ -43,15 +43,15 @@ namespace Server
                     else
                         Console.WriteLine("Create Account fail");
                 }
-                
-                if(gameAccount.Player == null) // 계정의 플레이어 정보가 없으면
+
+                if (gameAccount.Player == null) // 계정의 플레이어 정보가 없으면
                 {
                     CreatePlayer(accountDbId);
                 }
             }
 
             return gameAccount;
-		}
+        }
 
         private PlayerDb CreatePlayer(int accountDbId)
         {
@@ -65,7 +65,7 @@ namespace Server
                     .Include(a => a.Player)
                     .Where(a => a.GameAccountDbId == accountDbId).FirstOrDefault();
 
-                if(findAccount == null)
+                if (findAccount == null)
                 {
                     findAccount = CreateAccount(accountDbId);
                 }
@@ -89,51 +89,51 @@ namespace Server
             return createAccount;
         }
 
-		private bool DeleteAccount(int accountDbId)
-		{
-			using (GameDbContext db = new GameDbContext())
-			{
+        private bool DeleteAccount(int accountDbId)
+        {
+            using (GameDbContext db = new GameDbContext())
+            {
                 GameAccountDb findAccount = db.Accounts
                     .Where(a => a.AccountDbId == accountDbId).FirstOrDefault();
 
-                if(findAccount != null)
+                if (findAccount != null)
                 {
                     db.Remove(findAccount);
                     return true;
                 }
-			}
+            }
 
-			return false;
-		}
+            return false;
+        }
 
         public void LoginAccount(C_Login loginPacket)
-		{
-			if (LoginState != PlayerLoginState.NotLoggedIn)
-				return;
+        {
+            if (LoginState != PlayerLoginState.NotLoggedIn)
+                return;
 
             Console.WriteLine("Login Try");
 
-			// 패킷에 맞는 토큰 찾기
-			TokenDb findToken = null;
-			using (SharedDbContext db = new SharedDbContext())
-			{
-				findToken = db.Tokens
-					.Where(t => t.Token == loginPacket.Token && t.AccountDbId == loginPacket.AccountId).FirstOrDefault();
+            // 패킷에 맞는 토큰 찾기
+            TokenDb findToken = null;
+            using (SharedDbContext db = new SharedDbContext())
+            {
+                findToken = db.Tokens
+                    .Where(t => t.Token == loginPacket.Token && t.AccountDbId == loginPacket.AccountId).FirstOrDefault();
 
-				if (findToken == null) // 토큰을 못찾았을 경우
-				{
+                if (findToken == null) // 토큰을 못찾았을 경우
+                {
                     Console.WriteLine("Failed to find token");
-					LoginFail();
-					return;
-				}
-			}
+                    LoginFail();
+                    return;
+                }
+            }
 
-			// 토큰에 맞는 계정 찾기
-			GameAccountDb findAccount = null;
-			using (GameDbContext db = new GameDbContext())
-			{
-				findAccount = db.Accounts
-					.Where(a => a.GameAccountDbId == findToken.AccountDbId).FirstOrDefault();
+            // 토큰에 맞는 계정 찾기
+            GameAccountDb findAccount = null;
+            using (GameDbContext db = new GameDbContext())
+            {
+                findAccount = db.Accounts
+                    .Where(a => a.GameAccountDbId == findToken.AccountDbId).FirstOrDefault();
             }
 
             if (findAccount == null) // 계정을 못찾았을 경우
@@ -159,10 +159,10 @@ namespace Server
             }
 
             LoginSuccess(findAccount.GameAccountDbId);
-		}
+        }
 
-		private void LoginSuccess(int gameAccountDbId)
-		{
+        private void LoginSuccess(int gameAccountDbId)
+        {
             Console.WriteLine("Login Success");
             GameAccountDbId = gameAccountDbId;
             LoginState = PlayerLoginState.LoggedIn;
@@ -181,36 +181,21 @@ namespace Server
                     .Include(a => a.Player)
                     .Where(a => a.GameAccountDbId == gameAccountDbId).FirstOrDefault();
 
-                if(loginAccount == null)
+                if (loginAccount == null)
                 {
                     Console.WriteLine("Login account is null");
                     return;
-                }       
-                
-                if(loginAccount.Player == null)
+                }
+
+                if (loginAccount.Player == null)
                 {
                     Console.WriteLine("Login account's player is null");
                     loginAccount.Player = CreatePlayer(gameAccountDbId);
                 }
             }
 
-            // 플레이어 정보 업데이트
-            PlayerInfo info = new PlayerInfo();
-            {
-                info.SessionId = SessionId;
-                info.Hp = loginAccount.Player.Hp;
-                SetPlayerInfo(info);
-            }
-
-            // 접속중인 계정 추가하기
-            GameAccountManager.Instance.Add(GameAccountDbId, this);
-
-            // 핑 패킷 보내기
-            GameInstanceManager.Instance.PushAfter(5000, Ping);
-
-            // 유저를 GameMap에 추가
-            GameInstanceManager.Instance.Push(() => { EnterMap(GameInstanceManager.Instance.Find(loginAccount.Player.MapId)); });
-        }
+            StartSession();
+        }    
 
         private void LoginFail()
 		{
@@ -250,6 +235,50 @@ namespace Server
             GameInstanceManager.Instance.Push(LeaveMap);
         }
 
+        private void StartSession()
+        {
+            if (GameAccountManager.Instance.IsSaved(this.GameAccountDbId))
+            {
+                // 계정 정보에 맞게 세션 정보 업데이트
+                GameAccountDb loginAccount = null;
+                using (GameDbContext db = new GameDbContext())
+                {
+                    loginAccount = db.Accounts
+                        .AsNoTracking()
+                        .Include(a => a.Player)
+                        .Where(a => a.GameAccountDbId == this.GameAccountDbId).FirstOrDefault();
+
+                    if (loginAccount == null)
+                    {
+                        Console.WriteLine("Failed to find Account");
+                        return;
+                    }
+                }
+
+                // 플레이어 정보 업데이트
+                PlayerInfo info = new PlayerInfo();
+                {
+                    info.SessionId = SessionId;
+                    info.Hp = loginAccount.Player.Hp;
+                    SetPlayerInfo(info);
+                }
+
+                // 접속중인 계정 추가하기
+                GameAccountManager.Instance.Add(this.GameAccountDbId, this);
+
+                // 핑 패킷 보내기
+                GameInstanceManager.Instance.PushAfter(5000, Ping);
+
+                // 유저를 GameMap에 추가
+                GameInstanceManager.Instance.Push(() => { EnterMap(GameInstanceManager.Instance.Find(loginAccount.Player.MapId)); });
+
+                Console.WriteLine("Success to start session");
+            }
+            else
+            {
+                GameInstanceManager.Instance.Push(StartSession);
+            }
+        }
         #endregion
 
         #region Map

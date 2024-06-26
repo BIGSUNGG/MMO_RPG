@@ -66,7 +66,7 @@ namespace Server.Game
         }
 
         public bool LeaveMap(ClientSession session)
-        {
+        {            
             lock (_lock)
             {
                 if (_sessions.Remove(session.SessionId))
