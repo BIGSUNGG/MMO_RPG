@@ -21,6 +21,7 @@ namespace Server.DB
 		public string PlayerName { get; set; }
 
         public int Hp { get; set; }
+        public int Money { get; set; }
         public int MapId { get; set; }
 
 		[ForeignKey("Account")]

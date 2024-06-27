@@ -260,6 +260,7 @@ namespace Server
                 {
                     info.SessionId = SessionId;
                     info.Hp = loginAccount.Player.Hp;
+                    info.Money = loginAccount.Player.Money;
                     SetPlayerInfo(info);
                 }
 
@@ -315,12 +316,14 @@ namespace Server
 
         #region Player
         public int Hp = 100;
+        public int Money = 0;
 
         public PlayerInfo GetPlayerInfo()
         {
-            PlayerInfo result = new PlayerInfo();
-            result.SessionId  = this.SessionId;
-            result.Hp         = this.Hp;
+            PlayerInfo result   = new PlayerInfo();
+            result.SessionId    = this.SessionId;
+            result.Hp           = this.Hp;
+            result.Money        = this.Money;
 
             return result;
         }
@@ -336,7 +339,8 @@ namespace Server
             if (info.Hp == 0)
                 info.Hp = 100;
 
-            Hp = info.Hp;
+            Hp      = info.Hp;
+            Money   = info.Money;
         }
 
         #endregion

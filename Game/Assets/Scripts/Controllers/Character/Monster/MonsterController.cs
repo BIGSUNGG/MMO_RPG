@@ -60,11 +60,11 @@ public class MonsterController : CharacterController
         }
 
         PlayerController findPlayer = null;
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position + new Vector3(0.0f, _capsule.height / 2, 0.0f), searchDistance, layerMask);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position + new Vector3(0.0f, Capsule.height / 2, 0.0f), searchDistance, layerMask);
         foreach (var hitCollider in hitColliders)
         {
             PlayerController pc = hitCollider.gameObject.GetComponentInParent<PlayerController>();
-            if (pc == null || pc._health._bDead)
+            if (pc == null || pc.Health._bDead)
                 continue;            
 
             findPlayer = pc;

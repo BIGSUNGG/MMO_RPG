@@ -33,7 +33,8 @@ public class HealthComponent : ObjectComponent
 
     public UnityEvent _onServerBeforeTakeDamageEvent = new UnityEvent(); // 서버에서 대미지를 받기전에 호출되는 이벤트
     public UnityEvent _onTakeDamageEvent = new UnityEvent(); // 대미지를 받고 나서 호출되는 이벤트
-    public UnityEvent _onDeathEvent = new UnityEvent(); // 대미지를 받고 나서 호출되는 이벤트
+    public UnityEvent<ObjectController, int> _onKillEvent = new UnityEvent<ObjectController, int>(); // 대미지를 주고 나서 대미지를 받은 오브젝트가 사망 시 호출되는 이벤트
+    public UnityEvent _onDeathEvent = new UnityEvent(); // 대미지를 받고 사망 시 호출되는 이벤트
     public UnityEvent _onRespawnEvent = new UnityEvent();
 
     #region Give Damage
@@ -51,7 +52,7 @@ public class HealthComponent : ObjectComponent
             return 0;
 
         Client_GiveDamage(victim.ObjectId, damage);
-        return health.OnServer_TakeDamage(_owner, damage);
+        return health.OnServer_TakeDamage(Owner, damage);
     }
 
     // 서버에서 다른 클라이언트에게 데미지를 준것을 알리는 패킷을 보냄
@@ -71,16 +72,16 @@ public class HealthComponent : ObjectComponent
             Array.Copy(BitConverter.GetBytes((int)victimId), 0, parameterBuffer, 0, sizeof(int));
             Array.Copy(BitConverter.GetBytes((int)damage), 0, parameterBuffer, 4, sizeof(int));
 
-            rpcFuncPacket.ObjectId = _owner.ObjectId;
+            rpcFuncPacket.ObjectId = Owner.ObjectId;
             rpcFuncPacket.AbsolutelyExcute = true;
             rpcFuncPacket.ComponentType = GameComponentType.HealthComponent;
             rpcFuncPacket.RpcFunctionId = RpcComponentFunctionId.ClientGiveDamage;
             rpcFuncPacket.ParameterBytes = ByteString.CopyFrom(parameterBuffer);
 
-            PlayerController pc = _owner as PlayerController;
+            PlayerController pc = Owner as PlayerController;
             if (pc)
             {
-                Managers.Network.SendClient(pc._clientSession, rpcFuncPacket);
+                Managers.Network.SendClient(pc.Session, rpcFuncPacket);
             }
         }
     }
@@ -170,12 +171,12 @@ public class HealthComponent : ObjectComponent
         int damageResult = damage;
 
         _curHp -= damageResult;
-        Multicast_TakeDamage(_owner.ObjectId, damageResult);
+        Multicast_TakeDamage(attacker.ObjectId, damageResult);
 
         if(_curHp <= 0) // 체력이 0이하로 떨어졌다면
         {
             _curHp = 0;
-            OnServer_Death(_owner, damageResult);
+            OnServer_Death(attacker, damageResult);
         }
 
         return damageResult;
@@ -198,7 +199,7 @@ public class HealthComponent : ObjectComponent
             Array.Copy(BitConverter.GetBytes((int)attackerId),  0, parameterBuffer, 0, sizeof(int));
             Array.Copy(BitConverter.GetBytes((int)damage),      0, parameterBuffer, 4, sizeof(int));
 
-            rpcFuncPacket.ObjectId = _owner.ObjectId;
+            rpcFuncPacket.ObjectId = Owner.ObjectId;
             rpcFuncPacket.AbsolutelyExcute = true;
             rpcFuncPacket.ComponentType = GameComponentType.HealthComponent;
             rpcFuncPacket.RpcFunctionId = RpcComponentFunctionId.MulticastTakeDamage;
@@ -251,17 +252,37 @@ public class HealthComponent : ObjectComponent
     }
     #endregion
 
+    #region Kill
+    // 다른 오브젝트를 추천한 경우 호출
+    protected void OnServer_Kill(ObjectController victim, int damage)
+    {
+        if (Util.CheckFuncCalledOnServer() == false) // 서버에서 호출되지않은 경우
+            return;
+
+        _onKillEvent.Invoke(victim, damage);
+    }
+
+    #endregion
+
     #region Death
+    int _minKillMoney = 10; // 이 컴포넌트를 가진 오브젝트를 처치 시 얻을 돈의 최소 값
+    int _maxKillMoney = 30; // 이 컴포넌트를 가진 오브젝트를 처치 시 얻을 돈의 최대 값
+    public int CalculateKillMoney() { return Random.Range(_minKillMoney, _maxKillMoney); }
+
     // 서버에서 오브젝트의 체력이 0이하로 떨어졌을 때 호출
     // attacker : 대미지를 주는 오브젝트
     // damage : 받은 대미지
-    public void OnServer_Death(ObjectController attacker, int damage)
+    protected void OnServer_Death(ObjectController attacker, int damage)
     {
         if (Util.CheckFuncCalledOnServer() == false) // 서버에서 호출되지않은 경우
             return;
 
         Managers.Timer.SetTimer(3.0f, OnServer_Respawn, false);
         OnDeath();
+
+        // 공격한 오브젝트에게 처치 알리기
+        HealthComponent attackerHealth = attacker.GetComponent<HealthComponent>();
+        attackerHealth.OnServer_Kill(this.Owner, damage);
     }
 
     protected void OnDeath()
@@ -297,7 +318,7 @@ public class HealthComponent : ObjectComponent
         {
             S_RpcComponentFunction rpcFuncPacket = new S_RpcComponentFunction();
 
-            rpcFuncPacket.ObjectId = _owner.ObjectId;
+            rpcFuncPacket.ObjectId = Owner.ObjectId;
             rpcFuncPacket.AbsolutelyExcute = true;
             rpcFuncPacket.ComponentType = GameComponentType.HealthComponent;
             rpcFuncPacket.RpcFunctionId = RpcComponentFunctionId.MulticastRespawn;

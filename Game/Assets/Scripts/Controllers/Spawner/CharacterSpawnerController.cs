@@ -19,10 +19,7 @@ public class CharacterSpawnerController : ObjectController
 
             CharacterController cc = _spawnedObject.GetComponent<CharacterController>();
             if(cc)
-            {
                 cc._spawnPosition = this.transform.position;
-                Debug.Log($"{this.transform.position}");
-            }
         }
     }
 

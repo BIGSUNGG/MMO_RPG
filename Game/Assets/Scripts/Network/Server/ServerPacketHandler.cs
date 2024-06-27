@@ -9,18 +9,18 @@ using UnityEngine;
 #if UNITY_SERVER
 class ServerPacketHandler
 {
-	public static void S_ConnectedHandler(ISession session, IMessage packet)
-	{
+    public static void S_ConnectedHandler(ISession session, IMessage packet)
+    {
         S_Connected recvPacket = packet as S_Connected;
-	}
-	public static void S_PingHandler(ISession session, IMessage packet)
-	{
+    }
+    public static void S_PingHandler(ISession session, IMessage packet)
+    {
         S_Ping recvPacket = packet as S_Ping;
 
-		C_Pong pongPacket = new C_Pong();
-		Debug.Log("[Server] PingCheck");
+        C_Pong pongPacket = new C_Pong();
+        Debug.Log("[Server] PingCheck");
         session.Send(pongPacket);
-	}
+    }
 
     public static void S_LoginHandler(ISession session, IMessage packet)
     {
@@ -34,7 +34,7 @@ class ServerPacketHandler
 
         Managers.Map.LoadMap(recvPacket.MapId);
     }
-    
+
     public static void S_EnterPlayerHandler(ISession session, IMessage packet)
     {
         S_EnterPlayer recvPacket = packet as S_EnterPlayer;
@@ -66,19 +66,24 @@ class ServerPacketHandler
 
         // 접속한 플레이어가 빙의할 오브젝트 만들기
         {
-	        ObjectInfo info = new ObjectInfo();
-	        info.ObjectType = GameObjectType.KnightPlayer;
-	        GameObject go = Managers.Object.Create(info);
+            ObjectInfo info = new ObjectInfo();
+            info.ObjectType = GameObjectType.KnightPlayer;
+            GameObject go = Managers.Object.Create(info);
 
             PlayerController pc = go.GetComponent<PlayerController>();
             if (pc == null)
                 return;
 
+            // 만든 오브젝트에 플레이어 빙의시키기
+            clientSession.Possess(pc);
+
+            // 체력 설정
             HealthComponent health = go.GetComponent<HealthComponent>();
             health._curHp = recvPacket.Info.Hp;
 
-            // 만든 오브젝트에 플레이어 빙의시키기
-            clientSession.Possess(pc);
+            // 돈 설정
+            InventoryComponent inventory = go.GetComponent<InventoryComponent>();
+            inventory.SetMoney(recvPacket.Info.Money);
         }
     }
 
@@ -95,9 +100,9 @@ class ServerPacketHandler
 
         // 룸에서 나간 플레이어의 클라이언트 세션 찾기
         ClientSession clientSession = Managers.Network.FindClientSession(recvPacket.SessionId);
-        if(clientSession == null)
+        if (clientSession == null)
             return;
-      
+
         // 나간 클라이언트 세션의 오브젝트 제거
         Managers.Object.Delete(clientSession._playerController.ObjectId);
         // 룸에 있는 클라이언트 세션에서 나간 세션 제거
@@ -125,7 +130,7 @@ class ServerPacketHandler
 
         Managers.Object.Delete(recvPacket.ObjectId);
     }
-    
+
     public static void S_DespawnObjectsHandler(ISession session, IMessage packet)
     {
         S_DespawnObjects recvPacket = packet as S_DespawnObjects;
@@ -167,7 +172,7 @@ class ServerPacketHandler
         S_RpcComponentFunction recvPacket = packet as S_RpcComponentFunction;
 
     }
-    
+
     public static void S_RequestPlayerInfoHandler(ISession session, IMessage packet)
     {
         S_RequestPlayerInfo recvPacket = packet as S_RequestPlayerInfo;
@@ -180,11 +185,13 @@ class ServerPacketHandler
         // 정보 보내기
         G_ResponsePlayerInfo sendPacket = new G_ResponsePlayerInfo();
         sendPacket.GameAccountId = recvPacket.GameAccountId;
-        sendPacket.Info = new PlayerInfo();
-        {
-            sendPacket.Info.Hp = clientSession._playerController._health._curHp;
-        }
+        sendPacket.Info = clientSession.GetPlayerInfo();
         Managers.Network.SendServer(sendPacket);
+    }
+
+    public static void S_NotifyPlayerMoneyHandler(ISession session, IMessage packet)
+    {
+        S_NotifyPlayerMoney recvPacket = packet as S_NotifyPlayerMoney;
     }
 }
 #endif

@@ -43,4 +43,23 @@ partial class GamePacketHandler
 
         DbTransaction.SavePlayer(recvPacket.GameAccountId, curMap.MapId, recvPacket.Info);
     }
+
+    public static void G_NotifyPlayerMoneyHandler(ISession session, IMessage packet)
+    {
+        G_NotifyPlayerMoney recvPacket = packet as G_NotifyPlayerMoney;
+        GameSession gameSession = session as GameSession;
+        GameInstance curMap = gameSession.Map;
+
+        ClientSession clientSession = curMap.FindSession(recvPacket.SessionId);
+        if (clientSession == null)
+            return;
+
+        clientSession.Money = recvPacket.Money;
+
+        // 클라이언트에게 돈 전송
+        S_NotifyPlayerMoney sendPacket = new S_NotifyPlayerMoney();
+        sendPacket.Money = recvPacket.Money;
+
+        clientSession.Send(sendPacket);
+    }
 }

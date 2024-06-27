@@ -52,7 +52,7 @@ public class KnightMonsterController : MonsterController
 
         base.AiControllerUpdate();
 
-        if (_enemy == null || _enemy._health._bDead) // 현재 추적중인 적이 없거나 추적중인 적이 이미 사망했다면
+        if (_enemy == null || _enemy.Health._bDead) // 현재 추적중인 적이 없거나 추적중인 적이 이미 사망했다면
         {
             // 주변에 있는 적 찾기
             _enemy = FindEnemy(_enemySearchDistance);
@@ -130,7 +130,7 @@ public class KnightMonsterController : MonsterController
             return;
         }
 
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position + new Vector3(0.0f, _capsule.height / 2, 0.0f), 2.0f, layerMask);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position + new Vector3(0.0f, Capsule.height / 2, 0.0f), 2.0f, layerMask);
         foreach (var hitCollider in hitColliders)
         {
             CharacterController cc = hitCollider.gameObject.GetComponentInParent<CharacterController>();

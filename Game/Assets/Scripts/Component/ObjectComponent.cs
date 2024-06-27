@@ -6,12 +6,23 @@ using static UnityEngine.UI.GridLayoutGroup;
 
 public class ObjectComponent : MonoBehaviour, RpcComponentFunction
 {
-    protected ObjectController _owner = null;
+    public ObjectController Owner
+    {
+        get
+        {
+            if (_owner == null)
+                _owner = GetComponent<ObjectController>();
+
+            return _owner;
+        }
+        set { _owner = value; }
+    }
+    private ObjectController _owner;
 
     protected virtual void Start()
     {
-        _owner = gameObject.GetComponent<ObjectController>();
-        if (_owner == null)
+        Owner = gameObject.GetComponent<ObjectController>();
+        if (Owner == null)
         {
             Debug.LogWarning("Failed to find ObjectController");
             Debug.Assert(false);

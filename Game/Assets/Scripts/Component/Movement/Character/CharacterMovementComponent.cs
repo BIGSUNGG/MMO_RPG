@@ -21,7 +21,7 @@ public class CharacterMovementComponent : ObjectComponent
 
         _curMoveSpeed = _bIsRunning ? _runMaxSpeed : _walkMaxSpeed;
 
-        if (_owner.IsLocallyControlled()) // 클라이언트가 빙의한 오브젝트거나 서버의 Ai컨트롤러일 경우
+        if (Owner.IsLocallyControlled()) // 클라이언트가 빙의한 오브젝트거나 서버의 Ai컨트롤러일 경우
         {
             _rigidbody.useGravity = true;
             _rigidbody.isKinematic = false;

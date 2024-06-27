@@ -11,25 +11,36 @@ public class UI_GameScene : UI_Scene
     public GameObject HpObject;
     protected Image _hpImage;
 
+    public GameObject MoneyObject;
+    protected Text _moneyText;
+
+
 #if !UNITY_SERVER
     public override void Init()
 	{
         base.Init();
 
-        _nameText = NameObject.GetComponent<Text>();
-        _hpImage = HpObject.GetComponent<Image>();
+        _nameText   = NameObject.GetComponent<Text>();
+        _hpImage    = HpObject.GetComponent<Image>();
+        _moneyText  = MoneyObject.GetComponent<Text>();
     }
 
     public override void Update()
     {
         base.Update();
 
+        PlayerController pc = Managers.Controller.MyController;
+        if (pc == null)
+            return;
+
         if(_nameText)
             _nameText.text = Managers.Network.AccountName;
 
-        CharacterController co = Managers.Controller.MyController;
-        if(_hpImage && co && co._health)
-            _hpImage.fillAmount = co._health.CurHpRatio;
+        if(_hpImage  && pc.Health)
+            _hpImage.fillAmount = pc.Health.CurHpRatio;
+
+        if(_moneyText && pc.Inventory)
+            _moneyText.text = pc.Inventory._money.ToString() + " Gold";
     }
 #endif
 }

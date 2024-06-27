@@ -11,10 +11,6 @@ using UnityEngine.XR;
 
 public class PlayerController : CharacterController
 {
-    public ClientSession _clientSession = null;
-    public PlayerAnimParameter _playerAnim     { get; protected set; } = null;
-    public PlayerMovementComponent  _playerMovement { get; protected set; } = null;
-
     public PlayerController()
     {
         _characterType = CharacterType.Player;
@@ -24,8 +20,8 @@ public class PlayerController : CharacterController
     {
         base.Start();
 
-        _playerAnim = GetComponent<PlayerAnimParameter>();
-        if (_playerAnim == null)
+        PlayerAnim = GetComponent<PlayerAnimParameter>();
+        if (PlayerAnim == null)
             Debug.LogWarning("PlayerAnimParameter is null");
 
         _playerMovement = GetComponent<PlayerMovementComponent>();
@@ -33,10 +29,14 @@ public class PlayerController : CharacterController
             Debug.LogWarning("PlayerMovementComponent is null");
 
         _playerMovement._onDodgeStartEvent.AddListener(() =>
-            {
-                if (IsLocallyControlled())
-                    Multicast_ComboEnd();
-            });
+        {
+            if (IsLocallyControlled())
+                Multicast_ComboEnd();
+        });
+
+        Inventory = GetComponent<InventoryComponent>();
+        if (Inventory == null)
+            Debug.LogWarning("InventoryComponent is null");
     }
 
     protected override void Update()
@@ -44,6 +44,10 @@ public class PlayerController : CharacterController
         base.Update();
 
     }
+
+    #region Player
+    public ClientSession Session = null;
+    #endregion
 
     #region Controller
     public override void ControllerUpdate()
@@ -123,6 +127,51 @@ public class PlayerController : CharacterController
     }
     #endregion
 
+    #region Component
+    public InventoryComponent Inventory
+    {
+        get
+        {
+            if (_inventory == null)
+                _inventory = GetComponent<InventoryComponent>();
+
+            return _inventory;
+        }
+        set { _inventory = value; }
+    }
+    private InventoryComponent _inventory;
+
+    public PlayerMovementComponent PlayerMovement
+    {
+        get
+        {
+            if (_playerMovement == null)
+                _playerMovement = GetComponent<PlayerMovementComponent>();
+
+            return _playerMovement;
+        }
+        set { _playerMovement = value; }
+    }
+    private PlayerMovementComponent _playerMovement;
+
+    public PlayerAnimParameter PlayerAnim
+    {
+        get
+        {
+            if (_playerAnim == null)
+                _playerAnim = GetComponent<PlayerAnimParameter>();
+
+            return _playerAnim;
+        }
+        set { _playerAnim = value; }
+    }
+    private PlayerAnimParameter _playerAnim;
+    #endregion
+
+    #region Object
+    GameObject _camera = null;
+    #endregion
+
     #region Attack
     protected override void Multicast_ComboAttack_Implementation(int combo)
     {
@@ -133,13 +182,6 @@ public class PlayerController : CharacterController
             LookMousePos();
         }
     }
-    #endregion
-
-    #region Component
-    #endregion
-
-    #region Object
-    GameObject _camera = null;
     #endregion
 
     #region Sync

@@ -36,6 +36,6 @@ public class HpBar : Effect
         _canvas.transform.position = new Vector3(0.0f, 2.0f, 0.3f) + _character.transform.position;
 
         if (_character)
-            _forgeGround.transform.localScale = new Vector3(((float)_character._health._curHp / (float)_character._health._maxHp) * 10, 1.0f, 0.0f);
+            _forgeGround.transform.localScale = new Vector3(((float)_character.Health._curHp / (float)_character.Health._maxHp) * 10, 1.0f, 0.0f);
     }
 }

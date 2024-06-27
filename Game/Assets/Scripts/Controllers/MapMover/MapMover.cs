@@ -45,7 +45,7 @@ public class MapMover : ObjectController
             if (pc == null)
                 continue;
 
-            ClientSession clientSession = pc._clientSession;
+            ClientSession clientSession = pc.Session;
             if (clientSession == null)
                 continue;
 

@@ -26,7 +26,9 @@ class GamePacketManager
 		_onRecv.Add((ushort)MsgId.GMoveMap, MakePacket<G_MoveMap>);
 		_handler.Add((ushort)MsgId.GMoveMap, GamePacketHandler.G_MoveMapHandler);		
 		_onRecv.Add((ushort)MsgId.GResponsePlayerInfo, MakePacket<G_ResponsePlayerInfo>);
-		_handler.Add((ushort)MsgId.GResponsePlayerInfo, GamePacketHandler.G_ResponsePlayerInfoHandler);
+		_handler.Add((ushort)MsgId.GResponsePlayerInfo, GamePacketHandler.G_ResponsePlayerInfoHandler);		
+		_onRecv.Add((ushort)MsgId.GNotifyPlayerMoney, MakePacket<G_NotifyPlayerMoney>);
+		_handler.Add((ushort)MsgId.GNotifyPlayerMoney, GamePacketHandler.G_NotifyPlayerMoneyHandler);
 	}
 
 	public void OnRecvPacket(ISession session, ArraySegment<byte> buffer)

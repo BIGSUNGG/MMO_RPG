@@ -12,12 +12,6 @@ using Random = UnityEngine.Random;
 
 public class CharacterController : ObjectController
 {
-    public CharacterAnimParameter       _anim       { get; protected set; } = null;
-    public CharacterMovementComponent   _movement   { get; protected set; } = null;
-    public HealthComponent              _health     { get; protected set; } = null;
-    public InventoryComponent           _inventory  { get; protected set; } = null;
-    public CapsuleCollider              _capsule    { get; protected set; } = null;
-
     public CharacterController()
     {
         
@@ -27,30 +21,26 @@ public class CharacterController : ObjectController
     {
         base.Start();
 
-        _anim = GetComponent<CharacterAnimParameter>();
-        if (_anim == null)
+        Anim = GetComponent<CharacterAnimParameter>();
+        if (Anim == null)
             Debug.LogWarning("CharacterAnimParameter is null");
 
-        _movement = GetComponent<CharacterMovementComponent>();
-        if (_movement == null)
+        Movement = GetComponent<CharacterMovementComponent>();
+        if (Movement == null)
             Debug.LogWarning("MovementComponent is null");
 
-        _health = GetComponent<HealthComponent>();
-        if (_health == null)
+        Health = GetComponent<HealthComponent>();
+        if (Health == null)
             Debug.LogWarning("HealthComponent is null");
         else
         {
-            _health._onTakeDamageEvent.AddListener(OnTakeDamageEvent);
-            _health._onDeathEvent.AddListener(OnDeathEvent);
-            _health._onRespawnEvent.AddListener(OnRespawnEvent);
+            Health._onTakeDamageEvent.AddListener(OnTakeDamageEvent);
+            Health._onDeathEvent.AddListener(OnDeathEvent);
+            Health._onRespawnEvent.AddListener(OnRespawnEvent);
         }
 
-        _inventory = GetComponent<InventoryComponent>();
-        if (_inventory == null)
-            Debug.LogWarning("InventoryComponent is null");
-
-        _capsule = GetComponentInChildren<CapsuleCollider>();
-        if (_capsule == null)
+        Capsule = GetComponentInChildren<CapsuleCollider>();
+        if (Capsule == null)
             Debug.LogWarning("CapsuleCollider is null");
     }
 
@@ -69,7 +59,7 @@ public class CharacterController : ObjectController
         base.ControllerUpdate();
 
         _moveDir = Vector2.zero;
-        if (_movement)
+        if (Movement)
         {
             _moveDir = Vector2.zero;
          
@@ -83,7 +73,7 @@ public class CharacterController : ObjectController
             if (Input.GetKey(KeyCode.D))
                 _moveDir.x += 1.0f;
 
-            _movement._bIsRunning = Input.GetKey(KeyCode.LeftShift);
+            Movement._bIsRunning = Input.GetKey(KeyCode.LeftShift);
         }
     }
 
@@ -97,12 +87,12 @@ public class CharacterController : ObjectController
     {
         base.Multicast_SetPosition_Implementation(position);
 
-        _movement._syncStartPos = _spawnPosition;
+        Movement._syncStartPos = _spawnPosition;
     }
 
     public virtual bool CanInput()
     {
-        if (_health._bDead)
+        if (Health._bDead)
             return false;
 
         return true;
@@ -134,6 +124,58 @@ public class CharacterController : ObjectController
     #endregion
 
     #region Component
+    public CharacterAnimParameter Anim
+    {
+        get
+        {
+            if (_anim == null)
+                _anim = GetComponent<CharacterAnimParameter>();
+
+            return _anim;
+        }
+        set { _anim = value; }
+    }
+    private CharacterAnimParameter _anim;
+
+    public CharacterMovementComponent Movement
+    {
+        get
+        {
+            if (_movement == null)
+                _movement = GetComponent<CharacterMovementComponent>();
+
+            return _movement;
+        }
+        set { _movement = value; }
+    }
+    private CharacterMovementComponent _movement;
+
+    public HealthComponent Health
+    {
+        get
+        {
+            if (_health == null)
+                _health = GetComponent<HealthComponent>();
+
+            return _health;
+        }
+        set { _health = value; }
+    }
+    private HealthComponent _health;
+
+    public CapsuleCollider Capsule
+    {
+        get
+        {
+            if (_capsule == null)
+                _capsule = GetComponent<CapsuleCollider>();
+
+            return _capsule;
+        }
+        set { _capsule = value; }
+    }
+    private CapsuleCollider _capsule;
+
     protected virtual void OnTakeDamageEvent()
     {
         if(Managers.Network.IsServer)
@@ -145,7 +187,7 @@ public class CharacterController : ObjectController
 
     protected virtual void OnDeathEvent()
     {
-        _movement._velocity = Vector3.zero;
+        Movement._velocity = Vector3.zero;
     }
 
     protected virtual void OnRespawnEvent()
@@ -594,12 +636,12 @@ public class CharacterController : ObjectController
 
         if(!IsLocallyControlled())
         {
-            if (_movement)
-                _movement.Sync(info.position, info.rotation, info.moveDir, info.bIsRunning);
+            if (Movement)
+                Movement.Sync(info.position, info.rotation, info.moveDir, info.bIsRunning);
         }
 
-        if (Managers.Network.IsClient && _health)
-            _health.Sync(info.curHp, info.bDead);
+        if (Managers.Network.IsClient && Health)
+            Health.Sync(info.curHp, info.bDead);
 
         base.ObjectSync(info);
     }
@@ -613,18 +655,18 @@ public class CharacterController : ObjectController
 
     protected void GetObjectSyncInfo(CharacterSyncInfo info)
     {
-        if (_movement == null)
+        if (Movement == null)
             return;
 
         info.position = transform.position;
         info.rotation = transform.rotation;
         info.moveDir  = _moveDir;
-        info.bIsRunning = _movement._bIsRunning;
+        info.bIsRunning = Movement._bIsRunning;
 
         if(Managers.Network.IsServer)
         {
-            info.curHp = _health._curHp;
-            info.bDead = _health._bDead;
+            info.curHp = Health._curHp;
+            info.bDead = Health._bDead;
         }
 
         base.GetObjectSyncInfo(info);

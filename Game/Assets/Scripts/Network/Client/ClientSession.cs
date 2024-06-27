@@ -14,6 +14,8 @@ public class ClientSession : ISession
     {
     }
 
+    public int SessionId { get; private set; }
+
     void ISession.Send(IMessage packet)
     {
         throw new NotImplementedException();

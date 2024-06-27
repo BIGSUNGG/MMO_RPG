@@ -23,7 +23,7 @@ public class PlayerMovementComponent : CharacterMovementComponent
         }
         else
         {
-            _ownerPlayer._health._onServerBeforeTakeDamageEvent.AddListener(OnServerBeforeTakeDamageEvent);
+            _ownerPlayer.Health._onServerBeforeTakeDamageEvent.AddListener(OnServerBeforeTakeDamageEvent);
         }
     }
 
@@ -84,7 +84,7 @@ public class PlayerMovementComponent : CharacterMovementComponent
             Array.Copy(BitConverter.GetBytes((float)dir.x), 0, parameterBuffer, 0, sizeof(float));
             Array.Copy(BitConverter.GetBytes((float)dir.y), 0, parameterBuffer, 4, sizeof(float));
 
-            rpcFuncPacket.ObjectId = _owner.ObjectId;
+            rpcFuncPacket.ObjectId = Owner.ObjectId;
             rpcFuncPacket.ComponentType = GameComponentType.PlayerMovementComponent;
             rpcFuncPacket.RpcFunctionId = RpcComponentFunctionId.MulticastDodgeRollStart;
             rpcFuncPacket.ParameterBytes = ByteString.CopyFrom(parameterBuffer);
@@ -98,7 +98,7 @@ public class PlayerMovementComponent : CharacterMovementComponent
             Array.Copy(BitConverter.GetBytes((float)dir.x), 0, parameterBuffer, 0, sizeof(float));
             Array.Copy(BitConverter.GetBytes((float)dir.y), 0, parameterBuffer, 4, sizeof(float));
 
-            rpcFuncPacket.ObjectId = _owner.ObjectId;
+            rpcFuncPacket.ObjectId = Owner.ObjectId;
             rpcFuncPacket.AbsolutelyExcute = true;
             rpcFuncPacket.ComponentType = GameComponentType.PlayerMovementComponent;
             rpcFuncPacket.RpcFunctionId = RpcComponentFunctionId.MulticastDodgeRollStart;
@@ -125,7 +125,7 @@ public class PlayerMovementComponent : CharacterMovementComponent
             {
                 // 다른 클라이언트에게 패킷 보내기
                 S_RpcComponentFunction sendPacket = new S_RpcComponentFunction();
-                sendPacket.ObjectId = _owner.ObjectId;
+                sendPacket.ObjectId = Owner.ObjectId;
                 sendPacket.ComponentType = GameComponentType.PlayerMovementComponent;
                 sendPacket.ParameterBytes = ByteString.CopyFrom(packet);
                 Managers.Network.SendMulticast(sendPacket);
@@ -207,7 +207,7 @@ public class PlayerMovementComponent : CharacterMovementComponent
 
         if (_bIsdodging) // 구르고 있다면
         {
-            _ownerPlayer._health.OnServer_CancelTakeDamage(); // 데미지 취소
+            _ownerPlayer.Health.OnServer_CancelTakeDamage(); // 데미지 취소
             Debug.Log("Dodge attack");
         }
     }

@@ -204,6 +204,15 @@ class ServerPacketHandler
         S_RequestPlayerInfo recvPacket = packet as S_RequestPlayerInfo;
 
     }
-}
 
+    public static void S_NotifyPlayerMoneyHandler(ISession session, IMessage packet)
+    {
+        S_NotifyPlayerMoney recvPacket = packet as S_NotifyPlayerMoney;
+        PlayerController pc = Managers.Controller.MyController;
+        if (pc == null)
+            return;
+
+        pc.Inventory.SetMoney(recvPacket.Money);
+    }
+}
 #endif

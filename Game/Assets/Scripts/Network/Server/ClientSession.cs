@@ -24,6 +24,19 @@ public class ClientSession : ISession
 
     #region Controller
     public PlayerController _playerController { get; private set; }
+    public PlayerInfo GetPlayerInfo()
+    {
+        PlayerInfo result = new PlayerInfo();
+        result.SessionId = this.SessionId;
+
+        if (_playerController)
+        {
+            result.Hp = _playerController.Health._curHp;
+            result.Money = _playerController.Inventory._money;
+        }
+
+        return result;
+    }
 
     public void Possess(PlayerController pc)
     {
@@ -31,7 +44,7 @@ public class ClientSession : ISession
             return;
 
         _playerController = pc;
-        _playerController._clientSession = this;
+        _playerController.Session = this;
 
         // 클라이언트에 컨트롤러 빙의 알리기
         S_PossessObject possessPacket = new S_PossessObject();
@@ -53,10 +66,7 @@ public class ClientSession : ISession
 
         G_MoveMap sendPacket = new G_MoveMap();
         sendPacket.MoveMapId = moveMapId;
-        sendPacket.Info = new global::Google.Protobuf.Protocol.PlayerInfo();
-        sendPacket.Info.SessionId = SessionId;
-        sendPacket.Info.Hp = _playerController._health._curHp;
-
+        sendPacket.Info = this.GetPlayerInfo();
         Managers.Network.SendServer(sendPacket);
 
         Debug.Log($"Move {SessionId} Player to {moveMapId} map");

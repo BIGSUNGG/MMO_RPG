@@ -27,9 +27,13 @@ namespace Server.DB
                         return;
 
                     findAccount.Player.MapId = mapId;
-                    findAccount.Player.Hp = info.Hp;
+                    findAccount.Player.Hp    = info.Hp;
+                    findAccount.Player.Money = info.Money;
                     if (db.SaveChangesEx())
+                    {
+                        Console.WriteLine($"Map : {findAccount.Player.MapId}, Hp : {findAccount.Player.Hp}, Money : {findAccount.Player.Money}");
                         Console.WriteLine("Save Player Succeed");
+                    }
 
                     GameAccountManager.Instance.SaveSucceed(gameAccountId);
                 }
