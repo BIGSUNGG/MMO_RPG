@@ -28,7 +28,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SmoothTransition
+  m_Name: MapLeaveTransition
   serializedVersion: 5
   m_AnimatorParameters: []
   m_AnimatorLayers:
@@ -51,8 +51,8 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BlackTransition
-  m_Speed: 0.5
+  m_Name: MapLeaveTransition
+  m_Speed: 0.25
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours: []
@@ -64,7 +64,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: a226bbb5a7a8e904e8099fbce69b932b, type: 2}
+  m_Motion: {fileID: 7400000, guid: 4a5405e08b3c2854c8d3c63c0f10267f, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

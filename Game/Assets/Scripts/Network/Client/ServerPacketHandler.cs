@@ -45,11 +45,11 @@ class ServerPacketHandler
 	public static void S_EnterMapHandler(ISession session, IMessage packet)
 	{
 		S_EnterMap recvPacket = packet as S_EnterMap;
-		Managers.Map.LoadMap(recvPacket.MapId);
 
-	}
+        Managers.Map.LoadMap(recvPacket.MapId);
+    }
 
-	public static void S_EnterPlayerHandler(ISession session, IMessage packet)
+    public static void S_EnterPlayerHandler(ISession session, IMessage packet)
 	{
 		S_EnterPlayer recvPacket = packet as S_EnterPlayer;
 
@@ -60,8 +60,9 @@ class ServerPacketHandler
 	{
 		S_LeaveMap recvPacket = packet as S_LeaveMap;
 
+        Managers.Controller.Unpossess();
         Managers.Map.DestroyMap();
-	}
+    }
 
 	public static void S_LeavePlayerHandler(ISession session, IMessage packet)
 	{
@@ -110,6 +111,7 @@ class ServerPacketHandler
 	{
 		S_UnpossessObject recvPacket = packet as S_UnpossessObject;
 
+        Managers.Controller.Unpossess();
 	}
 
 	public static void S_ObjectSyncHandler(ISession session, IMessage packet)

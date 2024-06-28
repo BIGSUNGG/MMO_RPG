@@ -271,7 +271,7 @@ namespace Server
                 GameInstanceManager.Instance.PushAfter(5000, Ping);
 
                 // 유저를 GameMap에 추가
-                GameInstanceManager.Instance.Push(() => { EnterMap(GameInstanceManager.Instance.Find(loginAccount.Player.MapId)); });
+                GameInstanceManager.Instance.Push(() => { EnterMap(GameInstanceManager.Instance.Find(loginAccount.Player.MapId), 0); });
 
                 Console.WriteLine("Success to start session");
             }
@@ -283,15 +283,15 @@ namespace Server
         #endregion
 
         #region Map
-        public GameInstance MyMap { get; private set; }
+        public GameInstance MyMap { get; private set; } = null;
 
         // map : 입장할 GameMap
-        public void EnterMap(int mapId)
+        public void EnterMap(int mapId, int enterDelay)
         {
-            EnterMap(GameInstanceManager.Instance.Find(mapId));
+            EnterMap(GameInstanceManager.Instance.Find(mapId), enterDelay);
         }
 
-        public void EnterMap(GameInstance map)
+        public void EnterMap(GameInstance map, int enterDelay)
         {
             if (map == null) // 입장맵이 없는 경우
                 return;          
@@ -301,7 +301,7 @@ namespace Server
 
             // GameMap 입장하기
             MyMap = map;
-            MyMap.EnterMap(this);
+            MyMap.EnterMap(this, enterDelay);
         }
 
         // 현재 입장해있는 GameMap에서 나오기

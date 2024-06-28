@@ -34,9 +34,8 @@ public class MapManager
     public void DestroyMap()
 	{
         Debug.Log($"Destroy Map");
-        SceneManager.LoadScene($"Assets/Scenes/Transition.unity", LoadSceneMode.Single);
 
-        Managers.Controller.Unpossess();
+        Managers.Controller.Clear();
         Managers.Object.Clear();
         Managers.Timer.Clear();
 	}

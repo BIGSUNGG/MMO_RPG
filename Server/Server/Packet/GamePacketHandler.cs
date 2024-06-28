@@ -31,7 +31,7 @@ partial class GamePacketHandler
         GameInstanceManager.Instance.Push(() => 
         {
             clientSession.LeaveMap();
-            clientSession.EnterMap(moveMap);
+            clientSession.EnterMap(moveMap, 1250);
         });        
     }
 

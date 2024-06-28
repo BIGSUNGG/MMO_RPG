@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
 using Google.Protobuf;
+using UnityEngine.Events;
 
 public class ControllerManager
 {
@@ -18,6 +19,16 @@ public class ControllerManager
         MyController.ControllerUpdate();
     }
 
+    public void Clear()
+    {
+        _onPossess = new UnityEvent();
+        _onUnpossess = new UnityEvent();
+
+        Unpossess();
+    }
+
+    public UnityEvent _onPossess = new UnityEvent();
+    public UnityEvent _onUnpossess = new UnityEvent();
     public void Possess(GameObject obj)
     {
         if (obj == null)
@@ -30,6 +41,8 @@ public class ControllerManager
         Debug.Log("Possess GameObject");
         MyController = controller;
         MyController.OnPossess();
+
+        _onPossess.Invoke();
     }
 
     public void Unpossess()
@@ -41,5 +54,6 @@ public class ControllerManager
         MyController.OnUnpossess();
         MyController = null;
 
+        _onUnpossess.Invoke();
     }
 }

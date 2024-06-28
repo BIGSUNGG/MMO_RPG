@@ -23,31 +23,44 @@ namespace Server.Game
         #region Sessions
         Dictionary<int, ClientSession> _sessions = new Dictionary<int, ClientSession>(); // Key : SessionId, Value : DbId에 맞는 ClientSession
 
-        public void EnterMap(ClientSession session)
+        // 클라이언트를 맵에 추가
+        // session : 추가할 세션
+        // enterDelay : 플레이어를 맵에 추가할 딜레이
+        public void EnterMap(ClientSession session, int enterDelay) 
         {
+            if(session.MyMap != null && session.MyMap != this) // 세션이 다른 맵에 들어가 있다면
+            {
+                Console.WriteLine("Session's Map is already exist");
+                return;
+            }
+
             lock (_lock)
             {
                 Console.WriteLine("EnterMap");
-
                 // 현재 맵에 있는 세션 추가하기
                 _sessions.Add(session.SessionId, session);
 
-                // 클라이언트에게 맵 입장 알리기
-                S_EnterMap enterMapPacket = new S_EnterMap();
-                enterMapPacket.MapId = this.MapId;
-                session.Send(enterMapPacket);
+                PushAfter(enterDelay, () =>
+                {
+                    Console.WriteLine("EnterMap Send");
 
-                // 모든 클라이언트와 GameMap에 플레이어 입장 알리기
-                S_EnterPlayer enterPlayerPacket = new S_EnterPlayer();
-                enterPlayerPacket.SessionId = session.SessionId;
+                    // 클라이언트에게 맵 입장 알리기
+                    S_EnterMap enterMapPacket = new S_EnterMap();
+                    enterMapPacket.MapId = this.MapId;
+                    session.Send(enterMapPacket);
 
-                SendAll(enterPlayerPacket);
+                    PushAfter(enterDelay + 250, () =>
+                    {
+                        // 모든 클라이언트와 GameMap에 플레이어 입장 알리기
+                        S_EnterPlayer enterPlayerPacket = new S_EnterPlayer();
+                        enterPlayerPacket.SessionId = session.SessionId;
 
-                enterPlayerPacket.Info = session.GetPlayerInfo();
-                PushAfter(1000, () => 
-                { 
-                    Session.Send(enterPlayerPacket); 
-                });               
+                        SendAll(enterPlayerPacket);
+
+                        enterPlayerPacket.Info = session.GetPlayerInfo();
+                        Session.Send(enterPlayerPacket);
+                    });
+                });
             }
         }
 
