@@ -14,10 +14,6 @@ public class MonsterController : CharacterController
     {
         base.Start();   
 
-        if(Managers.Network.IsServer)
-        {
-            Managers.Object.Register(this);
-        }
     }
 
     protected override void Update()

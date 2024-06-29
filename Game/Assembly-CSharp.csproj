@@ -78,8 +78,10 @@
     <Compile Include="Assets\Scripts\Scenes\StartScene\StartScene.cs" />
     <Compile Include="Assets\Scripts\UI\Popup\UI_Popup.cs" />
     <Compile Include="Assets\Scripts\Managers\Core\Poolable.cs" />
+    <Compile Include="Assets\Scripts\Controllers\Spawner\NpcSpawnerController.cs" />
     <Compile Include="Assets\Scripts\Managers\Contents\MapManager.cs" />
     <Compile Include="Assets\Scripts\Scenes\GameScene\GameScene.cs" />
+    <Compile Include="Assets\Scripts\Item\Potion\Potion.cs" />
     <Compile Include="Assets\Scripts\Animation\Character\Monster\Knight\KnightMonsterAnimParameter.cs" />
     <Compile Include="Assets\Scripts\Scenes\GameScene\GameScene_Server.cs" />
     <Compile Include="Assets\Scripts\Animation\Character\IdleState.cs" />
@@ -88,6 +90,7 @@
     <Compile Include="Assets\Scripts\Effect\Effect.cs" />
     <Compile Include="Assets\Scripts\Network\Rpc\RpcComponentFunction.cs" />
     <Compile Include="Assets\Scripts\Network\Web\WebPacket.cs" />
+    <Compile Include="Assets\Scripts\Controllers\Npc\NpcController.cs" />
     <Compile Include="Assets\Scripts\UI\Scene\UI_GameScene.cs" />
     <Compile Include="Assets\Scripts\Network\Client\ClientPacketHandler.cs" />
     <Compile Include="Assets\Scripts\Scenes\StartScene\StartScene_Server.cs" />
@@ -112,9 +115,7 @@
     <Compile Include="Assets\Scripts\UI\UI_Base.cs" />
     <Compile Include="Assets\Scripts\Managers\Contents\ObjectManager.cs" />
     <Compile Include="Assets\Scripts\Network\Packet\Protocol.cs" />
-    <Compile Include="Assets\Scripts\Item\Weapon\Weapon.cs" />
     <Compile Include="Assets\Scripts\Network\ServerCore\Connector.cs" />
-    <Compile Include="Assets\Scripts\Item\Weapon\Melee\Melee.cs" />
     <Compile Include="Assets\Scripts\Managers\Contents\NetworkManager.cs" />
     <Compile Include="Assets\Scripts\Managers\Core\UIManager.cs" />
     <Compile Include="Assets\Scripts\Utils\Util.cs" />

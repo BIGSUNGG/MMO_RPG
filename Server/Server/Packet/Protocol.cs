@@ -83,19 +83,20 @@ namespace Google.Protobuf.Protocol {
             "UExBWUVSX01PTkVZEBoSGQoVU19OT1RJRllfUExBWUVSX01PTkVZEBsqNAoQ",
             "UGxheWVyTG9naW5TdGF0ZRIRCg1OT1RfTE9HR0VEX0lOEAASDQoJTE9HR0VE",
             "X0lOEAEqMAoLTG9naW5SZXN1bHQSEQoNTE9HSU5fU1VDQ0VTUxAAEg4KCkxP",
-            "R0lOX0ZBSUwQASpECg5HYW1lT2JqZWN0VHlwZRILCgdVTktOT1dOEAASEQoN",
-            "S05JR0hUX1BMQVlFUhABEhIKDktOSUdIVF9NT05TVEVSEAIqgAEKEUdhbWVD",
-            "b21wb25lbnRUeXBlEhQKEE9CSkVDVF9DT01QT05FTlQQABIgChxDSEFSQUNU",
-            "RVJfTU9WRU1FTlRfQ09NUE9ORU5UEAESHQoZUExBWUVSX01PVkVNRU5UX0NP",
-            "TVBPTkVOVBACEhQKEEhFQUxUSF9DT01QT05FTlQQAyp9ChNScGNPYmplY3RG",
-            "dW5jdGlvbklkEhkKFU11bHRpY2FzdF9TZXRQb3NpdGlvbhAAEhgKFE11bHRp",
-            "Y2FzdF9Db21ib1N0YXJ0EAESGQoVTXVsdGljYXN0X0NvbWJvQXR0YWNrEAIS",
-            "FgoSTXVsdGljYXN0X0NvbWJvRW5kEAMqfgoWUnBjQ29tcG9uZW50RnVuY3Rp",
-            "b25JZBIcChhNdWx0aWNhc3RfRG9kZ2VSb2xsU3RhcnQQABIVChFDbGllbnRf",
-            "R2l2ZURhbWFnZRABEhgKFE11bHRpY2FzdF9UYWtlRGFtYWdlEAISFQoRTXVs",
-            "dGljYXN0X1Jlc3Bhd24QAyoxCg1DaGFyYWN0ZXJUeXBlEgcKA05wYxAAEgsK",
-            "B01vbnN0ZXIQARIKCgZQbGF5ZXIQAkIbqgIYR29vZ2xlLlByb3RvYnVmLlBy",
-            "b3RvY29sYgZwcm90bzM="));
+            "R0lOX0ZBSUwQASpNCg5HYW1lT2JqZWN0VHlwZRILCgdVTktOT1dOEAASEQoN",
+            "S05JR0hUX1BMQVlFUhABEhIKDktOSUdIVF9NT05TVEVSEAISBwoDTlBDEAMq",
+            "mQEKEUdhbWVDb21wb25lbnRUeXBlEhQKEE9CSkVDVF9DT01QT05FTlQQABIg",
+            "ChxDSEFSQUNURVJfTU9WRU1FTlRfQ09NUE9ORU5UEAESHQoZUExBWUVSX01P",
+            "VkVNRU5UX0NPTVBPTkVOVBACEhQKEEhFQUxUSF9DT01QT05FTlQQAxIXChNJ",
+            "TlZFTlRPUllfQ09NUE9ORU5UEAQqfQoTUnBjT2JqZWN0RnVuY3Rpb25JZBIZ",
+            "ChVNdWx0aWNhc3RfU2V0UG9zaXRpb24QABIYChRNdWx0aWNhc3RfQ29tYm9T",
+            "dGFydBABEhkKFU11bHRpY2FzdF9Db21ib0F0dGFjaxACEhYKEk11bHRpY2Fz",
+            "dF9Db21ib0VuZBADKpcBChZScGNDb21wb25lbnRGdW5jdGlvbklkEhwKGE11",
+            "bHRpY2FzdF9Eb2RnZVJvbGxTdGFydBAAEhUKEUNsaWVudF9HaXZlRGFtYWdl",
+            "EAESGAoUTXVsdGljYXN0X1Rha2VEYW1hZ2UQAhIVChFNdWx0aWNhc3RfUmVz",
+            "cGF3bhADEhcKE1NlcnZlcl9QdXJjaGFzZUl0ZW0QBCo1Cg1DaGFyYWN0ZXJU",
+            "eXBlEgsKB1Vua25vd24QABILCgdNb25zdGVyEAESCgoGUGxheWVyEAJCG6oC",
+            "GEdvb2dsZS5Qcm90b2J1Zi5Qcm90b2NvbGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.MsgId), typeof(global::Google.Protobuf.Protocol.PlayerLoginState), typeof(global::Google.Protobuf.Protocol.LoginResult), typeof(global::Google.Protobuf.Protocol.GameObjectType), typeof(global::Google.Protobuf.Protocol.GameComponentType), typeof(global::Google.Protobuf.Protocol.RpcObjectFunctionId), typeof(global::Google.Protobuf.Protocol.RpcComponentFunctionId), typeof(global::Google.Protobuf.Protocol.CharacterType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -220,6 +221,7 @@ namespace Google.Protobuf.Protocol {
     [pbr::OriginalName("UNKNOWN")] Unknown = 0,
     [pbr::OriginalName("KNIGHT_PLAYER")] KnightPlayer = 1,
     [pbr::OriginalName("KNIGHT_MONSTER")] KnightMonster = 2,
+    [pbr::OriginalName("NPC")] Npc = 3,
   }
 
   public enum GameComponentType {
@@ -227,6 +229,7 @@ namespace Google.Protobuf.Protocol {
     [pbr::OriginalName("CHARACTER_MOVEMENT_COMPONENT")] CharacterMovementComponent = 1,
     [pbr::OriginalName("PLAYER_MOVEMENT_COMPONENT")] PlayerMovementComponent = 2,
     [pbr::OriginalName("HEALTH_COMPONENT")] HealthComponent = 3,
+    [pbr::OriginalName("INVENTORY_COMPONENT")] InventoryComponent = 4,
   }
 
   public enum RpcObjectFunctionId {
@@ -241,10 +244,11 @@ namespace Google.Protobuf.Protocol {
     [pbr::OriginalName("Client_GiveDamage")] ClientGiveDamage = 1,
     [pbr::OriginalName("Multicast_TakeDamage")] MulticastTakeDamage = 2,
     [pbr::OriginalName("Multicast_Respawn")] MulticastRespawn = 3,
+    [pbr::OriginalName("Server_PurchaseItem")] ServerPurchaseItem = 4,
   }
 
   public enum CharacterType {
-    [pbr::OriginalName("Npc")] Npc = 0,
+    [pbr::OriginalName("Unknown")] Unknown = 0,
     [pbr::OriginalName("Monster")] Monster = 1,
     [pbr::OriginalName("Player")] Player = 2,
   }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterSpawnerController : ObjectController
+public class NpcSpawnerController : ObjectController
 {
     public GameObject _spawnObject;
     protected GameObject _spawnedObject;
@@ -11,18 +11,21 @@ public class CharacterSpawnerController : ObjectController
     {
         base.Start();
 
-        if(Managers.Network.IsServer)
+        if (Managers.Network.IsServer)
         {
             _spawnedObject = GameObject.Instantiate(_spawnObject);
             _spawnedObject.transform.position = this.transform.position;
             _spawnedObject.transform.rotation = this.transform.rotation;
 
-            CharacterController cc = _spawnedObject.GetComponent<CharacterController>();
-            if(cc)
+            NpcController npc = _spawnedObject.GetComponent<NpcController>();
+            if (npc)
             {
-                cc._spawnPosition = this.transform.position;
-                Managers.Object.Register(cc);
+                Managers.Object.Register(npc);
             }
+            else
+            {
+                Debug.LogError("NpcController is not exist");
+            }                
         }
     }
 

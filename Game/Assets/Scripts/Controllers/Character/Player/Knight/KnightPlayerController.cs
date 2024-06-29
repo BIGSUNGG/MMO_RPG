@@ -102,7 +102,7 @@ public class KnightPlayerController : PlayerController
         }
 
         Collider[] hitColliders = Physics.OverlapSphere(transform.position + new Vector3(0.0f, Capsule.height / 2, 0.0f), 2.0f, layerMask);
-        foreach (var hitCollider in hitColliders)
+        foreach (var hitCollider in hitColliders) 
         {
             CharacterController cc = hitCollider.gameObject.GetComponentInParent<CharacterController>();
             if (cc == null || cc == this || cc._characterType == this._characterType)

@@ -47,6 +47,8 @@ public class PlayerController : CharacterController
 
     #region Player
     public ClientSession Session = null;
+    public NpcController _curCanInteractNcp = null;
+
     #endregion
 
     #region Controller
@@ -73,6 +75,34 @@ public class PlayerController : CharacterController
         if(CanRotate())
         {
             LookMousePos();
+        }
+
+        // 근처 상호작용 가능한 Npc 찾기
+        {
+            _curCanInteractNcp = null;
+
+            int targetLayer = LayerMask.NameToLayer("Npc");
+            int layerMask = 1 << targetLayer;
+            if (targetLayer == -1) // 레이어를 못 찾았을 경우
+            {
+                Debug.LogWarning("레이어 이름이 유효하지 않습니다: " + layerMask);
+                return;
+            }
+
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position + new Vector3(0.0f, Capsule.height / 2, 0.0f), 2.0f, layerMask);
+            foreach (var hitCollider in hitColliders)
+            {
+                NpcController npc = hitCollider.gameObject.GetComponentInParent<NpcController>();
+                if (npc == null)
+                    continue;
+
+                _curCanInteractNcp = npc;
+            }
+
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                _inventory.PurchaseItem(_curCanInteractNcp, 0);
+            }
         }
     }
 

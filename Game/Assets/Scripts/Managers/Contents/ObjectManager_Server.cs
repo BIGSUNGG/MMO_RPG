@@ -12,7 +12,7 @@ public partial class ObjectManager
 {
     object _lock = new object();
 
-    int _curId = 0;
+    int _curId = 1;
     int GetRegisterId()
     {
         return _curId++;

@@ -51,7 +51,7 @@ public class CharacterController : ObjectController
     }
 
     #region Controller
-    public  CharacterType _characterType { get; protected set; } = CharacterType.Npc;
+    public  CharacterType _characterType { get; protected set; } = CharacterType.Unknown;
     public Vector3 _spawnPosition = Vector3.zero;
     public Vector2 _moveDir = Vector2.zero;
     public override void ControllerUpdate()

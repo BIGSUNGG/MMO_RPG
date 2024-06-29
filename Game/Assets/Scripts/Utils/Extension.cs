@@ -48,6 +48,8 @@ public static class Extension
                 return go.GetComponent<PlayerMovementComponent>();
             case GameComponentType.HealthComponent:
                 return go.GetComponent<HealthComponent>();
+            case GameComponentType.InventoryComponent:
+                return go.GetComponent<InventoryComponent>();
             default:
                 return null;
         }

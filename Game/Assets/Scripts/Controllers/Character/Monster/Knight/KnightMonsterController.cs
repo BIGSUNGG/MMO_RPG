@@ -30,7 +30,7 @@ public class KnightMonsterController : MonsterController
 
     #region Ai
     protected PlayerController _enemy = null;
-    protected float _enemyAttackDistance = 4.0f;
+    protected float _enemyAttackDistance = 1.0f;
     protected float _enemyMaxDistance = 6.0f;
     protected float _enemySearchDistance = 4.5f;
     

@@ -13,6 +13,7 @@ public partial class ObjectManager
         _factory = new List<Func<GameObject>>(new Func<GameObject>[10]);
         _factory[(int)GameObjectType.KnightPlayer] = () => { return Managers.Resource.Instantiate("Object/Knight");  }; 
         _factory[(int)GameObjectType.KnightMonster] = () => { return Managers.Resource.Instantiate("Object/Monster");  };
+        _factory[(int)GameObjectType.Npc] = () => { return Managers.Resource.Instantiate("Object/Npc");  };
     }
     List<Func<GameObject>> _factory;
     Dictionary<int, Action<GameObject>> _onCreateEvent = new Dictionary<int, Action<GameObject>>(); // Key : object id, Value : 오브젝트를 찾았았을 때 이벤트

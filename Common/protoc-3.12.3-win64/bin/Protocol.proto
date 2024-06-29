@@ -73,6 +73,7 @@ enum GameObjectType {
 	UNKNOWN = 0;
 	KNIGHT_PLAYER = 1;
 	KNIGHT_MONSTER = 2;
+	NPC = 3;
 }
 
 enum GameComponentType {
@@ -80,6 +81,7 @@ enum GameComponentType {
 	CHARACTER_MOVEMENT_COMPONENT = 1;
 	PLAYER_MOVEMENT_COMPONENT = 2;
 	HEALTH_COMPONENT = 3;
+	INVENTORY_COMPONENT = 4;
 }
 
 enum RpcObjectFunctionId {
@@ -97,10 +99,12 @@ enum RpcComponentFunctionId {
     Client_GiveDamage = 1;	
     Multicast_TakeDamage = 2;
 	Multicast_Respawn = 3;
+
+	Server_PurchaseItem = 4;
 }
 
 enum CharacterType {
-	Npc = 0;
+	Unknown = 0;
 	Monster = 1;
 	Player = 2;
 }
