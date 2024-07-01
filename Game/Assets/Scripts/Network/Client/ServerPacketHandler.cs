@@ -216,5 +216,16 @@ class ServerPacketHandler
 
         pc.Inventory.SetMoney(recvPacket.Money);
     }
+
+    public static void S_NotifyPlayerItemHandler(ISession session, IMessage packet)
+    {
+        S_NotifyPlayerItem recvPacket = packet as S_NotifyPlayerItem;
+        PlayerController pc = Managers.Controller.MyController;
+        if (pc == null)
+            return;
+
+        pc.Inventory.SetItemSlot(recvPacket.Index, recvPacket.Info);
+        Debug.Log("H");
+    }
 }
 #endif

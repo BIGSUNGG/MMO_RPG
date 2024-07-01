@@ -27,7 +27,7 @@ public class HealthComponent : ObjectComponent
     #region Health
     public bool _bDead { get; protected set; } = false; // 오브젝트가 죽어있는지
     public float CurHpRatio { get { return (float)_curHp / (float)_maxHp; } } // 현재 체력 비율
-    public int _curHp = 100; // 현재 체력
+    public int _curHp { get; protected set; } = 100; // 현재 체력
     public int _maxHp { get; protected set; } = 100; // 최대 체력
     protected bool _bCancelTakeDamage = false; // 데미지를 무효화할지 여부
 
@@ -290,6 +290,34 @@ public class HealthComponent : ObjectComponent
         _bDead = true;
         _onDeathEvent.Invoke();
         Debug.Log("Dead");
+    }
+    #endregion
+
+    #region Hp
+    public void SetHp(int value)
+    {
+        _curHp = value;
+
+        if (_curHp > _maxHp)
+            _curHp = _maxHp;
+        else if (_curHp < 0)
+            _curHp = 0;
+    }
+
+    public void IncreaseHp(int value)
+    {
+        _curHp += value;
+
+        if (_curHp > _maxHp)
+            _curHp = _maxHp;
+    }
+
+    public void DecreaseHp(int value)
+    {
+        _curHp -= value;
+
+        if (_curHp < 0)
+            _curHp = 0;
     }
     #endregion
 

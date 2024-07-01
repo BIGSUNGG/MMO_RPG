@@ -62,4 +62,26 @@ partial class GamePacketHandler
 
         clientSession.Send(sendPacket);
     }
+
+    public static void G_NotifyPlayerItemHandler(ISession session, IMessage packet)
+    {
+        G_NotifyPlayerItem recvPacket = packet as G_NotifyPlayerItem;
+        GameSession gameSession = session as GameSession;
+        GameInstance curMap = gameSession.Map;
+
+        Console.WriteLine("a");
+        ClientSession clientSession = curMap.FindSession(recvPacket.SessionId);
+        if (clientSession == null)
+            return;
+
+        clientSession.ItemSlot[recvPacket.Index] = recvPacket.Info;
+
+        // 클라이언트에게 돈 전송
+        S_NotifyPlayerItem sendPacket = new S_NotifyPlayerItem();
+        sendPacket.Index = recvPacket.Index;
+        sendPacket.Info = recvPacket.Info;
+
+        clientSession.Send(sendPacket);
+        Console.WriteLine("H");
+    }
 }

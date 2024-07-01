@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Google.Protobuf.Protocol;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -97,6 +98,7 @@ public class Util
     {
         return Mathf.Atan2(vec.x, vec.z) * Mathf.Rad2Deg;
     }
+
     #endregion
 
     #region Bytes
@@ -195,5 +197,15 @@ public class Util
 
         return obj;
     }
+    #endregion
+
+    #region Enum
+    static ItemType[] ItemTypeConverter =
+    {
+        ItemType.Potion
+    };
+
+    public static ItemType ByteToItemType(byte value) { return ItemTypeConverter[value]; }
+
     #endregion
 }

@@ -79,7 +79,7 @@ class ServerPacketHandler
 
             // 체력 설정
             HealthComponent health = go.GetComponent<HealthComponent>();
-            health._curHp = recvPacket.Info.Hp;
+            health.SetHp(recvPacket.Info.Hp);
 
             // 돈 설정
             InventoryComponent inventory = go.GetComponent<InventoryComponent>();
@@ -192,6 +192,11 @@ class ServerPacketHandler
     public static void S_NotifyPlayerMoneyHandler(ISession session, IMessage packet)
     {
         S_NotifyPlayerMoney recvPacket = packet as S_NotifyPlayerMoney;
+    }
+
+    public static void S_NotifyPlayerItemHandler(ISession session, IMessage packet)
+    {
+        S_NotifyPlayerItem recvPacket = packet as S_NotifyPlayerItem;
     }
 }
 #endif

@@ -8,7 +8,6 @@ using UnityEngine;
 
 public class InventoryComponent: ObjectComponent
 {
-
     protected override void Start()
     {
         base.Start();
@@ -86,10 +85,119 @@ public class InventoryComponent: ObjectComponent
 
     #endregion
 
+    #region Item
+    List<ItemInfo> _itemSlot = new List<ItemInfo>(new ItemInfo[_itemSlotSize]); 
+    const int _itemSlotSize = 9; // 아이템 슬롯 최대 크기
+
+    public void SetItemSlot(int index, ItemInfo info)
+    {
+        _itemSlot[index] = info;
+    }
+
+    #region Use
+    public bool UseItem(int index)
+    {
+        if (_itemSlot[index] == null || _itemSlotSize <= index) // 아이템 슬롯에 아이템이 없다면
+        {
+            Debug.Log($"Item slot {index} is not exist");
+            return false;
+        }
+
+        Debug.Log($"Use {index} item");
+        Server_UseItem(index, _itemSlot[index].Type);
+        return true;
+    }
+
+    protected void Server_UseItem(int index, ItemType itemType)
+    {
+        // 패킷 보내기
+        if (Managers.Network.IsClient) // 클라이언트에서 호출된 경우 
+        {
+            C_RpcComponentFunction rpcFuncPacket = new C_RpcComponentFunction();
+            byte[] parameterBuffer = new byte[5];
+            Array.Copy(BitConverter.GetBytes((int)index), 0, parameterBuffer, 0, sizeof(int));
+            Array.Copy(BitConverter.GetBytes((byte)itemType), 0, parameterBuffer, 4, sizeof(byte));
+
+            rpcFuncPacket.ObjectId = Owner.ObjectId;
+            rpcFuncPacket.ComponentType = GameComponentType.InventoryComponent;
+            rpcFuncPacket.RpcFunctionId = RpcComponentFunctionId.ServerUseItem;
+            rpcFuncPacket.ParameterBytes = ByteString.CopyFrom(parameterBuffer);
+
+            Managers.Network.SendServer(rpcFuncPacket);
+        }
+        else // 서버에서 호출된 경우
+        {
+            Debug.LogError("Client can't call this function");
+            return;
+        }
+    }
+
+    // Rpc 패킷을 받으면 호출
+    // packet : 매개변수의 바이트 배열 
+    protected virtual void Server_UseItem_ReceivePacket(byte[] packet)
+    {
+        try
+        {
+            int index = BitConverter.ToInt32(packet, 0);
+            byte typeByte = packet[4];
+            ItemType itemType = Util.ByteToItemType(typeByte);
+
+            Server_UseItem_Implementation(index, itemType);
+        }
+        catch (System.Exception ex)
+        {
+            Debug.Log($"{ex}");
+        }
+    }
+
+    // 서버에서 패킷을 받았을 때 악성 패킷을 감지하기 위한 인증
+    // packet : 받은 패킷의 바이트 배열
+    // return : 받은 패킷이 악성 패킷이 아닌지
+    protected virtual bool Server_UseItem_Validate(byte[] packet)
+    {
+        try
+        {
+            int index = BitConverter.ToInt32(packet, 0);
+            if (_itemSlotSize <= index) 
+                return false;
+
+            byte typeByte = packet[4];
+            ItemType itemType = Util.ByteToItemType(typeByte);
+
+            return true;
+        }
+        catch (System.Exception ex)
+        {
+            Debug.Log($"{ex}");
+            return false;
+        }
+    }
+
+    // UseItem 코드
+    protected virtual void Server_UseItem_Implementation(int index, ItemType itemType)
+    {
+        // 사용할 아이템 차감
+        bool bSuccessRemove = OnServer_RemoveItem(index, itemType);
+        if(bSuccessRemove) // 아이템 차감에 성공했다면 
+        {
+            // 아이템 사용
+            Item useItem = Item.FindItem(itemType);
+            bool bSuccessUse = useItem.OnServer_Use(Owner);
+            if(bSuccessUse)
+                Debug.Log($"Use {itemType}");
+            else
+                Debug.LogError("Failed to use item");
+        }
+        else
+        {
+            Debug.LogError("Failed to remove item");
+        }
+    }
+    #endregion
+
     #region Purchase
     public void PurchaseItem(NpcController dealer, int itemIndex)
     {
-        Debug.Log("H");
         if (dealer._products.Count <= itemIndex)
         {
             Debug.Log("Select wrong index");
@@ -176,7 +284,6 @@ public class InventoryComponent: ObjectComponent
     // Server_PurchaseItem 코드
     protected virtual void Server_PurchaseItem_Implementation(NpcController dealer, int itemIndex)
     {
-                Debug.Log("22H");
         if (dealer._products.Count <= itemIndex)
         {
             Debug.LogError("Select wrong index");
@@ -190,8 +297,107 @@ public class InventoryComponent: ObjectComponent
             return;
         }
 
+        // 돈 차감 이후 아이템 추가
         DecreaseMoney(info.price);
+        OnServer_AddItem(info.item._itemType);
     }
+    #endregion
+
+    #region Add Remove
+    // 아이템 타입에 맞는 슬롯에 아이템 추가
+    // itemType : 추가할 아이템의 타입
+    // return : 아이템 추가에 성공했는지
+    public bool OnServer_AddItem(ItemType itemType)
+    {
+        if (Util.CheckFuncCalledOnServer() == false)
+            return false;
+
+        // 아이템 슬롯에 아이템이 이미 있다면
+        for (int i = 0; i < _itemSlot.Count; i++)
+        {
+            if (_itemSlot[i] != null && _itemSlot[i].Type == itemType)
+            {
+                // 아이탬 개수 추가
+                _itemSlot[i].Count++;
+                Debug.Log($"Add {itemType}");
+
+                // 서버에게 현재 슬롯 변화 알리기
+                Notify_Item(i);
+
+                return true;
+            }
+        }
+
+        // 아이템 슬롯에 아이템이 없다면
+        for (int i = 0; i < _itemSlot.Count; i++)
+        {
+            if (_itemSlot[i] == null)
+            {
+                // 빈 공간에 아이템 추가
+                _itemSlot[i] = new ItemInfo();
+                _itemSlot[i].Type = itemType;
+                _itemSlot[i].Count = 1;
+                Debug.Log($"Add {itemType}");
+
+                // 서버에게 현재 슬롯 변화 알리기
+                Notify_Item(i);
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // 아이템 타입에 맞는 슬롯에 아이템 제거
+    // index : 아이템을 제거할 슬롯
+    // itemType : 제거할 아이템의 타입
+    // return : 아이템 제거에 성공했는지
+    public bool OnServer_RemoveItem(int index, ItemType itemType)
+    {
+        if (Util.CheckFuncCalledOnServer() == false)
+            return false;
+
+        if (_itemSlot[index] == null) // 슬롯에 아이템이 없다면
+            return false;
+
+        if (_itemSlot[index].Type == itemType) // 슬롯에 있는 아이템이 제거하려는 아이템인지
+        {
+            // 아이탬 개수 감소
+            _itemSlot[index].Count--;
+            Debug.Log($"Remove {itemType}");
+
+            if (_itemSlot[index].Count <= 0) // 아이템 개수가 0이하라면
+                _itemSlot[index] = null; // 아이템 슬롯에서 아이템 제거
+
+            // 서버에게 현재 슬롯 변화 알리기
+            Notify_Item(index);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public void Notify_Item(int index)
+    {
+        if (Util.CheckFuncCalledOnServer() == false)
+            return;
+
+        PlayerController pc = Owner as PlayerController;
+        if (pc == null || pc.Session == null)
+            return;
+
+        // 서버에게 현재 슬롯 변화 알리기
+        G_NotifyPlayerItem notifyPacket = new G_NotifyPlayerItem();
+        notifyPacket.SessionId = pc.Session.SessionId;
+        notifyPacket.Index = index;
+        notifyPacket.Info = _itemSlot[index];
+        Managers.Network.SendServer(notifyPacket);
+    }
+
+    #endregion
+
     #endregion
 
     #region RpcFunction
@@ -206,6 +412,9 @@ public class InventoryComponent: ObjectComponent
             {
                 case RpcComponentFunctionId.ServerPurchaseItem:
                     Server_PurchaseItem_ReceivePacket(packet);
+                    break;
+                case RpcComponentFunctionId.ServerUseItem:
+                    Server_UseItem_ReceivePacket(packet);
                     break;
                 default:
                     break;
@@ -232,6 +441,8 @@ public class InventoryComponent: ObjectComponent
             {
                 case RpcComponentFunctionId.ServerPurchaseItem:
                     return Server_PurchaseItem_Validate(packet);
+                case RpcComponentFunctionId.ServerUseItem:
+                    return Server_UseItem_Validate(packet);
                 default:
                     break;
             }

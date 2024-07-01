@@ -60,7 +60,9 @@ class ServerPacketManager
 		_onRecv.Add((ushort)MsgId.SRequestPlayerInfo, MakePacket<S_RequestPlayerInfo>);
 		_handler.Add((ushort)MsgId.SRequestPlayerInfo, ServerPacketHandler.S_RequestPlayerInfoHandler);		
 		_onRecv.Add((ushort)MsgId.SNotifyPlayerMoney, MakePacket<S_NotifyPlayerMoney>);
-		_handler.Add((ushort)MsgId.SNotifyPlayerMoney, ServerPacketHandler.S_NotifyPlayerMoneyHandler);
+		_handler.Add((ushort)MsgId.SNotifyPlayerMoney, ServerPacketHandler.S_NotifyPlayerMoneyHandler);		
+		_onRecv.Add((ushort)MsgId.SNotifyPlayerItem, MakePacket<S_NotifyPlayerItem>);
+		_handler.Add((ushort)MsgId.SNotifyPlayerItem, ServerPacketHandler.S_NotifyPlayerItemHandler);
 	}
 
 	public void OnRecvPacket(ISession session, ArraySegment<byte> buffer)

@@ -56,19 +56,12 @@ enum MsgId {
 	// Notify
 	G_NOTIFY_PLAYER_MONEY = 26;
 	S_NOTIFY_PLAYER_MONEY = 27;
+	
+	G_NOTIFY_PLAYER_ITEM = 28;
+	S_NOTIFY_PLAYER_ITEM = 29;
 }
 
 // Enums
-enum PlayerLoginState {
-	NOT_LOGGED_IN = 0;
-	LOGGED_IN = 1;
-}
-
-enum LoginResult {
-	LOGIN_SUCCESS = 0;
-	LOGIN_FAIL = 1;
-}
-
 enum GameObjectType {
 	UNKNOWN = 0;
 	KNIGHT_PLAYER = 1;
@@ -89,8 +82,7 @@ enum RpcObjectFunctionId {
 
     Multicast_ComboStart = 1;
     Multicast_ComboAttack = 2;
-    Multicast_ComboEnd = 3;
-	
+    Multicast_ComboEnd = 3;	
 }
 
 enum RpcComponentFunctionId {
@@ -101,6 +93,7 @@ enum RpcComponentFunctionId {
 	Multicast_Respawn = 3;
 
 	Server_PurchaseItem = 4;
+	Server_UseItem = 5;
 }
 
 enum CharacterType {
@@ -109,11 +102,27 @@ enum CharacterType {
 	Player = 2;
 }
 
+enum ItemType {
+	Potion = 0;
+}
+
+enum PlayerLoginState {
+	NOT_LOGGED_IN = 0;
+	LOGGED_IN = 1;
+}
+
+enum LoginResult {
+	LOGIN_SUCCESS = 0;
+	LOGIN_FAIL = 1;
+}
+
 // Structs
 message PlayerInfo{
 	int32 SessionId = 1;
 	int32 Hp = 2;
 	int32 Money = 3;
+
+	repeated ItemInfo Items = 4;
 }
 
 message ObjectInfo {	
@@ -124,6 +133,11 @@ message ObjectInfo {
 message ObjectSyncInfo {
 	ObjectInfo ObjectInfo = 1;
 	bytes SyncInfo = 2;
+}
+
+message ItemInfo {
+	ItemType Type = 1;
+	int32 Count = 2;
 }
 
 // Packets
@@ -279,4 +293,17 @@ message G_NotifyPlayerMoney{
 // S_NOTIFY_PLAYER_MONEY
 message S_NotifyPlayerMoney{
 	int32 Money = 1;	
+}
+
+// G_NOTIFY_PLAYER_ITEM
+message G_NotifyPlayerItem{
+	int32 SessionId = 1;
+	int32 Index = 2;
+	ItemInfo info = 3;
+}
+
+// S_NOTIFY_PLAYER_ITEM
+message S_NotifyPlayerItem{
+	int32 Index = 1;
+	ItemInfo info = 2;
 }

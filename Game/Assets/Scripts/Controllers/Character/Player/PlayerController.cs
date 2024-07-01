@@ -100,9 +100,10 @@ public class PlayerController : CharacterController
             }
 
             if (Input.GetKeyDown(KeyCode.F))
-            {
-                _inventory.PurchaseItem(_curCanInteractNcp, 0);
-            }
+                Inventory.PurchaseItem(_curCanInteractNcp, 0);
+
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+                Inventory.UseItem(0);
         }
     }
 

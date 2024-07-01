@@ -317,6 +317,7 @@ namespace Server
         #region Player
         public int Hp = 100;
         public int Money = 0;
+        public List<ItemInfo> ItemSlot = new List<ItemInfo>(new ItemInfo[9]);
 
         public PlayerInfo GetPlayerInfo()
         {
