@@ -23,6 +23,16 @@ namespace Server.Game
         #region Sessions
         Dictionary<int, ClientSession> _sessions = new Dictionary<int, ClientSession>(); // Key : SessionId, Value : DbId에 맞는 ClientSession
 
+        public ClientSession FindSession(int id)
+        {
+            lock (_lock)
+            {
+                ClientSession result;
+                _sessions.TryGetValue(id, out result);
+                return result;
+            }
+        }
+
         // 클라이언트를 맵에 추가
         // session : 추가할 세션
         // enterDelay : 플레이어를 맵에 추가할 딜레이
@@ -48,33 +58,24 @@ namespace Server.Game
                     S_EnterMap enterMapPacket = new S_EnterMap();
                     enterMapPacket.MapId = this.MapId;
                     session.Send(enterMapPacket);
-
-                    PushAfter(enterDelay + 250, () =>
-                    {
-                        // 모든 클라이언트와 GameMap에 플레이어 입장 알리기
-                        S_EnterPlayer enterPlayerPacket = new S_EnterPlayer();
-                        enterPlayerPacket.SessionId = session.SessionId;
-
-                        SendAll(enterPlayerPacket);
-
-                        enterPlayerPacket.Info = session.GetPlayerInfo();
-                        Session.Send(enterPlayerPacket);
-                    });
                 });
-            }
-        }
 
-        public ClientSession FindSession(int id)
-        {
-            lock (_lock)
-            {
-                ClientSession result;
-                _sessions.TryGetValue(id, out result);
+                PushAfter(enterDelay + 250, () =>
+                {
+                    if (session.LoginState == PlayerLoginState.NotLoggedIn)
+                        return;
 
-                if (result == null)
-                    Console.WriteLine($"Find Session Failed{id}");
+                    // 모든 클라이언트와 GameMap에 플레이어 입장 알리기
+                    S_EnterPlayer enterPlayerPacket = new S_EnterPlayer();
+                    enterPlayerPacket.SessionId = session.SessionId;
 
-                return result;
+                    SendAll(enterPlayerPacket);
+
+                    enterPlayerPacket.Info = session.GetPlayerInfo();
+                    Session.Send(enterPlayerPacket);
+
+                    session.MyMap = this;
+                });
             }
         }
 
@@ -96,6 +97,8 @@ namespace Server.Game
 
                     Session.Send(leavePlayerPacket);
                     SendAll(leavePlayerPacket);
+
+                    session.MyMap = null;
 
                     return true;
                 }

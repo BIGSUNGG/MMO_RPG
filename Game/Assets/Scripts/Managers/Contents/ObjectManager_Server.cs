@@ -78,36 +78,7 @@ public partial class ObjectManager
 
     public List<GameObject> Create(RepeatedField<ObjectInfo> infos)
     {
-        lock (_lock)
-        {
-	        List<GameObject> result = new List<GameObject>();
-	
-	        S_SpawnObjects spawnPacket = new S_SpawnObjects();
-	
-	        foreach (var info in infos)
-	        {
-                // 만들 오브젝트 아이디 구하기
-                int createId = GetRegisterId();
-	
-	            // 오브젝트 만들기
-	            GameObject go = CreateAndRegister(createId, info.ObjectType);
-                if (go == null)
-                    continue;
-	
-	            // 만든 오브젝트 모든 클라이언트에 전송
-	            ObjectInfo objectInfo = new ObjectInfo();
-	            objectInfo.ObjectId = createId;
-	            objectInfo.ObjectType = info.ObjectType;
-	            spawnPacket.SpawnInfos.Add(objectInfo);
-	
-	            result.Add(go);
-	        }
-	
-	        if(spawnPacket.SpawnInfos.Count > 0)
-	            Managers.Network.SendMulticast(spawnPacket);
-	
-	        return result;
-        }
+        return Create(infos.ToList());
     }
 
     // 오브젝트 타입에 맞는 오브젝트를 만들고 id에 맞춰 추가

@@ -6,6 +6,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20240703164408_Item.cs" />
+    <Compile Remove="Migrations\20240703164408_Item.Designer.cs" />
+    <Compile Remove="Migrations\20240703170132_Item.cs" />
+    <Compile Remove="Migrations\20240703170132_Item.Designer.cs" />
+    <Compile Remove="Migrations\20240703171325_Item.cs" />
+    <Compile Remove="Migrations\20240703171325_Item.Designer.cs" />
+    <Compile Remove="Migrations\20240703171942_Item.cs" />
+    <Compile Remove="Migrations\20240703171942_Item.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.12.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.7">

@@ -14,6 +14,7 @@ public abstract class Item
     #region Factory
     static Item[] _factory = 
     {
+        null,
         new Potion()
     };
 

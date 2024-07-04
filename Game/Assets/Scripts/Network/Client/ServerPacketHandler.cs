@@ -3,6 +3,7 @@ using Google.Protobuf.Protocol;
 using ServerCore;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 using IMessage = Google.Protobuf.IMessage;
@@ -217,15 +218,24 @@ class ServerPacketHandler
         pc.Inventory.SetMoney(recvPacket.Money);
     }
 
-    public static void S_NotifyPlayerItemHandler(ISession session, IMessage packet)
+    public static void S_NotifyPlayerItemSlotHandler(ISession session, IMessage packet)
     {
-        S_NotifyPlayerItem recvPacket = packet as S_NotifyPlayerItem;
+        S_NotifyPlayerItemSlot recvPacket = packet as S_NotifyPlayerItemSlot;
         PlayerController pc = Managers.Controller.MyController;
         if (pc == null)
             return;
 
         pc.Inventory.SetItemSlot(recvPacket.Index, recvPacket.Info);
-        Debug.Log("H");
+    }
+
+    public static void S_NotifyPlayerItemSlotAllHandler(ISession session, IMessage packet)
+    {
+        S_NotifyPlayerItemSlotAll recvPacket = packet as S_NotifyPlayerItemSlotAll;
+        PlayerController pc = Managers.Controller.MyController;
+        if (pc == null)
+            return;
+
+        pc.Inventory.SetItemSlot(recvPacket.ItemSlot.ToList());
     }
 }
 #endif

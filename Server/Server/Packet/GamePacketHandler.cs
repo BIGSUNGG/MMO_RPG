@@ -27,6 +27,7 @@ partial class GamePacketHandler
             return;
 
         clientSession.SetPlayerInfo(recvPacket.Info);
+        DbTransaction.SavePlayer(clientSession.GameAccountDbId, curMap.MapId, clientSession.GetPlayerInfo());
 
         GameInstanceManager.Instance.Push(() => 
         {
@@ -63,13 +64,12 @@ partial class GamePacketHandler
         clientSession.Send(sendPacket);
     }
 
-    public static void G_NotifyPlayerItemHandler(ISession session, IMessage packet)
+    public static void G_NotifyPlayerItemSlotHandler(ISession session, IMessage packet)
     {
-        G_NotifyPlayerItem recvPacket = packet as G_NotifyPlayerItem;
+        G_NotifyPlayerItemSlot recvPacket = packet as G_NotifyPlayerItemSlot;
         GameSession gameSession = session as GameSession;
         GameInstance curMap = gameSession.Map;
 
-        Console.WriteLine("a");
         ClientSession clientSession = curMap.FindSession(recvPacket.SessionId);
         if (clientSession == null)
             return;
@@ -77,11 +77,33 @@ partial class GamePacketHandler
         clientSession.ItemSlot[recvPacket.Index] = recvPacket.Info;
 
         // 클라이언트에게 돈 전송
-        S_NotifyPlayerItem sendPacket = new S_NotifyPlayerItem();
+        S_NotifyPlayerItemSlot sendPacket = new S_NotifyPlayerItemSlot();
         sendPacket.Index = recvPacket.Index;
         sendPacket.Info = recvPacket.Info;
 
         clientSession.Send(sendPacket);
-        Console.WriteLine("H");
+    }
+
+    public static void G_NotifyPlayerItemSlotAllHandler(ISession session, IMessage packet)
+    {
+        G_NotifyPlayerItemSlotAll recvPacket = packet as G_NotifyPlayerItemSlotAll;
+        GameSession gameSession = session as GameSession;
+        GameInstance curMap = gameSession.Map;
+
+        ClientSession clientSession = curMap.FindSession(recvPacket.SessionId);
+        if (clientSession == null)
+            return;
+
+        if (recvPacket.ItemSlot == null)
+            return;
+
+        clientSession.SetItemSlot(recvPacket.ItemSlot.ToList());
+
+        // 클라이언트에게 아이템 슬롯 정보 전송
+        S_NotifyPlayerItemSlotAll sendPacket = new S_NotifyPlayerItemSlotAll();
+        foreach (var info in recvPacket.ItemSlot)
+            sendPacket.ItemSlot.Add(info);
+
+        clientSession.Send(sendPacket);
     }
 }

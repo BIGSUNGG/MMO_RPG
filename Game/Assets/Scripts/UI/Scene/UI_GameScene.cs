@@ -62,7 +62,7 @@ public class UI_GameScene : UI_Scene
             _hpImage.fillAmount = pc.Health.CurHpRatio;
 
         if(_moneyText && pc.Inventory)
-            _moneyText.text = pc.Inventory._money.ToString() + " Gold";
+            _moneyText.text = pc.Inventory.Money.ToString() + " Gold";
     }
 
     protected virtual void OnPossess()

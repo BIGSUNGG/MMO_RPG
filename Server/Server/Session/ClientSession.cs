@@ -15,6 +15,7 @@ namespace Server
 	public partial class ClientSession : PacketSession
 	{
 		public int SessionId { get; set; }
+        public bool IsValid = false;
 
 		object _lock = new object();
 		List<ArraySegment<byte>> _reserveQueue = new List<ArraySegment<byte>>();

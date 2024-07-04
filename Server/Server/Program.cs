@@ -211,7 +211,7 @@ namespace Server
 		public static int Port { get; } = 7777;
 		public static string IpAddress { get; set; }
         public static bool bTestUnityServer = false;
-        public static int TestUnityServerId = 1;
+        public static int TestUnityServerId = 0;
 
         static void Main(string[] args)
 		{

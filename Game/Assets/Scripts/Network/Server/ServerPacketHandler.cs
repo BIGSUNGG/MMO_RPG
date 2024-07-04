@@ -75,15 +75,7 @@ class ServerPacketHandler
                 return;
 
             // 만든 오브젝트에 플레이어 빙의시키기
-            clientSession.Possess(pc);
-
-            // 체력 설정
-            HealthComponent health = go.GetComponent<HealthComponent>();
-            health.SetHp(recvPacket.Info.Hp);
-
-            // 돈 설정
-            InventoryComponent inventory = go.GetComponent<InventoryComponent>();
-            inventory.SetMoney(recvPacket.Info.Money);
+            clientSession.Possess(pc, recvPacket.Info);
         }
     }
 
@@ -104,7 +96,7 @@ class ServerPacketHandler
             return;
 
         // 나간 클라이언트 세션의 오브젝트 제거
-        Managers.Object.Delete(clientSession._playerController.ObjectId);
+        Managers.Object.Delete(clientSession.ClientCharacter.ObjectId);
         // 룸에 있는 클라이언트 세션에서 나간 세션 제거
         Managers.Network.DeleteClientSession(recvPacket.SessionId);
     }
@@ -194,9 +186,14 @@ class ServerPacketHandler
         S_NotifyPlayerMoney recvPacket = packet as S_NotifyPlayerMoney;
     }
 
-    public static void S_NotifyPlayerItemHandler(ISession session, IMessage packet)
+    public static void S_NotifyPlayerItemSlotHandler(ISession session, IMessage packet)
     {
-        S_NotifyPlayerItem recvPacket = packet as S_NotifyPlayerItem;
+        S_NotifyPlayerItemSlot recvPacket = packet as S_NotifyPlayerItemSlot;
+    }
+
+    public static void S_NotifyPlayerItemSlotAllHandler(ISession session, IMessage packet)
+    {
+        S_NotifyPlayerItemSlotAll recvPacket = packet as S_NotifyPlayerItemSlotAll;
     }
 }
 #endif

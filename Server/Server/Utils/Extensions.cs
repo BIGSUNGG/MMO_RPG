@@ -15,9 +15,10 @@ namespace Server
 				db.SaveChanges();
 				return true;
 			}
-			catch
-			{
-				return false;
+            catch (System.Exception ex)
+            {
+				Console.WriteLine(ex);
+                return false;
 			}
 		}
 

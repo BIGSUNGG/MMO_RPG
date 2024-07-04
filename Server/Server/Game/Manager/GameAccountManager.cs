@@ -60,8 +60,16 @@ namespace Server
             }
         }
 
+        public void RequestSave(int gameAccountDbId)
+        {
+            lock (_lock)
+            {
+                SaveAccount[gameAccountDbId] = false;
+            }
+        }
+
         // gameAccountDbId : 저장한 플레이어 계정 아이디
-        public void SaveSucceed(int gameAccountDbId)
+        public void SuccessSave(int gameAccountDbId)
         {
             lock (_lock)
             {

@@ -25,10 +25,12 @@ public class HealthComponent : ObjectComponent
     }
 
     #region Health
-    public bool _bDead { get; protected set; } = false; // 오브젝트가 죽어있는지
+    public int Hp { get { return _curHp; } }
     public float CurHpRatio { get { return (float)_curHp / (float)_maxHp; } } // 현재 체력 비율
-    public int _curHp { get; protected set; } = 100; // 현재 체력
-    public int _maxHp { get; protected set; } = 100; // 최대 체력
+    protected int _curHp = 100; // 현재 체력
+    protected int _maxHp = 100; // 최대 체력
+
+    public bool _bDead { get; protected set; } = false; // 오브젝트가 죽어있는지
     protected bool _bCancelTakeDamage = false; // 데미지를 무효화할지 여부
 
     public UnityEvent _onServerBeforeTakeDamageEvent = new UnityEvent(); // 서버에서 대미지를 받기전에 호출되는 이벤트

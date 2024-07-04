@@ -43,7 +43,7 @@ class ClientPacketHandler
 
         ObjectSyncInfo info = recvPacket.SyncInfo;
 
-        PlayerController pc = clientSession._playerController;
+        PlayerController pc = clientSession.ClientCharacter;
         if (pc == null)
         {
             Debug.Log("Player controller is null");
@@ -69,7 +69,7 @@ class ClientPacketHandler
         C_RpcObjectFunction recvPacket = packet as C_RpcObjectFunction;
         ClientSession clientSession = session as ClientSession;
 
-        PlayerController pc = clientSession._playerController;
+        PlayerController pc = clientSession.ClientCharacter;
         if (pc == null || pc.ObjectId != recvPacket.ObjectId)
             return;
 
@@ -100,7 +100,7 @@ class ClientPacketHandler
         C_RpcComponentFunction recvPacket = packet as C_RpcComponentFunction;
         ClientSession clientSession = session as ClientSession;
 
-        PlayerController pc = clientSession._playerController;
+        PlayerController pc = clientSession.ClientCharacter;
         if (pc == null || pc.ObjectId != recvPacket.ObjectId)
             return;
 

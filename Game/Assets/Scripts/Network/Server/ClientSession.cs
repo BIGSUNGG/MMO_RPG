@@ -4,6 +4,7 @@ using ServerCore;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using UnityEngine;
 
@@ -23,35 +24,55 @@ public class ClientSession : ISession
     }
 
     #region Controller
-    public PlayerController _playerController { get; private set; }
-    public PlayerInfo GetPlayerInfo()
-    {
-        PlayerInfo result = new PlayerInfo();
-        result.SessionId = this.SessionId;
+    public PlayerController ClientCharacter { get; private set; }
 
-        if (_playerController)
-        {
-            result.Hp = _playerController.Health._curHp;
-            result.Money = _playerController.Inventory._money;
-        }
-
-        return result;
-    }
-
-    public void Possess(PlayerController pc)
+    public void Possess(PlayerController pc, PlayerInfo info)
     {
         if (pc == null)
             return;
 
-        _playerController = pc;
-        _playerController.Session = this;
+        ClientCharacter = pc;
+        ClientCharacter.Session = this;
 
         // 클라이언트에 컨트롤러 빙의 알리기
         S_PossessObject possessPacket = new S_PossessObject();
         possessPacket.ObjectId = pc.ObjectId;
         Managers.Network.SendClient(this, possessPacket);
+
+        // 플레이어 정보 동기화
+        SetPlayerInfo(info);
     }
 
+    public PlayerInfo GetPlayerInfo()
+    {
+        if (ClientCharacter == null)
+            return null;
+
+        PlayerInfo result = new PlayerInfo();
+        result.SessionId = this.SessionId;
+        result.Hp = ClientCharacter.Health.Hp;
+        result.Money = ClientCharacter.Inventory.Money;
+
+        foreach (var info in ClientCharacter.Inventory.ItemSlot)
+            result.ItemSlot.Add(info);
+
+        return result;
+    }
+
+    public void SetPlayerInfo(PlayerInfo info)
+    {
+        if (ClientCharacter == null)
+            return;
+
+        // 체력 설정
+        HealthComponent health = ClientCharacter.GetComponent<HealthComponent>();
+        health.SetHp(info.Hp);
+
+        // 돈 설정
+        InventoryComponent inventory = ClientCharacter.GetComponent<InventoryComponent>();
+        inventory.SetMoney(info.Money);
+        inventory.SetItemSlot(info.ItemSlot.ToList());
+    }
     #endregion
 
     #region Map

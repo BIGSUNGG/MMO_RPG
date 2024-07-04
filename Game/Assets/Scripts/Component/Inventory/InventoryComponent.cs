@@ -3,11 +3,18 @@ using Google.Protobuf.Protocol;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.Remoting.Messaging;
 using UnityEngine;
+using static UnityEngine.Rendering.VolumeComponent;
 
 public class InventoryComponent: ObjectComponent
 {
+    public InventoryComponent()
+    {
+        RestItemSlot();
+    }
+
     protected override void Start()
     {
         base.Start();
@@ -41,7 +48,8 @@ public class InventoryComponent: ObjectComponent
     }
 
     #region Money
-    public int _money { get; protected set; } = 0;
+    public int Money { get { return _money; } }
+    protected int _money = 0;
 
     public void SetMoney(int value)
     {
@@ -86,20 +94,187 @@ public class InventoryComponent: ObjectComponent
     #endregion
 
     #region Item
-    List<ItemInfo> _itemSlot = new List<ItemInfo>(new ItemInfo[_itemSlotSize]); 
-    const int _itemSlotSize = 9; // 아이템 슬롯 최대 크기
+    public List<ItemInfo> ItemSlot { get { return _itemSlot; } }
+    public const int ItemSlotSize = 9; // 아이템 슬롯 최대 크기
+    List<ItemInfo> _itemSlot = new List<ItemInfo>(new ItemInfo[ItemSlotSize]);
+
+    #region Slot
+    protected void RestItemSlot()
+    {
+        _itemSlot = new List<ItemInfo>(new ItemInfo[ItemSlotSize]);
+        for(int i = 0; i < ItemSlotSize; i++)
+        {
+            _itemSlot[i] = new ItemInfo();
+            _itemSlot[i].Type = ItemType.None;
+            _itemSlot[i].Count = 0;
+        }
+    }
+
+    public void SetItemSlot(List<ItemInfo> slot)
+    {
+        RestItemSlot();
+
+        for (int i = 0; i < slot.Count; i++)
+        {
+            if (_itemSlot[i] != null)
+                _itemSlot[i] = slot[i];
+        }
+
+        if (Managers.Network.IsServer)
+            Notify_ItemSlotAll();
+    }
 
     public void SetItemSlot(int index, ItemInfo info)
     {
-        _itemSlot[index] = info;
+        if (info == null)
+        {
+            _itemSlot[index].Type = ItemType.None;
+            _itemSlot[index].Count = 0;
+        }
+        else
+        {
+            _itemSlot[index] = info;
+        }
+
+        if (Managers.Network.IsServer)
+            Notify_ItemSlot(index);
     }
+
+    // 아이템 타입에 맞는 슬롯에 아이템 추가
+    // itemType : 추가할 아이템의 타입
+    // return : 아이템 추가에 성공했는지
+    public bool OnServer_AddItem(ItemType itemType)
+    {
+        if (Util.CheckFuncCalledOnServer() == false)
+            return false;
+
+        // 아이템 슬롯에 아이템이 이미 있다면
+        for (int i = 0; i < ItemSlotSize; i++)
+        {
+            if (_itemSlot[i] != null && _itemSlot[i].Type == itemType)
+            {
+                // 아이탬 개수 추가
+                _itemSlot[i].Count++;
+                Debug.Log($"Add {itemType}");
+
+                // 서버에게 현재 슬롯 변화 알리기
+                Notify_ItemSlot(i);
+
+                return true;
+            }
+        }
+
+        // 아이템 슬롯에 아이템이 없다면
+        for (int i = 0; i < ItemSlotSize; i++)
+        {
+            if (_itemSlot[i] != null && _itemSlot[i].Type != ItemType.None)
+                continue;
+
+            // 빈 공간에 아이템 추가
+            _itemSlot[i] = new ItemInfo();
+            _itemSlot[i].Type = itemType;
+            _itemSlot[i].Count = 1;
+            Debug.Log($"Add {itemType}");
+
+            // 서버에게 현재 슬롯 변화 알리기
+            Notify_ItemSlot(i);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    // 아이템 타입에 맞는 슬롯에 아이템 제거
+    // index : 아이템을 제거할 슬롯
+    // itemType : 제거할 아이템의 타입
+    // return : 아이템 제거에 성공했는지
+    public bool OnServer_RemoveItem(int index, ItemType itemType)
+    {
+        if (Util.CheckFuncCalledOnServer() == false)
+            return false;
+
+        if (_itemSlot[index] == null || _itemSlot[index].Type == ItemType.None) // 슬롯에 아이템이 없다면
+            return false;
+
+        if (_itemSlot[index].Type == itemType) // 슬롯에 있는 아이템이 제거하려는 아이템인지
+        {
+            // 아이탬 개수 감소
+            _itemSlot[index].Count--;
+            Debug.Log($"Remove {itemType}");
+
+            if (_itemSlot[index].Count <= 0) // 아이템 개수가 0이하라면
+            {
+                // 아이템 슬롯에서 아이템 제거
+                _itemSlot[index].Type = ItemType.None;
+                _itemSlot[index].Count = 0;
+            }
+
+            // 서버에게 현재 슬롯 변화 알리기
+            Notify_ItemSlot(index);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public void Notify_ItemSlotAll()
+    {
+        if (Util.CheckFuncCalledOnServer() == false)
+            return;
+
+        PlayerController pc = Owner as PlayerController;
+        if (pc == null || pc.Session == null)
+            return;
+
+        // 서버에게 현재 슬롯 변화 알리기
+        G_NotifyPlayerItemSlotAll notifyPacket = new G_NotifyPlayerItemSlotAll();
+        notifyPacket.SessionId = pc.Session.SessionId;
+
+        foreach (var info in _itemSlot)
+        {
+            if (info == null)
+            {
+                ItemInfo itemInfo = new ItemInfo();
+                itemInfo.Type = ItemType.None;
+                itemInfo.Count = 0;
+                notifyPacket.ItemSlot.Add(itemInfo);
+            }
+            else
+            {
+                notifyPacket.ItemSlot.Add(info);
+            }
+        }
+
+        Managers.Network.SendServer(notifyPacket);
+    }
+
+    public void Notify_ItemSlot(int index)
+    {
+        if (Util.CheckFuncCalledOnServer() == false)
+            return;
+
+        PlayerController pc = Owner as PlayerController;
+        if (pc == null || pc.Session == null)
+            return;
+
+        // 서버에게 현재 슬롯 변화 알리기
+        G_NotifyPlayerItemSlot notifyPacket = new G_NotifyPlayerItemSlot();
+        notifyPacket.SessionId = pc.Session.SessionId;
+        notifyPacket.Index = index;
+        notifyPacket.Info = _itemSlot[index];
+        Managers.Network.SendServer(notifyPacket);
+    }
+
+    #endregion
 
     #region Use
     public bool UseItem(int index)
     {
-        if (_itemSlot[index] == null || _itemSlotSize <= index) // 아이템 슬롯에 아이템이 없다면
+        if (ItemSlotSize <= index || _itemSlot[index] == null || _itemSlot[index].Type == ItemType.None) // 아이템 슬롯에 사용할 수 있는 아이템이 없다면
         {
-            Debug.Log($"Item slot {index} is not exist");
+            Debug.Log($"Item slot {index} is can't use");
             return false;
         }
 
@@ -158,11 +333,13 @@ public class InventoryComponent: ObjectComponent
         try
         {
             int index = BitConverter.ToInt32(packet, 0);
-            if (_itemSlotSize <= index) 
+            if (ItemSlotSize <= index)
                 return false;
 
             byte typeByte = packet[4];
             ItemType itemType = Util.ByteToItemType(typeByte);
+            if (itemType == ItemType.None)
+                return false;
 
             return true;
         }
@@ -182,6 +359,12 @@ public class InventoryComponent: ObjectComponent
         {
             // 아이템 사용
             Item useItem = Item.FindItem(itemType);
+            if(useItem == null)
+            {
+                Debug.LogError("Try use null item");
+                return;
+            }
+
             bool bSuccessUse = useItem.OnServer_Use(Owner);
             if(bSuccessUse)
                 Debug.Log($"Use {itemType}");
@@ -301,101 +484,6 @@ public class InventoryComponent: ObjectComponent
         DecreaseMoney(info.price);
         OnServer_AddItem(info.item._itemType);
     }
-    #endregion
-
-    #region Add Remove
-    // 아이템 타입에 맞는 슬롯에 아이템 추가
-    // itemType : 추가할 아이템의 타입
-    // return : 아이템 추가에 성공했는지
-    public bool OnServer_AddItem(ItemType itemType)
-    {
-        if (Util.CheckFuncCalledOnServer() == false)
-            return false;
-
-        // 아이템 슬롯에 아이템이 이미 있다면
-        for (int i = 0; i < _itemSlot.Count; i++)
-        {
-            if (_itemSlot[i] != null && _itemSlot[i].Type == itemType)
-            {
-                // 아이탬 개수 추가
-                _itemSlot[i].Count++;
-                Debug.Log($"Add {itemType}");
-
-                // 서버에게 현재 슬롯 변화 알리기
-                Notify_Item(i);
-
-                return true;
-            }
-        }
-
-        // 아이템 슬롯에 아이템이 없다면
-        for (int i = 0; i < _itemSlot.Count; i++)
-        {
-            if (_itemSlot[i] == null)
-            {
-                // 빈 공간에 아이템 추가
-                _itemSlot[i] = new ItemInfo();
-                _itemSlot[i].Type = itemType;
-                _itemSlot[i].Count = 1;
-                Debug.Log($"Add {itemType}");
-
-                // 서버에게 현재 슬롯 변화 알리기
-                Notify_Item(i);
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    // 아이템 타입에 맞는 슬롯에 아이템 제거
-    // index : 아이템을 제거할 슬롯
-    // itemType : 제거할 아이템의 타입
-    // return : 아이템 제거에 성공했는지
-    public bool OnServer_RemoveItem(int index, ItemType itemType)
-    {
-        if (Util.CheckFuncCalledOnServer() == false)
-            return false;
-
-        if (_itemSlot[index] == null) // 슬롯에 아이템이 없다면
-            return false;
-
-        if (_itemSlot[index].Type == itemType) // 슬롯에 있는 아이템이 제거하려는 아이템인지
-        {
-            // 아이탬 개수 감소
-            _itemSlot[index].Count--;
-            Debug.Log($"Remove {itemType}");
-
-            if (_itemSlot[index].Count <= 0) // 아이템 개수가 0이하라면
-                _itemSlot[index] = null; // 아이템 슬롯에서 아이템 제거
-
-            // 서버에게 현재 슬롯 변화 알리기
-            Notify_Item(index);
-
-            return true;
-        }
-
-        return false;
-    }
-
-    public void Notify_Item(int index)
-    {
-        if (Util.CheckFuncCalledOnServer() == false)
-            return;
-
-        PlayerController pc = Owner as PlayerController;
-        if (pc == null || pc.Session == null)
-            return;
-
-        // 서버에게 현재 슬롯 변화 알리기
-        G_NotifyPlayerItem notifyPacket = new G_NotifyPlayerItem();
-        notifyPacket.SessionId = pc.Session.SessionId;
-        notifyPacket.Index = index;
-        notifyPacket.Info = _itemSlot[index];
-        Managers.Network.SendServer(notifyPacket);
-    }
-
     #endregion
 
     #endregion

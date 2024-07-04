@@ -34,6 +34,9 @@ partial class ClientPacketHandler
         ClientSession clientSession = session as ClientSession;
 
         GameInstance map = clientSession.MyMap;
+        if (map == null)
+            return;
+
         map.Push(() => { map.Session.Send(clientSession, packet); });
     }
 
@@ -44,6 +47,9 @@ partial class ClientPacketHandler
         ClientSession clientSession = session as ClientSession;
 
         GameInstance map = clientSession.MyMap;
+        if (map == null)
+            return;
+
         map.Push(() => { map.Session.Send(clientSession, packet); });
     }
 
@@ -53,6 +59,9 @@ partial class ClientPacketHandler
         ClientSession clientSession = session as ClientSession;
 
         GameInstance map = clientSession.MyMap;
+        if (map == null)
+            return;
+
         map.Push(() => { map.Session.Send(clientSession, packet); });
     }
 
@@ -62,6 +71,9 @@ partial class ClientPacketHandler
         ClientSession clientSession = session as ClientSession;
 
         GameInstance map = clientSession.MyMap;
+        if (map == null)
+            return;
+
         map.Push(() => { map.Session.Send(clientSession, packet); });
     }
 }

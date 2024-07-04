@@ -60,7 +60,7 @@ public partial class ObjectManager
         foreach (var info in infos)
         {
             // 오브젝트 만들기
-            GameObject go = CreateAndRegister(info.ObjectId, info.ObjectType);
+            GameObject go = Create(info);
             result.Add(go);
         }
 
@@ -69,16 +69,7 @@ public partial class ObjectManager
 
     public List<GameObject> Create(RepeatedField<ObjectInfo> infos)
     {
-        List<GameObject> result = new List<GameObject>();
-
-        foreach (var info in infos)
-        {
-            // 오브젝트 만들기
-            GameObject go = CreateAndRegister(info.ObjectId, info.ObjectType);
-            result.Add(go);
-        }
-
-        return result;
+        return Create(infos.ToList());
     }
 
     // ObjectType에 맞는 오브젝트를 만들고 등록

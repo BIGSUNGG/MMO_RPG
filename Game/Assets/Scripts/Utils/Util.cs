@@ -202,7 +202,8 @@ public class Util
     #region Enum
     static ItemType[] ItemTypeConverter =
     {
-        ItemType.Potion
+        ItemType.None,
+        ItemType.Potion,
     };
 
     public static ItemType ByteToItemType(byte value) { return ItemTypeConverter[value]; }

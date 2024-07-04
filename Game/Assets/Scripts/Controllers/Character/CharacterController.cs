@@ -665,7 +665,7 @@ public class CharacterController : ObjectController
 
         if(Managers.Network.IsServer)
         {
-            info.curHp = Health._curHp;
+            info.curHp = Health.Hp;
             info.bDead = Health._bDead;
         }
 

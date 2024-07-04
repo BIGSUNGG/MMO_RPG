@@ -1,4 +1,5 @@
-﻿using Google.Protobuf.Protocol;
+﻿using Google.Protobuf.Collections;
+using Google.Protobuf.Protocol;
 using Microsoft.EntityFrameworkCore;
 using Server.DB;
 using Server.Game;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ItemInfo = Google.Protobuf.Protocol.ItemInfo;
 
 namespace Server
 {
@@ -57,12 +59,13 @@ namespace Server
         {
             Console.WriteLine("Try create player");
             GameAccountDb findAccount = null;
-            PlayerDb createAccount = null;
+            PlayerDb createPlayer = null;
 
             using (GameDbContext db = new GameDbContext())
             {
                 findAccount = db.Accounts
                     .Include(a => a.Player)
+                    .ThenInclude(p => p.ItemSlot)
                     .Where(a => a.GameAccountDbId == accountDbId).FirstOrDefault();
 
                 if (findAccount == null)
@@ -76,8 +79,8 @@ namespace Server
                     findAccount.Player.Hp = 100;
                     findAccount.Player.MapId = 0;
 
-                    createAccount = findAccount.Player;
-                    db.Players.Add(createAccount);
+                    createPlayer = findAccount.Player;
+                    db.Players.Add(createPlayer);
 
                     if (db.SaveChangesEx())
                         Console.WriteLine("Create Player Succeed");
@@ -86,7 +89,7 @@ namespace Server
                 }
             }
 
-            return createAccount;
+            return createPlayer;
         }
 
         private bool DeleteAccount(int accountDbId)
@@ -154,7 +157,9 @@ namespace Server
                 if (session != null && session.LoginState == PlayerLoginState.LoggedIn) // 찾은 계정이 다른 클라이언트에서 이미 플레이 중이라면
                 {
                     Console.WriteLine("Already playing this account");
-                    session.Disconnect(); // 이미 연결중인 클라이언트 연결해제
+
+                    // 이미 연결중인 클라이언트 연결해제
+                    session.Disconnect(); 
                 }
             }
 
@@ -224,6 +229,8 @@ namespace Server
 
             if (MyMap != null)
             {
+                GameAccountManager.Instance.RequestSave(GameAccountDbId);
+
                 S_RequestPlayerInfo requestPacket = new S_RequestPlayerInfo();
                 requestPacket.SessionId = SessionId;
                 requestPacket.GameAccountId = GameAccountDbId;
@@ -246,6 +253,7 @@ namespace Server
                     loginAccount = db.Accounts
                         .AsNoTracking()
                         .Include(a => a.Player)
+                        .ThenInclude(p => p.ItemSlot)
                         .Where(a => a.GameAccountDbId == this.GameAccountDbId).FirstOrDefault();
 
                     if (loginAccount == null)
@@ -253,16 +261,16 @@ namespace Server
                         Console.WriteLine("Failed to find Account");
                         return;
                     }
-                }
 
-                // 플레이어 정보 업데이트
-                PlayerInfo info = new PlayerInfo();
-                {
-                    info.SessionId = SessionId;
-                    info.Hp = loginAccount.Player.Hp;
-                    info.Money = loginAccount.Player.Money;
-                    SetPlayerInfo(info);
+                    if(loginAccount.Player == null)
+                    {
+                        Console.WriteLine("Failed to find Player");
+                        return;
+                    }
                 }
+    
+                // 플레이어 정보 업데이트
+                SetPlayerInfo(loginAccount.Player);
 
                 // 접속중인 계정 추가하기
                 GameAccountManager.Instance.Add(this.GameAccountDbId, this);
@@ -283,7 +291,7 @@ namespace Server
         #endregion
 
         #region Map
-        public GameInstance MyMap { get; private set; } = null;
+        public GameInstance MyMap = null;
 
         // map : 입장할 GameMap
         public void EnterMap(int mapId, int enterDelay)
@@ -300,8 +308,7 @@ namespace Server
             LeaveMap();
 
             // GameMap 입장하기
-            MyMap = map;
-            MyMap.EnterMap(this, enterDelay);
+            map.EnterMap(this, enterDelay);
         }
 
         // 현재 입장해있는 GameMap에서 나오기
@@ -317,7 +324,8 @@ namespace Server
         #region Player
         public int Hp = 100;
         public int Money = 0;
-        public List<ItemInfo> ItemSlot = new List<ItemInfo>(new ItemInfo[9]);
+        public List<ItemInfo> ItemSlot = new List<ItemInfo>(new ItemInfo[ItemSlotSize]);
+        public const int ItemSlotSize = 9;
 
         public PlayerInfo GetPlayerInfo()
         {
@@ -325,6 +333,21 @@ namespace Server
             result.SessionId    = this.SessionId;
             result.Hp           = this.Hp;
             result.Money        = this.Money;
+
+            for (int i = 0; i < ItemSlotSize; i++)
+            {
+                if(ItemSlot[i] != null)
+                {
+                    result.ItemSlot.Add(ItemSlot[i]);
+                }
+                else
+                {
+                    ItemInfo info = new ItemInfo();
+                    info.Type = ItemType.None;
+                    info.Count = 0;
+                    result.ItemSlot.Add(info);
+                }
+            }
 
             return result;
         }
@@ -337,13 +360,65 @@ namespace Server
                 return;
             }
 
-            if (info.Hp == 0)
+            if (info.Hp <= 0)
                 info.Hp = 100;
 
-            Hp      = info.Hp;
-            Money   = info.Money;
+            Hp          = info.Hp;
+            Money       = info.Money;
+            SetItemSlot(info.ItemSlot.ToList());
         }
 
+        public void SetPlayerInfo(PlayerDb dbInfo)
+        {
+            PlayerInfo info = new PlayerInfo();
+            {
+                info.SessionId = SessionId;
+                info.Hp     = dbInfo.Hp;
+                info.Money  = dbInfo.Money;
+
+                if (dbInfo.ItemSlot != null)
+                {
+                    for (int i = 0; i < dbInfo.ItemSlot.Count; i++)
+                    {
+                        ItemInfo itemInfo = new ItemInfo(); ;
+                        if (dbInfo.ItemSlot[i] == null)
+                        {
+                            itemInfo.Type = ItemType.None;
+                            itemInfo.Count = 0;
+                        }
+                        else
+                        {
+                            itemInfo.Type = dbInfo.ItemSlot[i].Type;
+                            itemInfo.Count = dbInfo.ItemSlot[i].Count;
+                        }
+
+                        info.ItemSlot.Add(itemInfo);
+                    }
+                }
+            }
+
+            SetPlayerInfo(info);
+        }
+
+        public void SetItemSlot(List<ItemInfo> slot)
+        {
+            ItemSlot = new List<ItemInfo>(ItemSlotSize);
+            for (int i = 0; i < ItemSlotSize; i++)
+            {
+                ItemInfo info = new ItemInfo();
+                info.Type = ItemType.None;
+                info.Count = 0;
+                ItemSlot.Add(info);
+            }
+
+            for(int i = 0; i < slot.Count; i++)
+            {
+                if (slot[i] == null)
+                    continue;
+
+                ItemSlot[i] = slot[i];
+            }
+        }
         #endregion
     }
 }

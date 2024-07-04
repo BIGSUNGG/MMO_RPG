@@ -57,8 +57,10 @@ enum MsgId {
 	G_NOTIFY_PLAYER_MONEY = 26;
 	S_NOTIFY_PLAYER_MONEY = 27;
 	
-	G_NOTIFY_PLAYER_ITEM = 28;
-	S_NOTIFY_PLAYER_ITEM = 29;
+	G_NOTIFY_PLAYER_ITEM_SLOT = 28;
+	S_NOTIFY_PLAYER_ITEM_SLOT = 29;
+	G_NOTIFY_PLAYER_ITEM_SLOT_ALL = 30;
+	S_NOTIFY_PLAYER_ITEM_SLOT_ALL = 31;
 }
 
 // Enums
@@ -103,7 +105,8 @@ enum CharacterType {
 }
 
 enum ItemType {
-	Potion = 0;
+	None = 0;
+	Potion = 1;
 }
 
 enum PlayerLoginState {
@@ -121,8 +124,7 @@ message PlayerInfo{
 	int32 SessionId = 1;
 	int32 Hp = 2;
 	int32 Money = 3;
-
-	repeated ItemInfo Items = 4;
+	repeated ItemInfo ItemSlot = 4;
 }
 
 message ObjectInfo {	
@@ -295,15 +297,26 @@ message S_NotifyPlayerMoney{
 	int32 Money = 1;	
 }
 
-// G_NOTIFY_PLAYER_ITEM
-message G_NotifyPlayerItem{
+// G_NOTIFY_PLAYER_ITEM_SLOT
+message G_NotifyPlayerItemSlot{
 	int32 SessionId = 1;
 	int32 Index = 2;
 	ItemInfo info = 3;
 }
 
-// S_NOTIFY_PLAYER_ITEM
-message S_NotifyPlayerItem{
+// S_NOTIFY_PLAYER_ITEM_SLOT
+message S_NotifyPlayerItemSlot{
 	int32 Index = 1;
 	ItemInfo info = 2;
+}
+
+// G_NOTIFY_PLAYER_ITEM_SLOT_ALL
+message G_NotifyPlayerItemSlotAll{
+	int32 SessionId = 1;
+	repeated ItemInfo ItemSlot = 2;
+}
+
+// S_NOTIFY_PLAYER_ITEM_SLOT_ALL
+message S_NotifyPlayerItemSlotAll{
+	repeated ItemInfo ItemSlot = 1;
 }
