@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class ProductInfo
 {
-    public Item item;
+    public ItemType itemType;
     public int price;
 }
 
@@ -22,10 +22,24 @@ public class NpcController : ObjectController
     {
         base.Start();
 
-        ProductInfo info = new ProductInfo();
-        info.item = new Potion();
-        info.price = 25;
-        _products.Add(info);
+        {
+            ProductInfo info = new ProductInfo();
+            info.itemType = ItemType.SmallPotion;
+            info.price = 25;
+            _products.Add(info);
+        }
+        {
+            ProductInfo info = new ProductInfo();
+            info.itemType = ItemType.NormalPotion;
+            info.price = 40;
+            _products.Add(info);
+        }
+        {
+            ProductInfo info = new ProductInfo();
+            info.itemType = ItemType.BigPotion;
+            info.price = 75;
+            _products.Add(info);
+        }
     }
 
     protected override void Update()
@@ -35,7 +49,8 @@ public class NpcController : ObjectController
     }
 
     #region Npc
-    public List<ProductInfo> _products = new List<ProductInfo>();
+    public List<ProductInfo> Products { get { return _products; } }
+    protected List<ProductInfo> _products = new List<ProductInfo>();
     #endregion
 
     #region Sync

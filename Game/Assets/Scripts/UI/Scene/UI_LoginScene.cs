@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-#if !UNITY_SERVER
 public class UI_LoginScene : UI_Scene
 {
 	enum GameObjects
@@ -19,6 +18,7 @@ public class UI_LoginScene : UI_Scene
 		LoginBtn
 	}
 
+    #if !UNITY_SERVER
     public override void Init()
 	{
         base.Init();
@@ -69,20 +69,16 @@ public class UI_LoginScene : UI_Scene
 			Get<GameObject>((int)GameObjects.AccountName).GetComponent<InputField>().text = "";
 			Get<GameObject>((int)GameObjects.Password).GetComponent<InputField>().text = "";
 
-			if (res.LoginOk)
-			{
+            if (res.LoginOk)
+            {
                 Managers.Network.AccountName = account;
                 Managers.Network.AccountId = res.AccountId;
-				Managers.Network.Token = res.Token;
+                Managers.Network.Token = res.Token;
 
                 Managers.Network.ConnectToGame(res.ServerList[0]);
                 Managers.UI.ClosePopupUI();
             }
 		});
 	}
-}
-#else
-public class UI_LoginScene : UI_Scene
-{
-}
 #endif
+}

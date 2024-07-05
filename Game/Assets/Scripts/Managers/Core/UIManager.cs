@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-#if !UNITY_SERVER
 public class UIManager
 {
     int _order = 10;
@@ -131,4 +130,3 @@ public class UIManager
         SceneUI = null;
     }
 }
-#endif

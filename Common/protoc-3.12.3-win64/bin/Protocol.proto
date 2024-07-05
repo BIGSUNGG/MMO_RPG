@@ -106,7 +106,9 @@ enum CharacterType {
 
 enum ItemType {
 	None = 0;
-	Potion = 1;
+	SmallPotion = 1;
+	NormalPotion = 2;
+	BigPotion = 3;
 }
 
 enum PlayerLoginState {

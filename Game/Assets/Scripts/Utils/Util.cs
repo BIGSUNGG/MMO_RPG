@@ -203,7 +203,9 @@ public class Util
     static ItemType[] ItemTypeConverter =
     {
         ItemType.None,
-        ItemType.Potion,
+        ItemType.SmallPotion,
+        ItemType.NormalPotion,
+        ItemType.BigPotion,
     };
 
     public static ItemType ByteToItemType(byte value) { return ItemTypeConverter[value]; }

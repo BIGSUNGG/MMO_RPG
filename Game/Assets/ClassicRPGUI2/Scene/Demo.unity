@@ -1717,7 +1717,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &166855063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13979,15 +13979,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 826037944, guid: 9a8fbbb24e3660b4f9661c3e0d61ea08, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 826037944, guid: 9a8fbbb24e3660b4f9661c3e0d61ea08, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 826037944, guid: 9a8fbbb24e3660b4f9661c3e0d61ea08, type: 3}
       propertyPath: m_SizeDelta.x
-      value: -7.5790005
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 826037946, guid: 9a8fbbb24e3660b4f9661c3e0d61ea08, type: 3}
       propertyPath: m_Color.a
@@ -14047,15 +14047,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1361132059, guid: 9a8fbbb24e3660b4f9661c3e0d61ea08, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1361132059, guid: 9a8fbbb24e3660b4f9661c3e0d61ea08, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.9999999
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1361132059, guid: 9a8fbbb24e3660b4f9661c3e0d61ea08, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0.273402
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1361132060, guid: 9a8fbbb24e3660b4f9661c3e0d61ea08, type: 3}
       propertyPath: m_Color.a
@@ -14179,6 +14179,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SpellBook
+      objectReference: {fileID: 0}
+    - target: {fileID: 3636382584915446709, guid: 9a8fbbb24e3660b4f9661c3e0d61ea08,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3636382584915446710, guid: 9a8fbbb24e3660b4f9661c3e0d61ea08,
         type: 3}

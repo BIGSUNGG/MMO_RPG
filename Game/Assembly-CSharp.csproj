@@ -75,13 +75,14 @@
     <Compile Include="Assets\Scripts\Utils\PriorityQueue.cs" />
     <Compile Include="Assets\Scripts\Controllers\Character\Player\Knight\KnightPlayerController.cs" />
     <Compile Include="Assets\Scripts\Scenes\GameScene\GameScene_Client.cs" />
+    <Compile Include="Assets\Scripts\Item\Potion\SmallPotion.cs" />
     <Compile Include="Assets\Scripts\Scenes\StartScene\StartScene.cs" />
     <Compile Include="Assets\Scripts\UI\Popup\UI_Popup.cs" />
+    <Compile Include="Assets\Scripts\Item\Potion\NormalPotion.cs" />
     <Compile Include="Assets\Scripts\Managers\Core\Poolable.cs" />
     <Compile Include="Assets\Scripts\Controllers\Spawner\NpcSpawnerController.cs" />
     <Compile Include="Assets\Scripts\Managers\Contents\MapManager.cs" />
     <Compile Include="Assets\Scripts\Scenes\GameScene\GameScene.cs" />
-    <Compile Include="Assets\Scripts\Item\Potion\Potion.cs" />
     <Compile Include="Assets\Scripts\Animation\Character\Monster\Knight\KnightMonsterAnimParameter.cs" />
     <Compile Include="Assets\Scripts\Scenes\GameScene\GameScene_Server.cs" />
     <Compile Include="Assets\Scripts\Animation\Character\IdleState.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Assets\Scripts\Controllers\Spawner\CharacterSpawnerController.cs" />
     <Compile Include="Assets\Scripts\Utils\Define.cs" />
     <Compile Include="Assets\Scripts\Network\Server\ServerPacketHandler.cs" />
+    <Compile Include="Assets\Scripts\UI\Popup\UI_ItemShop_Item.cs" />
     <Compile Include="Assets\Scripts\Network\Packet\ClientPacketManager.cs" />
     <Compile Include="Assets\Scripts\Component\Inventory\InventoryComponent.cs" />
     <Compile Include="Assets\Scripts\Animation\Character\Monster\MonsterAnimParameter.cs" />
@@ -116,6 +118,8 @@
     <Compile Include="Assets\Scripts\Managers\Contents\ObjectManager.cs" />
     <Compile Include="Assets\Scripts\Network\Packet\Protocol.cs" />
     <Compile Include="Assets\Scripts\Network\ServerCore\Connector.cs" />
+    <Compile Include="Assets\Scripts\UI\Popup\UI_ItemShop.cs" />
+    <Compile Include="Assets\Scripts\Item\Potion\IPotion.cs" />
     <Compile Include="Assets\Scripts\Managers\Contents\NetworkManager.cs" />
     <Compile Include="Assets\Scripts\Managers\Core\UIManager.cs" />
     <Compile Include="Assets\Scripts\Utils\Util.cs" />
@@ -123,6 +127,7 @@
     <Compile Include="Assets\Scripts\Component\Movement\Character\Player\PlayerMovementComponent.cs" />
     <Compile Include="Assets\Scripts\Network\Packet\ClientPacketQueue.cs" />
     <Compile Include="Assets\Scripts\Controllers\ObjectController.cs" />
+    <Compile Include="Assets\Scripts\Item\Potion\BigPotion.cs" />
     <Compile Include="Assets\Scripts\Network\Rpc\RpcObjectFunction.cs" />
     <Compile Include="Assets\Scripts\UI\Scene\UI_LoginScene.cs" />
     <Compile Include="Assets\Scripts\Component\ObjectComponent.cs" />

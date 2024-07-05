@@ -53,25 +53,23 @@ public class CharacterController : ObjectController
     #region Controller
     public  CharacterType _characterType { get; protected set; } = CharacterType.Unknown;
     public Vector3 _spawnPosition = Vector3.zero;
-    public Vector2 _moveDir = Vector2.zero;
+    public Vector2 _inputDir = Vector2.zero;
     public override void ControllerUpdate()
     {
         base.ControllerUpdate();
 
-        _moveDir = Vector2.zero;
+        _inputDir = Vector2.zero;
         if (Movement)
-        {
-            _moveDir = Vector2.zero;
-         
+        {         
             if (Input.GetKey(KeyCode.W))
-                _moveDir.y += 1.0f;
+                _inputDir.y += 1.0f;
             if (Input.GetKey(KeyCode.S))
-                _moveDir.y -= 1.0f;
+                _inputDir.y -= 1.0f;
 
             if (Input.GetKey(KeyCode.A))
-                _moveDir.x -= 1.0f;
+                _inputDir.x -= 1.0f;
             if (Input.GetKey(KeyCode.D))
-                _moveDir.x += 1.0f;
+                _inputDir.x += 1.0f;
 
             Movement._bIsRunning = Input.GetKey(KeyCode.LeftShift);
         }
@@ -91,7 +89,7 @@ public class CharacterController : ObjectController
     }
 
     public virtual bool CanInput()
-    {
+    {  
         if (Health._bDead)
             return false;
 
@@ -187,7 +185,7 @@ public class CharacterController : ObjectController
 
     protected virtual void OnDeathEvent()
     {
-        Movement._velocity = Vector3.zero;
+        Movement.Velocity = Vector3.zero;
     }
 
     protected virtual void OnRespawnEvent()
@@ -660,7 +658,7 @@ public class CharacterController : ObjectController
 
         info.position = transform.position;
         info.rotation = transform.rotation;
-        info.moveDir  = _moveDir;
+        info.moveDir  = Movement.MoveDir;
         info.bIsRunning = Movement._bIsRunning;
 
         if(Managers.Network.IsServer)

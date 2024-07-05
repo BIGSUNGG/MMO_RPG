@@ -35,9 +35,9 @@ public class CharacterAnimParameter : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        Vector3 moveDir = new Vector3(_character._moveDir.x, 0.0f, _character._moveDir.y);
+        Vector3 moveDir = new Vector3(_character.Movement.MoveDir.x, 0.0f, _character.Movement.MoveDir.y);
             
-        bool bIsMoving = _character._moveDir != Vector2.zero; // 캐릭터가 움직이고 있는지
+        bool bIsMoving = _character.Movement.MoveDir != Vector2.zero; // 캐릭터가 움직이고 있는지
         bool bIsRunning = bIsMoving && _movement._bIsRunning; // 캐릭터가 움직이고 있는지
         float forwardSpeed = Vector3.Dot(transform.forward, moveDir); // 정면 속도 구하기
         float horizonSpeed = Vector3.Dot(transform.right  , moveDir); // 수평 속도 구하기

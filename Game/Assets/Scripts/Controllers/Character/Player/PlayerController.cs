@@ -47,7 +47,7 @@ public class PlayerController : CharacterController
 
     #region Player
     public ClientSession Session = null;
-    public NpcController _curCanInteractNcp = null;
+    protected NpcController _curCanInteractNcp = null;
 
     #endregion
 
@@ -59,20 +59,20 @@ public class PlayerController : CharacterController
 
         base.ControllerUpdate();
 
-        if(_playerMovement)
+        if (_playerMovement)
         {
             if (Input.GetKeyDown(KeyCode.Space) && CanDodgeInput())
                 _playerMovement.DodgeRollStart();
         }
 
-        if(_camera)
+        if (_camera)
         {
             _camera.transform.position = new UnityEngine.Vector3(0.0f, 10.0f, -3.0f) + transform.position;
             _camera.transform.eulerAngles = new UnityEngine.Vector3(70, 0, 0);
         }
 
         // 마우스 방향으로 회전
-        if(CanRotate())
+        if (CanRotate())
         {
             LookMousePos();
         }
@@ -89,7 +89,7 @@ public class PlayerController : CharacterController
                 return;
             }
 
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position + new Vector3(0.0f, Capsule.height / 2, 0.0f), 2.0f, layerMask);
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position + new Vector3(0.0f, Capsule.height / 2, 0.0f), 3.0f, layerMask);
             foreach (var hitCollider in hitColliders)
             {
                 NpcController npc = hitCollider.gameObject.GetComponentInParent<NpcController>();
@@ -99,12 +99,23 @@ public class PlayerController : CharacterController
                 _curCanInteractNcp = npc;
             }
 
-            if (Input.GetKeyDown(KeyCode.F))
-                Inventory.PurchaseItem(_curCanInteractNcp, 0);
+            if (_curCanInteractNcp == null)
+            {
+                CloseShopPopup();
+                return;
+            }
 
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-                Inventory.UseItem(0);
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                if(_itemShopUI == null)
+                    ShowShopPopup(_curCanInteractNcp);
+                else
+                    CloseShopPopup();
+            }
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+            Inventory.UseItem(0);
     }
 
     protected virtual void LookMousePos()
@@ -150,6 +161,14 @@ public class PlayerController : CharacterController
             return false;
 
         return base.CanAttack();
+    }
+
+    public override bool CanInput()
+    {
+        if (_itemShopUI != null)
+            return false;
+
+        return base.CanInput();
     }
 
     public override bool IsPlayerControlled()
@@ -212,6 +231,28 @@ public class PlayerController : CharacterController
         {
             LookMousePos();
         }
+    }
+    #endregion
+
+    #region Shop
+    protected UI_ItemShop _itemShopUI = null;
+
+    protected virtual void ShowShopPopup(NpcController dealer)
+    {
+        if (_itemShopUI != null)
+            return;
+
+        _itemShopUI = Managers.UI.ShowPopupUI<UI_ItemShop>();
+        _itemShopUI.SetDealer(dealer);
+    }
+
+    protected virtual void CloseShopPopup()
+    {
+        if (_itemShopUI == null)
+            return;
+
+        Managers.UI.ClosePopupUI(_itemShopUI);
+        _itemShopUI = null;
     }
     #endregion
 

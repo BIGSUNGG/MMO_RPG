@@ -5,19 +5,29 @@ using UnityEngine;
 
 public abstract class Item
 {
+
+    #region Item
     public ItemType _itemType { get; protected set; }
+    public string ItemName { get { return _itemName; } }
+    protected string _itemName;
+
+    public string IconImagePath { get { return "Icon/" + _iconImgName; } }
+    protected string _iconImgName;
+    #endregion
 
     #region Use
     public abstract bool OnServer_Use(ObjectController oc);
     #endregion
 
     #region Factory
-    static Item[] _factory = 
+    static Item[] Items = 
     {
         null,
-        new Potion()
+        new SmallPotion(),
+        new NormalPotion(),
+        new BigPotion(),
     };
 
-    static public Item FindItem(ItemType type) { return _factory[(byte)type]; }
+    static public Item FindItem(ItemType type) { return Items[(byte)type]; }
     #endregion
 }

@@ -62,7 +62,7 @@ public class KnightMonsterController : MonsterController
             }
             else
             {
-                _moveDir = Vector3.zero;
+                _inputDir = Vector3.zero;
             }
         }
         else // 추적중인 적이 있다면
@@ -76,7 +76,7 @@ public class KnightMonsterController : MonsterController
                 _enemy = FindEnemy(_enemySearchDistance);
                 if(_enemy == null)
                 {
-                    _moveDir = Vector3.zero;
+                    _inputDir = Vector3.zero;
                     return;
                 }
             }
@@ -92,7 +92,7 @@ public class KnightMonsterController : MonsterController
             else // 가깝다면
             {
                 // 멈추기
-                _moveDir = Vector3.zero;
+                _inputDir = Vector3.zero;
 
                 if(_aiCurAttackDelay <= 0.0f)
                 {

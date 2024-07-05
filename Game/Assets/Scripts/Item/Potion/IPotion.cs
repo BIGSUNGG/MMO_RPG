@@ -3,14 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Potion : Item
+public class IPotion : Item
 {
-    public int _healPoint = 25;
-
-    public Potion()
+    public IPotion()
     {
-        _itemType = ItemType.Potion;
+        _itemType = ItemType.SmallPotion;
+        _iconImgName = "Potion";
     }
+
+    #region Use
+    protected int _healPoint = 25;
 
     public override bool OnServer_Use(ObjectController oc)
     {
@@ -24,4 +26,5 @@ public class Potion : Item
         cc.Health.IncreaseHp(_healPoint);
         return true;
     }
+    #endregion
 }

@@ -381,13 +381,13 @@ public class InventoryComponent: ObjectComponent
     #region Purchase
     public void PurchaseItem(NpcController dealer, int itemIndex)
     {
-        if (dealer._products.Count <= itemIndex)
+        if (dealer.Products.Count <= itemIndex)
         {
             Debug.Log("Select wrong index");
             return;
         }
 
-        ProductInfo info = dealer._products[itemIndex];
+        ProductInfo info = dealer.Products[itemIndex];
         if (info.price > _money)
         {
             Debug.Log("Need more money");
@@ -452,7 +452,7 @@ public class InventoryComponent: ObjectComponent
                 return false;
 
             int index = BitConverter.ToInt32(packet, 4);
-            if (npc._products.Count <= index)
+            if (npc.Products.Count <= index)
                 return false;
 
             return true;
@@ -467,13 +467,13 @@ public class InventoryComponent: ObjectComponent
     // Server_PurchaseItem 코드
     protected virtual void Server_PurchaseItem_Implementation(NpcController dealer, int itemIndex)
     {
-        if (dealer._products.Count <= itemIndex)
+        if (dealer.Products.Count <= itemIndex)
         {
             Debug.LogError("Select wrong index");
             return;
         }
 
-        ProductInfo info = dealer._products[itemIndex];
+        ProductInfo info = dealer.Products[itemIndex];
         if (info.price > _money) // 돈이 부족한 경우
         {
             Debug.LogError("Need more money");
@@ -482,7 +482,7 @@ public class InventoryComponent: ObjectComponent
 
         // 돈 차감 이후 아이템 추가
         DecreaseMoney(info.price);
-        OnServer_AddItem(info.item._itemType);
+        OnServer_AddItem(info.itemType);
     }
     #endregion
 

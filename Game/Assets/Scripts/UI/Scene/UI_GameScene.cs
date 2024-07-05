@@ -22,7 +22,7 @@ public class UI_GameScene : UI_Scene
     protected Image _mapLeaveTrasitionImage;
     protected Animator _mapLeaveTrasitionAnim;
 
-#if !UNITY_SERVER
+    #if !UNITY_SERVER
     public override void Init()
 	{
         base.Init();
@@ -82,5 +82,5 @@ public class UI_GameScene : UI_Scene
         _mapLeaveTrasitionImage.enabled = true;
         _mapLeaveTrasitionAnim.enabled = true;
     }
-#endif
+    #endif
 }

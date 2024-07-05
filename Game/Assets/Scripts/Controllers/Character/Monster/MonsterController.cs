@@ -84,9 +84,9 @@ public class MonsterController : CharacterController
             return;
 
         Vector3 dir = to - transform.position;
-        _moveDir.x = dir.x;
-        _moveDir.y = dir.z;
-        _moveDir.Normalize();
+        _inputDir.x = dir.x;
+        _inputDir.y = dir.z;
+        _inputDir.Normalize();
     }
 
     protected virtual void LookAt(GameObject to)

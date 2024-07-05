@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-#if !UNITY_SERVER
 public class UI_Scene : UI_Base
 {
 	public override void Init()
@@ -15,11 +14,3 @@ public class UI_Scene : UI_Base
 
     }
 }
-#else
-public class UI_Scene : UI_Base
-{
-    public override void Init()
-    {
-    }
-}
-#endif

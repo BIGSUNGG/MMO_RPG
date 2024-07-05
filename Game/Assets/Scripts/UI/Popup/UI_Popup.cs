@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-#if !UNITY_SERVER
 public class UI_Popup : UI_Base
 {
     public override void Init()
@@ -15,4 +14,3 @@ public class UI_Popup : UI_Base
         Managers.UI.ClosePopupUI(this);
     }
 }
-#endif

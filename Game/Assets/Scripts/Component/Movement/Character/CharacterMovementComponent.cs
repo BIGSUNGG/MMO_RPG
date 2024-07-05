@@ -26,12 +26,17 @@ public class CharacterMovementComponent : ObjectComponent
             _rigidbody.useGravity = true;
             _rigidbody.isKinematic = false;
 
-            Vector2 _moveDir = _character._moveDir;
-            _moveDir.Normalize();
+            _moveDir = Vector2.zero;
             if (_character.CanMove() && this.CanMove()) // 캐릭터가 움직일 수 있는지
             {
                 // 입력 방향으로 이동
-                _velocity = new Vector3(_moveDir.x * _curMoveSpeed, _velocity.y < 2.0f ? _velocity.y : 2.0f, _moveDir.y * _curMoveSpeed);
+                _moveDir = _character._inputDir;
+                _moveDir.Normalize();
+                Velocity = new Vector3(_moveDir.x * _curMoveSpeed, Velocity.y < 2.0f ? Velocity.y : 2.0f, _moveDir.y * _curMoveSpeed);
+            }
+            else
+            {
+                Velocity = Vector3.zero;
             }
         }
         else if (Managers.Network.IsClient) // 클라이언트가 빙의하지않은 오브젝트인 경우
@@ -43,7 +48,7 @@ public class CharacterMovementComponent : ObjectComponent
             _curRotSyncLerpTime += Time.deltaTime * _syncRotLerpMultiply;
 
             if (_curPosSyncLerpTime >= 1)
-                _character._moveDir = Vector3.zero;
+                _character._inputDir = Vector3.zero;
 
             transform.position = Vector3.Lerp(_syncStartPos, _syncEndPos, _curPosSyncLerpTime);
             transform.rotation = Quaternion.Lerp(_syncStartRot, _syncEndRot, _curRotSyncLerpTime);
@@ -57,7 +62,10 @@ public class CharacterMovementComponent : ObjectComponent
 
 	#region Movement
     // State
-	public Vector3 _velocity { get { return _rigidbody.velocity; }  set { _rigidbody.velocity = value; } }
+    public Vector2 MoveDir { get { return _moveDir; } }
+    protected Vector2 _moveDir = Vector2.zero;
+
+	public Vector3 Velocity { get { return _rigidbody.velocity; }  set { _rigidbody.velocity = value; } }
 
     // Move
     public bool _bIsRunning = false; // 달리고 있는지
@@ -107,7 +115,7 @@ public class CharacterMovementComponent : ObjectComponent
 			transform.rotation = rot;
 
             _bIsRunning = IsRunnung;
-            _character._moveDir = moveDir;
+            _moveDir = moveDir;
         }
         else
         {
@@ -116,7 +124,7 @@ public class CharacterMovementComponent : ObjectComponent
                 _curPosSyncLerpTime = 0.0f;
                 _syncStartPos = transform.position;
                 if(moveDir != Vector3.zero)
-                    _character._moveDir = moveDir;
+                    _moveDir = moveDir;
             }
 
             if(rot != _syncEndRot)

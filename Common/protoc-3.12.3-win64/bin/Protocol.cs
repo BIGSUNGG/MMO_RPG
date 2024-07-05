@@ -106,11 +106,12 @@ namespace Google.Protobuf.Protocol {
             "ARIYChRNdWx0aWNhc3RfVGFrZURhbWFnZRACEhUKEU11bHRpY2FzdF9SZXNw",
             "YXduEAMSFwoTU2VydmVyX1B1cmNoYXNlSXRlbRAEEhIKDlNlcnZlcl9Vc2VJ",
             "dGVtEAUqNQoNQ2hhcmFjdGVyVHlwZRILCgdVbmtub3duEAASCwoHTW9uc3Rl",
-            "chABEgoKBlBsYXllchACKiAKCEl0ZW1UeXBlEggKBE5vbmUQABIKCgZQb3Rp",
-            "b24QASo0ChBQbGF5ZXJMb2dpblN0YXRlEhEKDU5PVF9MT0dHRURfSU4QABIN",
-            "CglMT0dHRURfSU4QASowCgtMb2dpblJlc3VsdBIRCg1MT0dJTl9TVUNDRVNT",
-            "EAASDgoKTE9HSU5fRkFJTBABQhuqAhhHb29nbGUuUHJvdG9idWYuUHJvdG9j",
-            "b2xiBnByb3RvMw=="));
+            "chABEgoKBlBsYXllchACKkYKCEl0ZW1UeXBlEggKBE5vbmUQABIPCgtTbWFs",
+            "bFBvdGlvbhABEhAKDE5vcm1hbFBvdGlvbhACEg0KCUJpZ1BvdGlvbhADKjQK",
+            "EFBsYXllckxvZ2luU3RhdGUSEQoNTk9UX0xPR0dFRF9JThAAEg0KCUxPR0dF",
+            "RF9JThABKjAKC0xvZ2luUmVzdWx0EhEKDUxPR0lOX1NVQ0NFU1MQABIOCgpM",
+            "T0dJTl9GQUlMEAFCG6oCGEdvb2dsZS5Qcm90b2J1Zi5Qcm90b2NvbGIGcHJv",
+            "dG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.MsgId), typeof(global::Google.Protobuf.Protocol.GameObjectType), typeof(global::Google.Protobuf.Protocol.GameComponentType), typeof(global::Google.Protobuf.Protocol.RpcObjectFunctionId), typeof(global::Google.Protobuf.Protocol.RpcComponentFunctionId), typeof(global::Google.Protobuf.Protocol.CharacterType), typeof(global::Google.Protobuf.Protocol.ItemType), typeof(global::Google.Protobuf.Protocol.PlayerLoginState), typeof(global::Google.Protobuf.Protocol.LoginResult), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -269,7 +270,9 @@ namespace Google.Protobuf.Protocol {
 
   public enum ItemType {
     [pbr::OriginalName("None")] None = 0,
-    [pbr::OriginalName("Potion")] Potion = 1,
+    [pbr::OriginalName("SmallPotion")] SmallPotion = 1,
+    [pbr::OriginalName("NormalPotion")] NormalPotion = 2,
+    [pbr::OriginalName("BigPotion")] BigPotion = 3,
   }
 
   public enum PlayerLoginState {
