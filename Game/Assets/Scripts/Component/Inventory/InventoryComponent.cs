@@ -315,7 +315,7 @@ public class InventoryComponent: ObjectComponent
         {
             int index = BitConverter.ToInt32(packet, 0);
             byte typeByte = packet[4];
-            ItemType itemType = Util.ByteToItemType(typeByte);
+            ItemType itemType = (ItemType)typeByte;
 
             Server_UseItem_Implementation(index, itemType);
         }
@@ -337,7 +337,7 @@ public class InventoryComponent: ObjectComponent
                 return false;
 
             byte typeByte = packet[4];
-            ItemType itemType = Util.ByteToItemType(typeByte);
+            ItemType itemType = (ItemType)typeByte;
             if (itemType == ItemType.None)
                 return false;
 

@@ -388,7 +388,7 @@ namespace Server
                         }
                         else
                         {
-                            itemInfo.Type = dbInfo.ItemSlot[i].Type;
+                            itemInfo.Type = (ItemType)dbInfo.ItemSlot[i].Type;
                             itemInfo.Count = dbInfo.ItemSlot[i].Count;
                         }
 

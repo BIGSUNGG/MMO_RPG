@@ -198,17 +198,4 @@ public class Util
         return obj;
     }
     #endregion
-
-    #region Enum
-    static ItemType[] ItemTypeConverter =
-    {
-        ItemType.None,
-        ItemType.SmallPotion,
-        ItemType.NormalPotion,
-        ItemType.BigPotion,
-    };
-
-    public static ItemType ByteToItemType(byte value) { return ItemTypeConverter[value]; }
-
-    #endregion
 }

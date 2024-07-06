@@ -78,45 +78,70 @@ public class PlayerController : CharacterController
         }
 
         // 근처 상호작용 가능한 Npc 찾기
+        SearchNpc();
+
+        // 아이템 사용
+        if (CanUseItem())
         {
-            _curCanInteractNcp = null;
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+                Inventory.UseItem(0);
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+                Inventory.UseItem(1);
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+                Inventory.UseItem(2);
+            if (Input.GetKeyDown(KeyCode.Alpha4))
+                Inventory.UseItem(3);
+            if (Input.GetKeyDown(KeyCode.Alpha5))
+                Inventory.UseItem(4);
+            if (Input.GetKeyDown(KeyCode.Alpha6))
+                Inventory.UseItem(5);
+            if (Input.GetKeyDown(KeyCode.Alpha7))
+                Inventory.UseItem(6);
+            if (Input.GetKeyDown(KeyCode.Alpha8))
+                Inventory.UseItem(7);
+            if (Input.GetKeyDown(KeyCode.Alpha9))
+                Inventory.UseItem(8);
+        }
+    }
 
-            int targetLayer = LayerMask.NameToLayer("Npc");
-            int layerMask = 1 << targetLayer;
-            if (targetLayer == -1) // 레이어를 못 찾았을 경우
-            {
-                Debug.LogWarning("레이어 이름이 유효하지 않습니다: " + layerMask);
-                return;
-            }
+    // 근처 상호작용 가능한 Npc 찾기
+    protected virtual void SearchNpc()
+    {
+        _curCanInteractNcp = null;
 
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position + new Vector3(0.0f, Capsule.height / 2, 0.0f), 3.0f, layerMask);
-            foreach (var hitCollider in hitColliders)
-            {
-                NpcController npc = hitCollider.gameObject.GetComponentInParent<NpcController>();
-                if (npc == null)
-                    continue;
-
-                _curCanInteractNcp = npc;
-            }
-
-            if (_curCanInteractNcp == null)
-            {
-                CloseShopPopup();
-                return;
-            }
-
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                if(_itemShopUI == null)
-                    ShowShopPopup(_curCanInteractNcp);
-                else
-                    CloseShopPopup();
-            }
+        int targetLayer = LayerMask.NameToLayer("Npc");
+        int layerMask = 1 << targetLayer;
+        if (targetLayer == -1) // 레이어를 못 찾았을 경우
+        {
+            Debug.LogWarning("레이어 이름이 유효하지 않습니다: " + layerMask);
+            return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-            Inventory.UseItem(0);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position + new Vector3(0.0f, Capsule.height / 2, 0.0f), 3.0f, layerMask);
+        foreach (var hitCollider in hitColliders)
+        {
+            NpcController npc = hitCollider.gameObject.GetComponentInParent<NpcController>();
+            if (npc == null)
+                continue;
+
+            _curCanInteractNcp = npc;
+        }
+
+        if (_curCanInteractNcp == null)
+        {
+            CloseShopPopup();
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            if (_itemShopUI == null)
+                ShowShopPopup(_curCanInteractNcp);
+            else
+                CloseShopPopup();
+        }
     }
+
 
     protected virtual void LookMousePos()
     {

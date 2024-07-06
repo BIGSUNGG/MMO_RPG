@@ -119,6 +119,14 @@ public class CharacterController : ObjectController
 
         return true;
     }
+
+    public virtual bool CanUseItem()
+    {
+        if (CanInput() == false)
+            return false;
+
+        return true;
+    }
     #endregion
 
     #region Component

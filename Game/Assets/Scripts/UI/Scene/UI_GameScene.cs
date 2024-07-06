@@ -5,20 +5,30 @@ using UnityEngine.UI;
 
 public class UI_GameScene : UI_Scene
 {
-    public GameObject NameObject;
-    protected Text _nameText;
+    enum GameObjects
+    {
+        BlackEnterTransition,
+        BlackLeaveTransition,
+    }
 
-    public GameObject HpObject;
+    enum Texts
+    { 
+        Name,
+        Money,
+    }
+
+    enum Images
+    {
+        HP_Fill,
+    }
+
+    protected Text _nameText;
+    protected Text _moneyText;
     protected Image _hpImage;
 
-    public GameObject MoneyObject;
-    protected Text _moneyText;
-
-    public GameObject MapEnterBlackTransition;
     protected Image _mapEnterTrasitionImage;
     protected Animator _mapEnterTrasitionAnim;
 
-    public GameObject MapLeaveBlackTransition;
     protected Image _mapLeaveTrasitionImage;
     protected Animator _mapLeaveTrasitionAnim;
 
@@ -27,18 +37,24 @@ public class UI_GameScene : UI_Scene
 	{
         base.Init();
 
-        _nameText   = NameObject.GetComponent<Text>();
-        _hpImage    = HpObject.GetComponent<Image>();
-        _moneyText  = MoneyObject.GetComponent<Text>();
+        Bind<GameObject>(typeof(GameObjects));
+        Bind<Text>      (typeof(Texts));
+        Bind<Image>     (typeof(Images));
 
-        _mapEnterTrasitionImage = MapEnterBlackTransition.GetComponent<Image>();
-        _mapEnterTrasitionAnim = MapEnterBlackTransition.GetComponent<Animator>();
+        _nameText   = GetText((int)Texts.Name);
+        _moneyText  = GetText((int)Texts.Money);
+        _hpImage    = GetImage((int)Images.HP_Fill);
+
+        GameObject mapEnterBlackTransition = Get<GameObject>((int)GameObjects.BlackEnterTransition);
+        _mapEnterTrasitionImage = mapEnterBlackTransition.GetOrAddComponent<Image>();
+        _mapEnterTrasitionAnim = mapEnterBlackTransition.GetOrAddComponent<Animator>();
 
         _mapEnterTrasitionImage.enabled = true;
         _mapEnterTrasitionAnim.enabled = false;
 
-        _mapLeaveTrasitionImage = MapLeaveBlackTransition.GetComponent<Image>();
-        _mapLeaveTrasitionAnim = MapLeaveBlackTransition.GetComponent<Animator>();
+        GameObject mapLeaveBlackTransition = Get<GameObject>((int)GameObjects.BlackLeaveTransition);
+        _mapLeaveTrasitionImage = mapLeaveBlackTransition.GetOrAddComponent<Image>();
+        _mapLeaveTrasitionAnim = mapLeaveBlackTransition.GetOrAddComponent<Animator>();
 
         _mapLeaveTrasitionImage.enabled = false;
         _mapLeaveTrasitionAnim.enabled = false;

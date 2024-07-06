@@ -36,7 +36,7 @@ namespace Server.DB
     {
         public int ItemInfoDbId { get; set; }
 
-        public ItemType Type { get; set; }
+        public byte Type { get; set; }
         public int Count { get; set; }
 
         [ForeignKey("Player")]

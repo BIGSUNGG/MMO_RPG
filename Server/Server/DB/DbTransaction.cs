@@ -51,12 +51,12 @@ namespace Server.DB
 
                             if (info.ItemSlot[i] == null)
                             {
-                                itemInfo.Type = ItemType.None;
+                                itemInfo.Type = (byte)ItemType.None;
                                 itemInfo.Count = 0;
                             }
                             else
                             {
-                                itemInfo.Type = info.ItemSlot[i].Type;
+                                itemInfo.Type = (byte)info.ItemSlot[i].Type;
                                 itemInfo.Count = info.ItemSlot[i].Count;
                             }
                             findPlayer.ItemSlot[i] = itemInfo;
