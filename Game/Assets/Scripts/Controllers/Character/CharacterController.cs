@@ -189,6 +189,8 @@ public class CharacterController : ObjectController
             Debug.Log("TakeDamage");
             Multicast_ComboEnd();
         }
+
+        Managers.Sound.Play(_hitSound, Define.Sound.Effect);
     }
 
     protected virtual void OnDeathEvent()
@@ -206,6 +208,8 @@ public class CharacterController : ObjectController
     #endregion
 
     #region Attack
+    public AudioClip _attackSound;
+    public AudioClip _hitSound;
     public bool _isAttacking { get; protected set; } = false;
     protected bool _bDoNextCombo = false;
 
@@ -451,15 +455,15 @@ public class CharacterController : ObjectController
     #region ComboAttackSwing
     public virtual void OnComboAttackSwing(string attackName) // 무기를 휘두르는 타이밍에 호출
     {
+        Managers.Sound.Play(_attackSound, Define.Sound.Effect);
+
         if(Managers.Network.IsServer && _isAttacking)
             OnServer_ComboAttackSwing(attackName);
     }
 
-    // 서버에 공격 결과 패킷을 보냄
     // attackName : 공격 이름
     public virtual void OnServer_ComboAttackSwing(string attackName)
     {
-
     }
     #endregion
 

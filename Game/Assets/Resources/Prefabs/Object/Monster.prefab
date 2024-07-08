@@ -54,7 +54,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawnPosition: {x: 0, y: 0, z: 0}
-  _moveDir: {x: 0, y: 0}
+  _inputDir: {x: 0, y: 0}
+  _attackSound: {fileID: 8300000, guid: d3e7a08b937eab048be8b7cf808e9324, type: 3}
+  _hitSound: {fileID: 8300000, guid: 732087dce2328b54aaf0241eace425c8, type: 3}
   _maxCombo: 1
   _comboDelay:
   - 2.5
@@ -91,11 +93,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4015773a56dfb724b8a9132eea69798d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _curHp: 100
   _onServerBeforeTakeDamageEvent:
     m_PersistentCalls:
       m_Calls: []
   _onTakeDamageEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  _onKillEvent:
     m_PersistentCalls:
       m_Calls: []
   _onDeathEvent:

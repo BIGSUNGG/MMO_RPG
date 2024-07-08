@@ -53,6 +53,7 @@ public class PlayerMovementComponent : CharacterMovementComponent
     float _dodgeSpeed = 12.5f;          // 구르는 속도
     const float _dodgeTime = 0.5f;      // 구르는 시간
     TimerHandler _dodgeEndTimer;        // 구르기를 끝내는 타이머
+    public AudioClip _dodgeRollSound;
 
     float _dodgeDelay = 0.75f;          // 구르기 딜레이
     TimerHandler _dodgeDelayTimer;      // 구르기 딜레이 타이머
@@ -171,6 +172,8 @@ public class PlayerMovementComponent : CharacterMovementComponent
         _dodgeEndTimer = Managers.Timer.SetTimer(_dodgeTime, DodgeRollEnd, false); // _dodgeRollTime이후에 구르기 종료
 
         _onDodgeStartEvent.Invoke();
+
+        Managers.Sound.Play(_dodgeRollSound, Define.Sound.Effect);
     }
 
     // 구르기 종료 시 호출

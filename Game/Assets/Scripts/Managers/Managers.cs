@@ -78,9 +78,6 @@ public class Managers : MonoBehaviour
         Sound.Clear();
         Scene.Clear();
         Pool.Clear();
-
-        #if !UNITY_SERVER
         UI.Clear();
-        #endif
     }
 }

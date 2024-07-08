@@ -55,6 +55,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spawnPosition: {x: 0, y: 0, z: 0}
   _inputDir: {x: 0, y: 0}
+  _attackSound: {fileID: 8300000, guid: d3e7a08b937eab048be8b7cf808e9324, type: 3}
+  _hitSound: {fileID: 8300000, guid: 732087dce2328b54aaf0241eace425c8, type: 3}
   _maxCombo: 4
   _comboDelay:
   - 0.55
@@ -82,6 +84,7 @@ MonoBehaviour:
   _bIsRunning: 0
   _syncStartPos: {x: 0, y: 0, z: 0}
   _syncEndPos: {x: 0, y: 0, z: 0}
+  _dodgeRollSound: {fileID: 8300000, guid: d71460f920fee374f87c533f17f7ff90, type: 3}
   _onDodgeStartEvent:
     m_PersistentCalls:
       m_Calls: []

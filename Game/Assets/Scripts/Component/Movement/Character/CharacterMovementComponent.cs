@@ -27,7 +27,7 @@ public class CharacterMovementComponent : ObjectComponent
             _rigidbody.isKinematic = false;
 
             _moveDir = Vector2.zero;
-            if (_character.CanMove() && this.CanMove()) // 캐릭터가 움직일 수 있는지
+            if (_character._inputDir != Vector2.zero || _character.CanMove() && this.CanMove()) // 캐릭터가 움직일 수 있는지
             {
                 // 입력 방향으로 이동
                 _moveDir = _character._inputDir;
@@ -48,7 +48,7 @@ public class CharacterMovementComponent : ObjectComponent
             _curRotSyncLerpTime += Time.deltaTime * _syncRotLerpMultiply;
 
             if (_curPosSyncLerpTime >= 1)
-                _character._inputDir = Vector3.zero;
+                _moveDir = Vector3.zero;
 
             transform.position = Vector3.Lerp(_syncStartPos, _syncEndPos, _curPosSyncLerpTime);
             transform.rotation = Quaternion.Lerp(_syncStartRot, _syncEndRot, _curRotSyncLerpTime);
@@ -119,11 +119,12 @@ public class CharacterMovementComponent : ObjectComponent
         }
         else
         {
-            if (pos != _syncEndPos)
+            float posDistance = Mathf.Abs((pos - _syncEndPos).magnitude);
+            if (posDistance >= 0.1f)
             {
                 _curPosSyncLerpTime = 0.0f;
                 _syncStartPos = transform.position;
-                if(moveDir != Vector3.zero)
+                if (moveDir != Vector3.zero)
                     _moveDir = moveDir;
             }
 
