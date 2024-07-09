@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Google.Protobuf.Protocol;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +8,7 @@ public class UI_GameScene : UI_Scene
 {
     enum GameObjects
     {
+        ItemSlot,
         BlackEnterTransition,
         BlackLeaveTransition,
     }
@@ -21,6 +23,9 @@ public class UI_GameScene : UI_Scene
     {
         HP_Fill,
     }
+
+    protected List<Image> _itemSlotImages = new List<Image>(9);
+    protected List<Text> _itemSlotTexts = new List<Text>(9);
 
     protected Text _nameText;
     protected Text _moneyText;
@@ -44,6 +49,18 @@ public class UI_GameScene : UI_Scene
         _nameText   = GetText((int)Texts.Name);
         _moneyText  = GetText((int)Texts.Money);
         _hpImage    = GetImage((int)Images.HP_Fill);
+
+        GameObject itemSlot = Get<GameObject>((int)GameObjects.ItemSlot);
+        foreach(var image in itemSlot.GetComponentsInChildren<Image>())
+        {
+            if (image.gameObject.name == "IconImage")
+                _itemSlotImages.Add(image);
+        }
+        foreach (var text in itemSlot.GetComponentsInChildren<Text>())
+        {
+            if (text.gameObject.name == "Count")
+                _itemSlotTexts.Add(text);
+        }
 
         GameObject mapEnterBlackTransition = Get<GameObject>((int)GameObjects.BlackEnterTransition);
         _mapEnterTrasitionImage = mapEnterBlackTransition.GetOrAddComponent<Image>();
@@ -79,6 +96,8 @@ public class UI_GameScene : UI_Scene
 
         if(_moneyText && pc.Inventory)
             _moneyText.text = pc.Inventory.Money.ToString() + " Gold";
+
+        RefreshItemSlot();
     }
 
     protected virtual void OnPossess()
@@ -97,6 +116,38 @@ public class UI_GameScene : UI_Scene
 
         _mapLeaveTrasitionImage.enabled = true;
         _mapLeaveTrasitionAnim.enabled = true;
+    }
+
+    protected virtual void RefreshItemSlot()
+    {
+        PlayerController pc = Managers.Controller.MyController;
+        if (pc == null)
+            return;
+
+        // 슬롯 이미지 초기화
+        for (int i = 0; i < _itemSlotImages.Count; i++)
+        {
+            _itemSlotImages[i].sprite = null;
+            _itemSlotImages[i].enabled = false;
+
+            _itemSlotTexts[i].enabled = false;
+        }
+
+        // 슬롯 이미지 설정
+        List<ItemInfo> items = pc.Inventory.ItemSlot;
+        for (int i = 0; i < items.Count; i++)
+        {
+            Item item = Item.FindItem(items[i].Type);
+            if (item == null)
+                continue;
+   
+            Sprite itemIcon = Resources.Load<Sprite>(item.IconImagePath);
+            _itemSlotImages[i].sprite = itemIcon;
+            _itemSlotImages[i].enabled = true;
+
+            _itemSlotTexts[i].text = items[i].Count.ToString();
+            _itemSlotTexts[i].enabled = true;
+        }
     }
     #endif
 }
