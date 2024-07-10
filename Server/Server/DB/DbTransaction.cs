@@ -9,13 +9,13 @@ using System.Text;
 
 namespace Server.DB
 {
-	public partial class DbTransaction : JobSerializer
-	{
-		public static DbTransaction Instance { get; } = new DbTransaction();
+    public partial class DbTransaction : JobSerializer
+    {
+        public static DbTransaction Instance { get; } = new DbTransaction();
 
         public static void SavePlayer(int gameAccountId, int mapId, PlayerInfo info)
         {
-            Instance.Push(() => 
+            Instance.Push(() =>
             {
                 using (GameDbContext db = new GameDbContext())
                 {
@@ -36,16 +36,49 @@ namespace Server.DB
                     findPlayer.Hp = info.Hp;
                     findPlayer.Money = info.Money;
 
-                    if (info.ItemSlot == null)
+                    if (findPlayer.ItemSlot == null)
+                        findPlayer.ItemSlot = new List<ItemInfoDb>();
+
+                    // 아이템 슬롯 초기화                   
+                    for (int i = 0; i < findPlayer.ItemSlot.Count; i++)
                     {
-                        findPlayer.ItemSlot = new List<ItemInfoDb>();           
+                        ItemInfoDb itemInfo = findPlayer.ItemSlot[i];
+                        if (itemInfo == null)
+                            itemInfo = new ItemInfoDb();
+
+                        itemInfo.Player = findPlayer;
+                        itemInfo.PlayerDbId = findPlayer.PlayerDbId;
+                        itemInfo.Type = (byte)ItemType.None;
+                        itemInfo.Count = 0;
+
+                        findPlayer.ItemSlot[i] = itemInfo;
                     }
-                    else
+
+                    if (info.ItemSlot != null) // 아이템 슬롯이 있다면
                     {
-                        findPlayer.ItemSlot = new List<ItemInfoDb>(new ItemInfoDb[info.ItemSlot.Count]);
+                        // Db에 있는 아이템 슬롯이 저장할 아이템 슬롯보다 크다면 Db 아이템 슬롯 사이즈 줄이기
+                        while(findPlayer.ItemSlot.Count > info.ItemSlot.Count)
+                        {
+                            findPlayer.ItemSlot.RemoveAt(findPlayer.ItemSlot.Count - 1);
+                        }
+
+                        // Db에 있는 아이템 슬롯이 저장할 아이템 슬롯보다 작다면 Db 아이템 슬롯 사이즈 늘리기
+                        while (findPlayer.ItemSlot.Count < info.ItemSlot.Count)
+                        {
+                            ItemInfoDb itemInfo = itemInfo = new ItemInfoDb();
+                            itemInfo.Player = findPlayer;
+                            itemInfo.PlayerDbId = findPlayer.PlayerDbId;
+                            itemInfo.Type = (byte)ItemType.None;
+                            itemInfo.Count = 0;
+
+                            findPlayer.ItemSlot.Add(itemInfo);
+                            Console.WriteLine("Add");
+                        }
+
+                        // Db에 있는 아이템 슬롯 정보 수정
                         for (int i = 0; i < info.ItemSlot.Count; i++)
                         {
-                            ItemInfoDb itemInfo = new ItemInfoDb();
+                            ItemInfoDb itemInfo = findPlayer.ItemSlot[i];
                             itemInfo.Player = findPlayer;
                             itemInfo.PlayerDbId = findPlayer.PlayerDbId;
 
