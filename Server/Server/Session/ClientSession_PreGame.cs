@@ -145,7 +145,7 @@ namespace Server
 
                 // 계정 만들기
                 findAccount = CreateAccount(findToken.AccountDbId);
-                if (findAccount == null) // 계정을 못만들었을 경우
+                if (findAccount == null) // 계정을 생성이 실패했을 경우
                 {
                     LoginFail();
                     return;
@@ -154,7 +154,7 @@ namespace Server
             else // 계정이 있을 경우
             {
                 ClientSession session = GameAccountManager.Instance.Find(findAccount.GameAccountDbId);
-                if (session != null && session.LoginState == PlayerLoginState.LoggedIn) // 찾은 계정이 다른 클라이언트에서 이미 플레이 중이라면
+                if (session != null && session.LoginState == PlayerLoginState.LoggedIn) // 계정이 다른 클라이언트에서 이미 플레이 중이라면
                 {
                     Console.WriteLine("Already playing this account");
 
@@ -177,7 +177,6 @@ namespace Server
             sendPacket.LoginResult = LoginResult.LoginSuccess;
             Send(sendPacket);
 
-            // 계정 정보에 맞게 세션 정보 업데이트
             GameAccountDb loginAccount = null;
             using (GameDbContext db = new GameDbContext())
             {
@@ -185,18 +184,21 @@ namespace Server
                     .AsNoTracking()
                     .Include(a => a.Player)
                     .Where(a => a.GameAccountDbId == gameAccountDbId).FirstOrDefault();
+            }
 
-                if (loginAccount == null)
-                {
-                    Console.WriteLine("Login account is null");
+            if (loginAccount == null)
+            {
+                Console.WriteLine("Login account is null");
+                return;
+            }
+
+            if (loginAccount.Player == null)
+            {
+                Console.WriteLine("Login account's player is null");
+                loginAccount.Player = CreatePlayer(gameAccountDbId);
+
+                if(loginAccount.Player == null)
                     return;
-                }
-
-                if (loginAccount.Player == null)
-                {
-                    Console.WriteLine("Login account's player is null");
-                    loginAccount.Player = CreatePlayer(gameAccountDbId);
-                }
             }
 
             StartSession();
@@ -244,6 +246,7 @@ namespace Server
 
         private void StartSession()
         {
+            // 계정 정보가 업데이트 됬을경우
             if (GameAccountManager.Instance.IsSaved(this.GameAccountDbId))
             {
                 // 계정 정보에 맞게 세션 정보 업데이트
@@ -255,20 +258,20 @@ namespace Server
                         .Include(a => a.Player)
                         .ThenInclude(p => p.ItemSlot)
                         .Where(a => a.GameAccountDbId == this.GameAccountDbId).FirstOrDefault();
-
-                    if (loginAccount == null)
-                    {
-                        Console.WriteLine("Failed to find Account");
-                        return;
-                    }
-
-                    if(loginAccount.Player == null)
-                    {
-                        Console.WriteLine("Failed to find Player");
-                        return;
-                    }
                 }
-    
+
+                if (loginAccount == null)
+                {
+                    Console.WriteLine("LoginAccount is null");
+                    return;
+                }
+
+                if (loginAccount.Player == null)
+                {
+                    Console.WriteLine("LoginAccount's Player is null");
+                    return;
+                }
+
                 // 플레이어 정보 업데이트
                 SetPlayerInfo(loginAccount.Player);
 
@@ -285,7 +288,7 @@ namespace Server
             }
             else
             {
-                GameInstanceManager.Instance.Push(StartSession);
+                GameInstanceManager.Instance.PushAfter(250, StartSession);
             }
         }
         #endregion

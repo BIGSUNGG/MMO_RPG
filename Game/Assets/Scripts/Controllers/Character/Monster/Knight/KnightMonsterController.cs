@@ -42,24 +42,31 @@ public class KnightMonsterController : MonsterController
         if (Util.CheckFuncCalledOnServer() == false)
             return;
 
-        if (_aiCurAttackDelay > 0.0f)
-            _aiCurAttackDelay -= Time.deltaTime;
-
-        if (_isAttacking) // 공격중이라면 
-            return;
-
         base.AiControllerUpdate();
 
-        if (_enemy != null && _enemy.Health._bDead == false) // 추적중인 적이 있다면
+        if (_enemy == null || _enemy.Health._bDead) // 현재 추적중인 적이 없거나 추적중인 적이 이미 사망했다면
+        {
+            // 주변에 있는 적 찾기
+            _enemy = FindEnemy(_enemySearchDistance);
+            if (_enemy == null && Vector3.Distance(this.transform.position, _spawnPosition) > 4.5f) // 주변에 적이 없고 스폰 위치에서 떨어져있다면
+            {
+                MoveTo(_spawnPosition); // 스폰 위치로 돌아가기
+            }
+            else
+            {
+                _inputDir = Vector3.zero;
+            }
+        }
+        else // 추적중인 적이 있다면
         {
             Vector3 distanceVec = _enemy.transform.position - this.transform.position;
             float distance = Mathf.Abs(distanceVec.magnitude);
 
-            if(distance > _enemyMaxDistance) // 적이 최대 거리보다 멀리 떨어져있다면
+            if (distance > _enemyMaxDistance) // 적이 최대 거리보다 멀리 떨어져있다면
             {
                 // 새로운 주변에 있는 적 찾기
                 _enemy = FindEnemy(_enemySearchDistance);
-                if(_enemy == null)
+                if (_enemy == null)
                 {
                     _inputDir = Vector3.zero;
                     return;
@@ -79,14 +86,14 @@ public class KnightMonsterController : MonsterController
                 // 멈추기
                 _inputDir = Vector3.zero;
 
-                if(_aiCurAttackDelay <= 0.0f)
+                if (_aiCurAttackDelay <= 0.0f)
                 {
                     _aiCurAttackDelay = _aiAttackDelay;
                     Attack(); // 공격                
                 }
             }
         }
-    }
+    }    
     #endregion
 
     #region Attack

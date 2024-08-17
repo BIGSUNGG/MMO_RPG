@@ -118,9 +118,8 @@ public class CharacterMovementComponent : ObjectComponent
             _moveDir = moveDir;
         }
         else
-        {
-            float posDistance = Mathf.Abs((pos - _syncEndPos).magnitude);
-            if (posDistance >= 0.1f)
+        {           
+            if (pos != _syncEndPos)
             {
                 _curPosSyncLerpTime = 0.0f;
                 _syncStartPos = transform.position;

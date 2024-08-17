@@ -38,7 +38,7 @@ namespace Server.Game
         // enterDelay : 플레이어를 맵에 추가할 딜레이
         public void EnterMap(ClientSession session, int enterDelay) 
         {
-            if(session.MyMap != null && session.MyMap != this) // 세션이 다른 맵에 들어가 있다면
+            if(session.MyMap != null) // 세션이 다른 맵에 들어가 있다면
             {
                 Console.WriteLine("Session's Map is already exist");
                 return;
