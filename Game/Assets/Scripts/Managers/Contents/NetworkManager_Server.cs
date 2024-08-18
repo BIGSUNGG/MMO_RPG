@@ -101,53 +101,15 @@ public partial class NetworkManager
     {
         // 서버에게 sessionId로 0을 준다면 서버에서 처리하는 패킷으로 처리
         int sessionId = 0;
-
-		string msgName = packet.Descriptor.Name.Replace("_", string.Empty);
-		MsgId msgId = (MsgId)Enum.Parse(typeof(MsgId), msgName);
-		ushort size = (ushort)packet.CalculateSize();
-        byte[] sendBuffer = new byte[size + 8];
-        Array.Copy(BitConverter.GetBytes((int)(sessionId)), 0, sendBuffer, 0, sizeof(int));
-        Array.Copy(BitConverter.GetBytes((ushort)(size + 8)), 0, sendBuffer, 4, sizeof(ushort));
-        Array.Copy(BitConverter.GetBytes((ushort)msgId), 0, sendBuffer, 6, sizeof(ushort));
-        Array.Copy(packet.ToByteArray(), 0, sendBuffer, 8, size);
-
-        // 서버로 패킷 전송
-        _serverSession.Send(new ArraySegment<byte>(sendBuffer));
-
-#if false // Log Packet Info
-        Debug.Log(
-            "Send " +
-            "Id : " + sessionId +
-            ", Size : " + (size + 8) +
-            ", MsgId : " + msgId + $"{((int)msgId)}"
-            );
-#endif
+        Send(sessionId, packet);
     }
 
     // 매개 변수로 들어온 session으로 패킷 전송
     public void SendClient(ClientSession session, IMessage packet)
     {
         // 서버로 패킷 전송 후 서버에서 다시 클라이언트로 전송
-		string msgName = packet.Descriptor.Name.Replace("_", string.Empty);
-		MsgId msgId = (MsgId)Enum.Parse(typeof(MsgId), msgName);
-		ushort size = (ushort)packet.CalculateSize();
-		byte[] sendBuffer = new byte[size + 8];
-		Array.Copy(BitConverter.GetBytes((int)(session.SessionId)), 0, sendBuffer, 0, sizeof(int));
-        Array.Copy(BitConverter.GetBytes((ushort)(size + 8)), 0, sendBuffer, 4, sizeof(ushort));
-        Array.Copy(BitConverter.GetBytes((ushort)msgId), 0, sendBuffer, 6, sizeof(ushort));
-        Array.Copy(packet.ToByteArray(), 0, sendBuffer, 8, size);
-
-        // 서버로 패킷 전송
-        _serverSession.Send(new ArraySegment<byte>(sendBuffer));
-
-#if false // Log Packet Info
-        Debug.Log(
-            "Send " +
-            "Id : " + session.SessionId +
-            ", Size : " + (size + 8) +
-            ", MsgId : " + msgId + $"{((int)msgId)}"
-            );
-#endif
+        int sessionId = session.SessionId;
+        Send(sessionId, packet);
     }
 
     // 이 Game Room안에 있는 모든 클라이언트에게 패킷 전송
@@ -155,13 +117,17 @@ public partial class NetworkManager
     {
         // 서버에게 sessionId로 -1을 준다면 모두에게 전송하는 패킷으로 처리
         int sessionId = -1;
+        Send(sessionId, packet);
+    }
 
+    public void Send(int id, IMessage packet)
+    {
         // 서버로 패킷 전송 후 서버에서 모든 클라이언트로 전송
         string msgName = packet.Descriptor.Name.Replace("_", string.Empty);
         MsgId msgId = (MsgId)Enum.Parse(typeof(MsgId), msgName);
         ushort size = (ushort)packet.CalculateSize();
         byte[] sendBuffer = new byte[size + 8];
-        Array.Copy(BitConverter.GetBytes((int)(sessionId)), 0, sendBuffer, 0, sizeof(int));
+        Array.Copy(BitConverter.GetBytes((int)(id)), 0, sendBuffer, 0, sizeof(int));
         Array.Copy(BitConverter.GetBytes((ushort)(size + 8)), 0, sendBuffer, 4, sizeof(ushort));
         Array.Copy(BitConverter.GetBytes((ushort)msgId), 0, sendBuffer, 6, sizeof(ushort));
         Array.Copy(packet.ToByteArray(), 0, sendBuffer, 8, size);
@@ -221,6 +187,6 @@ public partial class NetworkManager
 
         return result;
     }
-    #endregion 
+    #endregion
 }
 #endif

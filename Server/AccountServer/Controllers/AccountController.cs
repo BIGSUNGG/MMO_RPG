@@ -44,13 +44,17 @@ namespace AccountServer.Controllers
 
 				bool success = _context.SaveChangesEx();
 				res.CreateOk = success;
-			}
-			else
-			{
-				res.CreateOk = false;
+
+                Console.WriteLine($"Create Success Id : {req.AccountName}, Password : {req.Password}");
 			}
 
-			return res;
+            else
+			{
+				res.CreateOk = false;
+                Console.WriteLine($"Create Fail Id : {req.AccountName}, Password : {req.Password}");
+            }
+
+            return res;
 		}
 
 		[HttpPost]
@@ -66,10 +70,12 @@ namespace AccountServer.Controllers
 
 			if (account == null)
 			{
+                Console.WriteLine($"Create Fail Id : {req.AccountName}, Password : {req.Password}");
 				res.LoginOk = false;
-			}
-			else
+            }
+            else
 			{
+                Console.WriteLine($"Create Success Id : {req.AccountName}, Password : {req.Password}");
 				res.LoginOk = true;
 
 				// 토큰 발급
