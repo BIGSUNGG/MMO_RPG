@@ -44,6 +44,8 @@ public class KnightMonsterController : MonsterController
 
         base.AiControllerUpdate();
 
+        Mathf.Max(0.0f, _aiCurAttackDelay -= Time.deltaTime);
+
         if (_enemy == null || _enemy.Health._bDead) // 현재 추적중인 적이 없거나 추적중인 적이 이미 사망했다면
         {
             // 주변에 있는 적 찾기

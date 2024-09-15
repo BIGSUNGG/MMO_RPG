@@ -140,6 +140,7 @@ namespace Server
                     return session;
                 });
 
+                int waitingTick = System.Environment.TickCount + ProcessWaitingTick;
                 if (bTestUnityServer == false || mapId != TestUnityServerId)
                 {
                     // 새로운 윈도우 창에서 열리도록 설정
@@ -151,7 +152,7 @@ namespace Server
                 }
 
                 while(true)
-                { 
+                {
                     // 유니티 게임 인스턴스 연결 기다리기
                     if(bProgramConnect)
                     {   
@@ -163,6 +164,17 @@ namespace Server
                         instance.Session.FlushSend();
                         Console.WriteLine("Unity server connect");
                         break;
+                    }
+
+                    // 게임 인스턴스 연결이 너무 오래걸릴 시 프로세스 재시작
+                    if(bTestUnityServer == false || mapId != TestUnityServerId)
+                    {
+                        if(System.Environment.TickCount > waitingTick)
+                        {
+                            process.Close();
+                            i--;
+                            break;
+                        }
                     }
                 }
             }
@@ -206,6 +218,7 @@ namespace Server
             GameLogicTask();
         }
 
+        public static int ProcessWaitingTick = 10000;
         public static string Path = new string("");
         public static string Name { get; } = "메인서버";
 		public static int Port { get; } = 7777;
@@ -219,7 +232,7 @@ namespace Server
             for(int i = 0; i < Environment.CurrentDirectory.Length - 38; i++)
                 Path += Environment.CurrentDirectory[i];
 
-			StartServerInfoTask();
+            StartServerInfoTask();
             CreateGameInstances();
             StartServer();
         }

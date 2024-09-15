@@ -17,13 +17,13 @@ namespace AccountServer.Controllers
 		AccountDbContext _context;
 		SharedDbContext _shared;
 
-		public AccountController(AccountDbContext context, SharedDbContext shared)
-		{
-			_context = context;
-			_shared = shared;
-		}
+        public AccountController(AccountDbContext context, SharedDbContext shared)
+        {
+            _context = context;
+            _shared = shared;
+        }
 
-		[HttpPost]
+        [HttpPost]
 		[Route("create")]
 		public CreateAccountPacketRes CreateAccount([FromBody] CreateAccountPacketReq req)
 		{
@@ -70,12 +70,12 @@ namespace AccountServer.Controllers
 
 			if (account == null)
 			{
-                Console.WriteLine($"Create Fail Id : {req.AccountName}, Password : {req.Password}");
+                Console.WriteLine($"Login Fail Id : {req.AccountName}, Password : {req.Password}");
 				res.LoginOk = false;
             }
             else
 			{
-                Console.WriteLine($"Create Success Id : {req.AccountName}, Password : {req.Password}");
+                Console.WriteLine($"Login Success Id : {req.AccountName}, Password : {req.Password}");
 				res.LoginOk = true;
 
 				// 토큰 발급
