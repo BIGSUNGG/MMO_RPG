@@ -48,6 +48,8 @@ MMO RPG project is Unity3D MMORPG with `Tcp/Ip socket` and `HTTP`
 
 <h2>Login</h2>
 
+![intro-image](./README/Screen.png)
+
 When a client attempts to log in, 
 it sends a login packet to the `Account Server (web server)` using HTTP.   
 The Account Server then searches for the corresponding account in the AccountDB and,   

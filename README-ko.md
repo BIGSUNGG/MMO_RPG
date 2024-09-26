@@ -48,6 +48,8 @@ MMO RPG 프로젝트는 Unity와 `TCP/IP 소켓`과 `HTTP`를 사용한 MMO RPG 
 
 <h2>로그인</h2>
 
+![intro-image](./README/Screen.png)
+
 클라이언트에서 로그인 시도 시 `계정 서버(웹 서버)`로   
 로그인 패킷을 HTTP를 사용하여 보냅니다.  
 로그인 패킷을 받은 계정 서버에서는 패킷에 맞는 계정을  
