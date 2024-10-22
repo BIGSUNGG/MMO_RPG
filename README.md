@@ -1,3 +1,5 @@
+[한국어 문서](https://github.com/BIGSUNGG/MMO_RPG/blob/Finish/README-ko.md)
+
 <h2>MMO RPG Project</h2>
 
 MMO RPG project is Unity3D MMORPG with `Tcp/Ip socket` and `HTTP`
@@ -69,13 +71,13 @@ starts the client session, and sends a login success packet to the client.
 
 The MMO RPG project features a server structure that includes:  
 
-`Account Server` (web server), which is responsible for managing user accounts.   
+`Account Server(Web Server)`, which is responsible for managing user accounts.   
 This server communicates with clients using `HTTP`.  
 
 `Game Server Process`, tasked with managing connected players.   
 It communicates with clients via `TCP/IP sockets`.
 
-`Game Server Instance`, which handles the game logic.   
+`Game Server Instance(Unity Dedicated Server)`, which handles the game logic.   
 It communicates with the Game Server Process through `IPC communication using TCP/IP sockets`   
 and also facilitates communication with clients via the Game Server Process.
 
