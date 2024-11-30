@@ -9,5 +9,17 @@ public class UI_Scene : UI_Base
 	{
 		Managers.UI.SetCanvas(gameObject, false);
 	}
+
+    public virtual void Update()
+    {
+
+    }
+}
+#else
+public class UI_Scene : UI_Base
+{
+    public override void Init()
+    {
+    }
 }
 #endif

@@ -1,19 +1,35 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-#if !UNITY_SERVER
 public class UI_GameScene : UI_Scene
 {
-    public UI_Stat StatUI { get; private set; }
+    public GameObject NameObject;
+    protected Text _nameText;
 
+    public GameObject HpObject;
+    protected Image _hpImage;
+
+#if !UNITY_SERVER
     public override void Init()
 	{
         base.Init();
 
-        StatUI = GetComponentInChildren<UI_Stat>();
+        _nameText = NameObject.GetComponent<Text>();
+        _hpImage = HpObject.GetComponent<Image>();
+    }
 
-        StatUI.gameObject.SetActive(false);
-	}
-}
+    public override void Update()
+    {
+        base.Update();
+
+        if(_nameText)
+            _nameText.text = Managers.Network.AccountName;
+
+        CharacterController co = Managers.Controller.MyController;
+        if(_hpImage && co && co._health)
+            _hpImage.fillAmount = co._health.CurHpRatio;
+    }
 #endif
+}

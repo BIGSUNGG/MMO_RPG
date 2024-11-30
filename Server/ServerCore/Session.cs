@@ -83,7 +83,7 @@ namespace ServerCore
             RegisterRecv();
         }
 
-        public void Send(List<ArraySegment<byte>> sendBuffList)
+        public virtual void Send(List<ArraySegment<byte>> sendBuffList)
         {
             if (sendBuffList.Count == 0)
                 return;
@@ -98,7 +98,7 @@ namespace ServerCore
             }
         }
 
-        public void Send(ArraySegment<byte> sendBuff)
+        public virtual void Send(ArraySegment<byte> sendBuff)
         {
             lock (_lock)
             {
