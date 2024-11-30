@@ -1,28 +1,29 @@
-﻿using Google.Protobuf.Protocol;
+﻿using Google.Protobuf.Collections;
+using Google.Protobuf.Protocol;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class ObjectManager
+public partial class ObjectManager
 {
-	Dictionary<int, GameObject> _objects = new Dictionary<int, GameObject>();
-
-	public void Add(GameObject gameObject, int id)
-	{
-        _objects.Add(id, gameObject);
-
+    public ObjectManager()
+    {
+        _spawner = new List<Func<GameObject>>(new Func<GameObject>[10]);
+        _spawner[(int)GameObjectType.Character] = () => { return Managers.Resource.Instantiate("Object/Character");  }; 
     }
+    public Dictionary<int, GameObject> _objects { get; private set; } = new Dictionary<int, GameObject>();
+    List<Func<GameObject>> _spawner;
 
-	public void Remove(int id)
-	{
-
-	}
-
-	public GameObject FindById(int id)
+    public GameObject FindById(int id)
 	{
 		GameObject go = null;
 		_objects.TryGetValue(id, out go);
+
+        if (go == null)
+            Debug.Log($"Find GameObject failed Id : {id}");
+
 		return go;
 	}
 

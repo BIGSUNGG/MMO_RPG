@@ -9,10 +9,9 @@ namespace Server.Game
 	{
 		public static GameLogic Instance { get; } = new GameLogic();
 
-		Dictionary<int, GameRoom> _rooms = new Dictionary<int, GameRoom>();
-		int _roomId = 1;
+		Dictionary<int, GameRoom> _rooms = new Dictionary<int, GameRoom>(); // Key : MapId, Value : GameRoom
 
-		public void Update()
+        public void Update()
 		{
 			Flush();
 
@@ -25,13 +24,10 @@ namespace Server.Game
 		public GameRoom Add(int mapId, Process program)
 		{
 			GameRoom gameRoom = new GameRoom();
-			gameRoom.Push(gameRoom.Init, mapId, 10);
-
-			gameRoom.RoomId = _roomId;
+			gameRoom.MapId = mapId;
             gameRoom.Program = program;
-			_rooms.Add(_roomId, gameRoom);
-			_roomId++;
 
+			_rooms.Add(mapId, gameRoom);
 			return gameRoom;
 		}
 

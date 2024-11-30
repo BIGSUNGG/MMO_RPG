@@ -1,0 +1,39 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CharacterAnimParameter : MonoBehaviour
+{
+    protected Animator _animator;
+    protected CharacterMovementComponent _movement;
+
+    protected virtual void Awake()
+    {
+        _animator = GetComponent<Animator>();
+        _movement = GetComponent<CharacterMovementComponent>();
+    }
+
+    // Start is called before the first frame update
+    protected virtual void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    protected virtual void Update()
+    {
+        Vector3 inputDir = new Vector3(_movement._lastInputDir.x, 0.0f, _movement._lastInputDir.y);
+
+        bool bIsMoving = _movement._lastInputDir != Vector2.zero; // 캐릭터가 움직이고 있는지
+        bool bIsRunning = bIsMoving && _movement._bIsRunning; // 캐릭터가 움직이고 있는지
+        float forwardSpeed = Vector3.Dot(transform.forward, inputDir); // 정면 속도 구하기
+        float horizonSpeed = Vector3.Dot(transform.right  , inputDir); // 수평 속도 구하기
+
+        // 애니메이터에 값 적용
+        _animator.SetBool("IsMoving", bIsMoving);
+        _animator.SetBool("IsRunning", bIsRunning);
+        _animator.SetFloat("Forward Speed", forwardSpeed);
+        _animator.SetFloat("Horizon Speed", horizonSpeed);
+
+    }
+}

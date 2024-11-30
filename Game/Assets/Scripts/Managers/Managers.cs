@@ -8,19 +8,23 @@ public class Managers : MonoBehaviour
     public static Managers Instance { get { Init(); return s_instance; } } // 유일한 매니저를 갖고온다
 
     #region Contents
+    ControllerManager _controller = new ControllerManager();
     MapManager _map = new MapManager();
     ObjectManager _obj = new ObjectManager();
     NetworkManager _network = new NetworkManager();
     WebManager _web = new WebManager();
+    TimerManager _timer = new TimerManager();
 
+    public static ControllerManager Controller { get { return Instance._controller; } }
     public static MapManager Map { get { return Instance._map; } }
     public static ObjectManager Object { get { return Instance._obj; } }
     public static NetworkManager Network { get { return Instance._network; } }
     public static WebManager Web { get { return Instance._web; } }
-	#endregion
+    public static TimerManager Timer { get { return Instance._timer; } }
+    #endregion
 
-	#region Core
-	DataManager _data = new DataManager();
+    #region Core
+    DataManager _data = new DataManager();
     PoolManager _pool = new PoolManager();
     ResourceManager _resource = new ResourceManager();
     SceneManagerEx _scene = new SceneManagerEx();
@@ -49,6 +53,8 @@ public class Managers : MonoBehaviour
 
     void Update()
     {
+        _timer.Update();
+        _controller.Update();
         _network.Update();
     }
 

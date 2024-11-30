@@ -21,7 +21,7 @@ public class ServerPacketQueue
 	public void Push(ushort id, IMessage packet)
 	{
 		lock (_lock)
-		{
+		{   
 			_packetQueue.Enqueue(new ServerPacketMessage() { Id = id, Message = packet });
 		}
 	}
