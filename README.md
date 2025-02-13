@@ -2,7 +2,7 @@
 
 MMO RPG 프로젝트는 Unity와 `TCP/IP 소켓`과 `HTTP`를 사용한 MMO RPG 입니다.
 
-[실행 영상](https://www.youtube.com/watch?v=Cpboz2mf5Pk&t=109s)
+[실행 영상](https://www.youtube.com/watch?v=Cpboz2mf5Pk)
 
 ---
 
